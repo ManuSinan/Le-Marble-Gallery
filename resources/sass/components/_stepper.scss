@@ -1,0 +1,25 @@
+@import '../tokens';
+
+.knm-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: $knm-space-2;
+}
+
+.knm-stepper button {
+  width: $knm-tap-min;
+  height: $knm-tap-min;
+  border-radius: $knm-radius-input;
+  border: 1px solid $knm-border;
+  background: $knm-surface;
+  font-weight: $knm-weight-medium;
+  cursor: pointer;
+}
+
+.knm-stepper input {
+  width: 56px;
+  min-height: $knm-tap-min;
+  text-align: center;
+  border: 1px solid $knm-border;
+  border-radius: $knm-radius-input;
+}

@@ -1,0 +1,75 @@
+@import '../tokens';
+
+.knm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $knm-space-2;
+  min-height: $knm-tap-min;
+  padding: $knm-space-2 $knm-space-4;
+  border-radius: $knm-radius-input;
+  border: 1px solid transparent;
+  font-size: $knm-type-15;
+  font-weight: $knm-weight-medium;
+  cursor: pointer;
+  background: transparent;
+  color: $knm-text;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.knm-btn:active {
+  transform: scale(0.99);
+}
+
+.knm-btn--primary {
+  background: var(--knm-accent);
+  border-color: var(--knm-accent);
+  color: #fff;
+}
+
+.knm-btn--primary:hover {
+  background: var(--knm-accent-hover);
+  border-color: var(--knm-accent-hover);
+}
+
+.knm-btn--ghost {
+  border-color: $knm-border;
+  background: $knm-surface;
+}
+
+.knm-btn--ghost:hover {
+  border-color: #c4c4c4;
+}
+
+.knm-btn--sm {
+  min-height: 40px;
+  padding: $knm-space-2 $knm-space-3;
+  font-size: $knm-type-13;
+}
+
+.knm-btn--block {
+  width: 100%;
+}
+
+.knm-btn--spread {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.knm-btn--icon {
+  min-width: $knm-tap-min;
+  padding: 0;
+}
+
+.knm-btn.is-active {
+  background: var(--knm-accent-muted);
+  color: var(--knm-accent);
+}
+
+.knm-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}

@@ -1,0 +1,35 @@
+@import '../tokens';
+
+.knm-chip-row {
+  display: flex;
+  gap: $knm-space-2;
+  overflow-x: auto;
+  padding-bottom: $knm-space-2;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.knm-chip-row::-webkit-scrollbar {
+  height: 4px;
+}
+
+.knm-chip {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  padding: $knm-space-2 $knm-space-4;
+  min-height: $knm-tap-min;
+  border-radius: $knm-radius-pill;
+  border: 1px solid $knm-border;
+  background: $knm-surface;
+  font-size: $knm-type-15;
+  font-weight: $knm-weight-medium;
+  color: $knm-text;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.knm-chip.is-active {
+  background: var(--knm-accent-muted);
+  border-color: var(--knm-accent);
+  color: var(--knm-accent);
+}

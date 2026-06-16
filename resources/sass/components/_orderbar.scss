@@ -1,0 +1,36 @@
+@import '../tokens';
+
+.knm-orderbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  padding: $knm-space-4;
+  background: linear-gradient(to top, $knm-surface-subtle, transparent);
+  pointer-events: none;
+}
+
+.knm-orderbar__inner {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $knm-space-4;
+  padding: $knm-space-4;
+  background: $knm-text;
+  color: #fff;
+  border-radius: $knm-radius-card;
+  max-width: var(--knm-max-store);
+  margin-inline: auto;
+}
+
+.knm-orderbar__cta {
+  flex-shrink: 0;
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-orderbar {
+    display: none;
+  }
+}

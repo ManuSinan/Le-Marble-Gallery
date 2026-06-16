@@ -1,0 +1,154 @@
+@import 'tokens';
+
+/* Layout */
+.knm-container {
+  width: 100%;
+  max-width: var(--knm-max-store);
+  margin-inline: auto;
+  padding-inline: $knm-space-4;
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-container {
+    padding-inline: $knm-space-6;
+  }
+}
+
+.knm-flex {
+  display: flex;
+}
+
+.knm-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.knm-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.knm-gap-2 {
+  gap: $knm-space-2;
+}
+
+.knm-gap-3 {
+  gap: $knm-space-3;
+}
+
+.knm-gap-4 {
+  gap: $knm-space-4;
+}
+
+.knm-stack {
+  display: flex;
+  flex-direction: column;
+  gap: $knm-space-4;
+}
+
+.knm-stack-6 {
+  display: flex;
+  flex-direction: column;
+  gap: $knm-space-6;
+}
+
+/* Grid — no Bootstrap */
+.knm-grid-2 {
+  display: grid;
+  gap: $knm-space-4;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: $knm-bp-tablet) {
+  .knm-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.knm-grid-classes {
+  display: grid;
+  gap: $knm-space-4;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: $knm-bp-tablet) {
+  .knm-grid-classes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-grid-classes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.knm-store-layout {
+  display: grid;
+  gap: $knm-space-6;
+  padding-block: $knm-space-6 $knm-space-12;
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-store-layout {
+    grid-template-columns: 200px minmax(0, 1fr) 300px;
+    align-items: start;
+  }
+
+  .knm-store-layout--hero {
+    grid-template-columns: 1fr 300px;
+  }
+
+  .knm-store-layout--hero .knm-desktop-sidebar {
+    display: none;
+  }
+
+  .knm-main--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.knm-hidden {
+  display: none !important;
+}
+
+.knm-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.knm-text-right {
+  text-align: right;
+}
+
+.knm-grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.knm-mt-4 {
+  margin-top: $knm-space-4;
+}
+
+.knm-mt-6 {
+  margin-top: $knm-space-6;
+}
+
+.knm-pb-nav {
+  padding-bottom: 88px;
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-pb-nav {
+    padding-bottom: $knm-space-6;
+  }
+}

@@ -1,0 +1,79 @@
+@import '../tokens';
+
+.knm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.knm-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.knm-drawer {
+  position: absolute;
+  background: $knm-surface;
+  display: flex;
+  flex-direction: column;
+  max-height: 88vh;
+  min-height: 0;
+}
+
+.knm-drawer--left {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: min(320px, 88vw);
+  border-right: 1px solid $knm-border;
+}
+
+.knm-drawer--bottom {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: $knm-radius-card $knm-radius-card 0 0;
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-modal--desktop-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(440px, 92vw);
+    max-height: 90vh;
+    border-radius: $knm-radius-card;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+  }
+}
+
+@media (max-width: $knm-bp-desktop - 1px) {
+  .knm-modal--desktop-card {
+    position: absolute;
+    inset: 0;
+    max-height: none;
+    border-radius: 0;
+  }
+}
+
+.knm-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $knm-space-4;
+  border-bottom: 1px solid $knm-border;
+}
+
+.knm-drawer__body {
+  padding: $knm-space-4;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.knm-drawer__foot {
+  padding: $knm-space-4;
+  border-top: 1px solid $knm-border;
+}

@@ -1,0 +1,61 @@
+@import "../../../build/theme";
+
+
+////////////////////////////////////////////////////
+// ------ C O L O R S ------------------------------
+////////////////////////////////////////////////////
+// Theme Colors
+$colorPrimary:         $theme-primary;
+$colorLightPrimary:    $theme-secondary;
+$colorSecondary:       $theme-tertiary;
+$colorTertiary:        $theme-fourthiary; 
+
+
+$colorSuccess:         #099100;
+$colorDanger:          #EC4433;
+$colorWarning:         #FE9500;
+$colorInfo:            #592BCA;
+
+$primaryFontColor:     $theme-primary-color;
+
+$secondaryFontColor:     $theme-secondary-color;
+
+// Background
+$colorBackground:      #ffffff;
+// Line Colors
+$colorLine:            #f3f3f3;
+// Text Colors
+$colorHeading:         #090909;
+$colorText:            #090a0a;
+$colorLight:           #68686a;
+
+// Dark Mode Colors
+$darkModeBackground:        #0c1624;
+$darkModeContentBackground: #bec6d3;
+$darkModeColorHeading:      #FFFFFF;
+$darkModeColorText:         #8195a6;
+$darkModeColorLight:        #586d7f;
+$darkModeColorLine:         #1B283B;
+ 
+// Font Family
+$fontFamily:             Roboto, sans-serif;
+// Define font weight
+$regular :               400; // font regular
+$medium :                600; // font medium (if font does not support medium, define the semibold)
+$bold :                  700; // font bold or black
+// Typography
+$lineHeight:             1.55rem;
+$letterSpacing:          -0.015rem;
+// Sizes
+$fontSizeHeadingXLarge:  34px;
+$fontSizeHeadingLarge:   24px;
+$fontSizeHeading:        15px;
+$fontSize:               14px;
+$fontSizeSub:            14px;
+$fontSizeCaption:        12px;
+
+////////////////////////////////////////////////////
+// ------ OTHERS -----------------------------------
+////////////////////////////////////////////////////
+$borderRadius:           6px;
+$boxShadow :             0 3px 6px 0 rgba(0,0,0,.1), 0 1px 3px 0 rgba(0,0,0,.08);

@@ -1,0 +1,46 @@
+/* ==================== GLOBAL STYLES – The Canvas Co. ======================= */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+html { font-family: 'Source Sans 3', sans-serif; font-size: 15px; }
+
+// @supports (font-variation-settings: normal) {
+//   html { font-family: 'Inter var', sans-serif; }
+// }
+
+/* ========================
+INCLUDE STYLES AND COMPONENTS
+===================== */
+
+@import "variables-custom"; 
+
+/* ================== HELPERS  =================== */
+@import "ui-assets/helpers/mixins";
+@import "ui-assets/helpers/helper-classes"; 
+@import "ui-assets/helpers/bg";
+@import "ui-assets/helpers/typography"; 
+
+
+/* ================== SECTIONS =================== */
+@import "ui-assets/sections/header";
+@import "ui-assets/sections/footer";
+@import "ui-assets/sections/sidebar";
+
+
+/* ================== COMPONENTS =================== */
+@import "ui-assets/components/plugin-styles";
+@import "ui-assets/components/buttons";
+@import "ui-assets/components/items";
+@import "ui-assets/components/lists";
+@import "ui-assets/components/cards-product";
+@import "ui-assets/components/elements.scss";
+@import "ui-assets/components/menu";
+@import "ui-assets/components/forms";
+
+/* ================== PAGES =================== */
+@import "ui-assets/pages/page-account";
+@import "ui-assets/pages/page-base";
+@import "ui-assets/pages/page-home";
+@import "ui-assets/pages/page-detail";
+@import "ui-assets/pages/page-listing";
+@import "ui-assets/pages/page-order";
+

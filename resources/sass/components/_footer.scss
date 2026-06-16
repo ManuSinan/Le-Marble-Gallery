@@ -1,0 +1,43 @@
+@import '../tokens';
+
+.knm-footer {
+  border-top: 1px solid $knm-border;
+  padding: $knm-space-8 0;
+  margin-top: auto;
+  background: $knm-surface;
+  color: $knm-text-muted;
+  font-size: $knm-type-15;
+}
+
+.knm-footer__grid {
+  display: grid;
+  gap: $knm-space-8;
+}
+
+@media (min-width: $knm-bp-desktop) {
+  .knm-footer__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.knm-footer h3 {
+  font-size: $knm-type-15;
+  font-weight: $knm-weight-medium;
+  margin-bottom: $knm-space-3;
+  color: $knm-text;
+}
+
+.knm-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $knm-space-2;
+}
+
+.knm-footer a {
+  color: $knm-text-muted;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

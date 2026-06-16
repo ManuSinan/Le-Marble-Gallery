@@ -1,0 +1,62 @@
+// KNM design tokens — teal accent, 4px spacing grid, type scale 13/15/18/24/32
+
+$knm-accent: #0d9373;
+$knm-accent-hover: #0a7a5f;
+$knm-accent-muted: rgba(13, 147, 115, 0.12);
+
+$knm-surface: #ffffff;
+$knm-surface-subtle: #fafafa;
+$knm-border: #e8e8e8;
+$knm-text: #1a1a1a;
+$knm-text-muted: #5c5c5c;
+$knm-danger: #b42318;
+$knm-danger-bg: #fef3f2;
+$knm-success: #027a48;
+$knm-success-bg: #ecfdf3;
+
+$knm-radius-input: 8px;
+$knm-radius-card: 8px;
+$knm-radius-pill: 99px;
+
+$knm-space-1: 4px;
+$knm-space-2: 8px;
+$knm-space-3: 12px;
+$knm-space-4: 16px;
+$knm-space-6: 24px;
+$knm-space-8: 32px;
+$knm-space-12: 48px;
+
+$knm-type-13: 13px;
+$knm-type-15: 15px;
+$knm-type-18: 18px;
+$knm-type-24: 24px;
+$knm-type-32: 32px;
+
+$knm-weight-body: 400;
+$knm-weight-medium: 600;
+
+$knm-max-store: 1200px;
+$knm-tap-min: 44px;
+
+$knm-bp-tablet: 640px;
+$knm-bp-desktop: 1024px;
+
+:root {
+  --knm-accent: #{$knm-accent};
+  --knm-accent-hover: #{$knm-accent-hover};
+  --knm-accent-muted: #{$knm-accent-muted};
+  --knm-surface: #{$knm-surface};
+  --knm-surface-subtle: #{$knm-surface-subtle};
+  --knm-border: #{$knm-border};
+  --knm-text: #{$knm-text};
+  --knm-text-muted: #{$knm-text-muted};
+  --knm-danger: #{$knm-danger};
+  --knm-danger-bg: #{$knm-danger-bg};
+  --knm-success: #{$knm-success};
+  --knm-success-bg: #{$knm-success-bg};
+  --knm-radius-input: #{$knm-radius-input};
+  --knm-radius-card: #{$knm-radius-card};
+  --knm-radius-pill: #{$knm-radius-pill};
+  --knm-max-store: #{$knm-max-store};
+  --knm-tap-min: #{$knm-tap-min};
+}

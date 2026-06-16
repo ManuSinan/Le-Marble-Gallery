@@ -1,0 +1,24 @@
+@import '../tokens';
+
+.knm-notice {
+  padding: $knm-space-4;
+  border-radius: $knm-radius-card;
+  border: 1px solid $knm-border;
+  font-size: $knm-type-15;
+}
+
+.knm-notice--success {
+  background: $knm-success-bg;
+  border-color: #abefc6;
+  color: $knm-success;
+}
+
+.knm-notice--error {
+  background: $knm-danger-bg;
+  border-color: #fecdca;
+  color: $knm-danger;
+}
+
+.knm-notice--info {
+  background: $knm-surface-subtle;
+}

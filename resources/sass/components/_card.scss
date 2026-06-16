@@ -1,0 +1,55 @@
+@import '../tokens';
+
+.knm-card {
+  background: $knm-surface;
+  border: 1px solid $knm-border;
+  border-radius: $knm-radius-card;
+  padding: $knm-space-4;
+}
+
+.knm-card--class {
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.knm-card--class:hover,
+.knm-card--class:focus-visible {
+  border-color: var(--knm-accent);
+}
+
+.knm-card--book {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: $knm-space-4;
+  align-items: center;
+}
+
+@media (min-width: $knm-bp-tablet) {
+  .knm-card--book {
+    grid-template-columns: 72px 1fr auto;
+  }
+}
+
+.knm-thumb {
+  width: 56px;
+  height: 72px;
+  border-radius: $knm-radius-input;
+  background: var(--knm-accent-muted);
+  border: 1px solid $knm-border;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: $knm-bp-tablet) {
+  .knm-thumb {
+    width: 72px;
+    height: 96px;
+  }
+}
+
+.knm-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

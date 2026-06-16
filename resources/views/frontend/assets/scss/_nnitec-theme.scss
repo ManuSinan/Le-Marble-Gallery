@@ -1,0 +1,2489 @@
+/* ============================================
+   NNITEC-STYLE THEME – The Canvas Co.
+   Glassmorphism, soft shadows, rounded corners
+   ============================================ */
+
+// Variables
+$nnitec-bg: #f5f5f5;
+$nnitec-card-bg: #ffffff;
+$nnitec-text: #1a1a1a;
+$nnitec-text-muted: #6b6b6b;
+$nnitec-accent: #7cb342;
+$nnitec-accent-hover: #689f38;
+$nnitec-radius: 16px;
+$nnitec-radius-sm: 12px;
+$nnitec-shadow: 0 4px 24px rgba(0,0,0,0.06);
+$nnitec-shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+
+// Main page wrapper – full width, no border, no center
+.nnitec-page {
+  background: $nnitec-card-bg;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.nnitec-container {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  overflow: visible;
+  padding: 20px 16px;
+  @media (min-width: 768px) {
+    padding: 24px 32px;
+  }
+}
+
+.nnitec-fullwidth .nnitec-container {
+  padding-left: 16px;
+  padding-right: 16px;
+  @media (min-width: 576px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  @media (min-width: 768px) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+// Header – Nnitec style
+.nnitec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.nnitec-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: $nnitec-text;
+  font-weight: 700;
+  font-size: 1.25rem;
+  img {
+    height: 36px;
+    max-width: 120px;
+  }
+}
+
+.nnitec-search-wrap {
+  flex: 1;
+  min-width: 200px;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  @media (max-width: 767px) {
+    order: 3;
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.nnitec-search {
+  width: 100%;
+  padding: 12px 48px 12px 44px;
+  border: 1px solid #e8e8e8;
+  border-radius: 24px;
+  background: #fafafa;
+  font-size: 14px;
+  color: $nnitec-text;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  &:focus {
+    outline: none;
+    border-color: $nnitec-accent;
+    box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.15);
+  }
+  &::placeholder {
+    color: $nnitec-text-muted;
+  }
+}
+
+.nnitec-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $nnitec-text-muted;
+  pointer-events: none;
+}
+
+.nnitec-search-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $nnitec-text;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  &:hover {
+    background: darken($nnitec-text, 10%);
+  }
+}
+
+.nnitec-user-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border-radius: 24px;
+  @media (max-width: 767px) {
+    padding: 6px 12px;
+    gap: 12px;
+  }
+}
+
+.nnitec-user-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: $nnitec-text;
+  text-decoration: none;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+  &:hover {
+    color: $nnitec-accent;
+    background: rgba(124, 179, 66, 0.1);
+  }
+}
+
+.nnitec-cart-count {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: $nnitec-accent;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nnitec-user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: $nnitec-text;
+  margin: 0;
+  @media (max-width: 575px) {
+    display: none;
+  }
+}
+
+.nnitec-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e0e0e0;
+}
+
+// Hero section
+.nnitec-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+  }
+}
+
+.nnitec-hero-main {
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+  border-radius: $nnitec-radius;
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: $nnitec-shadow;
+  min-height: 380px;
+  @media (min-width: 768px) {
+    padding: 40px 36px;
+    min-height: 420px;
+  }
+}
+
+.nnitec-hero-tag {
+  font-size: 13px;
+  color: $nnitec-text-muted;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.nnitec-hero-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $nnitec-text;
+  margin: 0 0 16px;
+  line-height: 1.25;
+  @media (min-width: 768px) {
+    font-size: 2.25rem;
+  }
+}
+
+.nnitec-hero-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  .num {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #d0d0d0;
+    line-height: 1;
+  }
+  .desc {
+    font-size: 14px;
+    color: $nnitec-text-muted;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.nnitec-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background: $nnitec-accent;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: $nnitec-radius-sm;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 12px rgba(124, 179, 66, 0.3);
+  &:hover {
+    background: $nnitec-accent-hover;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+}
+
+.nnitec-cta-arrow {
+  width: 32px;
+  height: 32px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nnitec-hero-image {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  max-width: 55%;
+  max-height: 70%;
+  object-fit: contain;
+  @media (min-width: 768px) {
+    right: 40px;
+    bottom: 40px;
+    max-width: 50%;
+  }
+}
+
+.nnitec-social {
+  position: absolute;
+  bottom: 24px;
+  left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: $nnitec-text-muted;
+  a {
+    color: $nnitec-text-muted;
+    transition: color 0.2s;
+    &:hover { color: $nnitec-accent; }
+  }
+}
+
+// Sidebar
+.nnitec-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nnitec-sidebar-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: $nnitec-radius-sm;
+  padding: 20px;
+  box-shadow: $nnitec-shadow;
+}
+
+.nnitec-sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: $nnitec-text;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nnitec-color-swatches {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nnitec-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.nnitec-product-mini {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
+  border-radius: 8px;
+  margin: 0 -8px;
+  padding: 12px 8px;
+  &:last-child { border-bottom: none; }
+  &:hover {
+    background: #fafafa;
+  }
+}
+
+.nnitec-product-mini-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.nnitec-product-mini-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: $nnitec-text;
+  margin: 0;
+}
+
+.nnitec-product-mini-desc {
+  font-size: 12px;
+  color: $nnitec-text-muted;
+  margin: 4px 0 0;
+}
+
+.nnitec-card-link {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.2s;
+  &:hover {
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+  }
+}
+
+// Bottom grid
+.nnitec-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.nnitec-grid-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: $nnitec-radius-sm;
+  padding: 24px;
+  box-shadow: $nnitec-shadow;
+  transition: box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  &:hover {
+    box-shadow: $nnitec-shadow-lg;
+    transform: translateY(-2px);
+    color: inherit;
+  }
+}
+
+.nnitec-grid-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $nnitec-text;
+  margin: 0 0 4px;
+}
+
+.nnitec-grid-card-sub {
+  font-size: 13px;
+  color: $nnitec-text-muted;
+  margin: 0 0 16px;
+}
+
+.nnitec-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: $nnitec-accent;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.nnitec-stat {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $nnitec-text;
+  margin: 0 0 4px;
+}
+
+// Product cards – Nnitec style
+.nnitec-product-card {
+  background: #fff;
+  border-radius: $nnitec-radius-sm;
+  overflow: hidden;
+  box-shadow: $nnitec-shadow;
+  border: 1px solid #f0f0f0;
+  transition: box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  &:hover {
+    box-shadow: $nnitec-shadow-lg;
+    transform: translateY(-4px);
+    color: inherit;
+  }
+}
+
+.nnitec-product-card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.nnitec-product-card-body {
+  padding: 16px;
+}
+
+.nnitec-product-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: $nnitec-text;
+  margin: 0 0 8px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.nnitec-product-card-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: $nnitec-text;
+  del {
+    font-size: 13px;
+    color: $nnitec-text-muted;
+    font-weight: 500;
+    margin-left: 6px;
+  }
+}
+
+// Inner content for non-home pages
+.nnitec-inner {
+  padding-top: 0;
+}
+
+// Override product listing inside nnitec
+.nnitec-inner .section-page-info,
+.nnitec-inner .section-content {
+  background: transparent !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.nnitec-inner .card {
+  border-radius: $nnitec-radius-sm;
+  box-shadow: $nnitec-shadow;
+  border: 1px solid #eee;
+}
+.nnitec-inner .card-product-grid {
+  border-radius: $nnitec-radius-sm;
+  box-shadow: $nnitec-shadow;
+  overflow: hidden;
+  &:hover {
+    box-shadow: $nnitec-shadow-lg;
+  }
+}
+
+// PDP (product detail) inside nnitec
+.nnitec-inner .pdp-myntra .container {
+  max-width: 100%;
+  padding: 0;
+}
+.nnitec-inner .pdp-gallery,
+.nnitec-inner .pdp-detail {
+  background: #fff;
+  border-radius: $nnitec-radius-sm;
+  padding: 24px;
+  box-shadow: $nnitec-shadow;
+}
+.nnitec-inner .pdp-main-image {
+  border-radius: $nnitec-radius-sm;
+  overflow: hidden;
+}
+.nnitec-inner .steper-btn-modern,
+.nnitec-inner .btn-primary {
+  background: $nnitec-accent !important;
+  border-color: $nnitec-accent !important;
+  border-radius: $nnitec-radius-sm;
+  &:hover {
+    background: $nnitec-accent-hover !important;
+    border-color: $nnitec-accent-hover !important;
+  }
+}
+
+// Cart page inside nnitec
+.nnitec-inner .cart-page .card {
+  border-radius: $nnitec-radius-sm;
+  box-shadow: $nnitec-shadow;
+  border: 1px solid #eee;
+}
+.nnitec-inner .checkout-delivery-card {
+  border-radius: $nnitec-radius-sm;
+  box-shadow: $nnitec-shadow;
+}
+
+// Footer – nnitec style
+.nnitec-body .section-footer {
+  background: $nnitec-bg !important;
+  border-top: 1px solid #e8e8e8;
+  margin-top: 32px;
+  padding: 32px 0 24px;
+}
+.nnitec-body .section-footer .title {
+  font-size: 13px;
+  font-weight: 600;
+  color: $nnitec-text;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.nnitec-body .section-footer a {
+  color: $nnitec-text-muted;
+  font-size: 14px;
+  transition: color 0.2s;
+  &:hover {
+    color: $nnitec-accent;
+  }
+}
+
+/* ============================================
+   LUXURY DARK THEME – Home page
+   Dark brown, warm beige, editorial typography
+   ============================================ */
+$luxury-bg: #1a140d;
+$luxury-bg-soft: #231c14;
+$luxury-text: #f2e8d8;
+$luxury-text-muted: #c4b8a8;
+$luxury-accent: #b8956b;
+$luxury-accent-hover: #d4b896;
+$luxury-max-w: 1200px;
+$luxury-font-display: 'Playfair Display', Georgia, serif;
+$luxury-font-sans: 'Inter', -apple-system, sans-serif;
+
+.page-home .nnitec-body,
+.luxury-page {
+  background: $luxury-bg;
+}
+
+// Luxury nav – fixed, transparent
+.luxury-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: transparent;
+  transition: background 0.3s;
+  &.scrolled,
+  &.luxury-nav-inner {
+    background: rgba(26, 20, 13, 0.92);
+  }
+}
+
+.luxury-logo {
+  font-family: $luxury-font-display;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: $luxury-text;
+  text-decoration: none;
+  &:hover { color: $luxury-accent; }
+}
+
+.luxury-menu {
+  display: flex;
+  gap: 2.5rem;
+  font-family: $luxury-font-sans;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  a {
+    color: $luxury-text;
+    text-decoration: none;
+    transition: color 0.2s;
+    &:hover { color: $luxury-accent; }
+  }
+  @media (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100vh;
+    background: $luxury-bg;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    z-index: 99;
+    border-left: 1px solid rgba(242, 232, 216, 0.1);
+    &.open {
+      transform: translateX(0);
+    }
+    a { font-size: 1rem; }
+  }
+}
+
+.luxury-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 101;
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: $luxury-text;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  &.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  &.active span:nth-child(2) {
+    opacity: 0;
+  }
+  &.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+  @media (max-width: 767px) {
+    display: flex;
+  }
+}
+
+body.luxury-menu-open::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 98;
+}
+
+.luxury-actions {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.luxury-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $luxury-text;
+  text-decoration: none;
+  transition: color 0.2s;
+  position: relative;
+  &:hover { color: $luxury-accent; }
+}
+
+.luxury-cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: $luxury-accent;
+  color: $luxury-bg;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Hero – full viewport
+.luxury-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(180deg, $luxury-bg 0%, $luxury-bg-soft 50%, $luxury-bg 100%);
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 50% at 50% 50%, rgba(184, 149, 107, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.luxury-hero-small {
+  font-family: $luxury-font-sans;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: $luxury-text-muted;
+  margin-bottom: 0.5rem;
+  animation: luxury-fade 0.8s 0.2s forwards;
+  opacity: 0;
+}
+
+.luxury-hero-title {
+  font-family: $luxury-font-display;
+  font-size: clamp(4rem, 15vw, 11rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: $luxury-text;
+  margin: 0 0 0.5rem;
+  animation: luxury-fade 0.8s 0.4s forwards;
+  opacity: 0;
+}
+
+.luxury-hero-sub {
+  font-family: $luxury-font-sans;
+  font-size: 0.9rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: $luxury-text-muted;
+  margin-bottom: 2.5rem;
+  animation: luxury-fade 0.8s 0.6s forwards;
+  opacity: 0;
+}
+
+.luxury-cta {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: $luxury-font-sans;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid $luxury-accent;
+  color: $luxury-text;
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+  animation: luxury-fade 0.8s 0.8s forwards;
+  opacity: 0;
+  &:hover {
+    background: rgba(184, 149, 107, 0.15);
+    box-shadow: 0 0 24px rgba(184, 149, 107, 0.25);
+    color: $luxury-accent-hover;
+  }
+}
+
+.luxury-scroll-hint {
+  font-family: $luxury-font-sans;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: $luxury-text-muted;
+  margin-top: 3rem;
+  animation: luxury-fade 0.8s 1.2s forwards;
+  opacity: 0;
+}
+
+@keyframes luxury-fade {
+  to { opacity: 1; }
+}
+
+// Sections
+.luxury-section {
+  padding: 6rem 2rem;
+}
+
+.luxury-container {
+  max-width: $luxury-max-w;
+  margin: 0 auto;
+}
+
+.luxury-section-title {
+  font-family: $luxury-font-display;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  color: $luxury-text;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+// Products grid
+.luxury-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.luxury-product-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: $luxury-bg-soft;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+  &:hover img { transform: scale(1.05); }
+}
+
+.luxury-product-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26, 20, 13, 0.8) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.luxury-product-card:hover .luxury-product-overlay {
+  opacity: 1;
+}
+
+.luxury-product-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  transform: translateY(10px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.luxury-product-card:hover .luxury-product-info {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.luxury-product-name {
+  font-family: $luxury-font-display;
+  font-size: 1.1rem;
+  color: $luxury-text;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.luxury-product-price {
+  font-size: 0.85rem;
+  color: $luxury-accent;
+}
+
+// About
+.luxury-about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.luxury-about-text p {
+  font-size: 1.05rem;
+  color: $luxury-text-muted;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.luxury-about-text .luxury-cta {
+  margin-top: 0.5rem;
+  opacity: 1;
+  animation: none;
+}
+
+.luxury-about-image {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: $luxury-bg-soft;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Stories
+.luxury-stories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.luxury-story-card {
+  padding: 2rem;
+  border: 1px solid rgba(242, 232, 216, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  &:hover {
+    border-color: rgba(184, 149, 107, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.luxury-story-num {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: $luxury-accent;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.luxury-story-card h3 {
+  font-family: $luxury-font-display;
+  font-size: 1.25rem;
+  color: $luxury-text;
+  margin-bottom: 0.5rem;
+}
+
+.luxury-story-card p {
+  font-size: 0.9rem;
+  color: $luxury-text-muted;
+  margin: 0;
+}
+
+// Custom
+.luxury-custom {
+  text-align: center;
+  padding: 6rem 2rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(184, 149, 107, 0.05) 50%, transparent 100%);
+  p {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: $luxury-text-muted;
+    font-size: 1.05rem;
+  }
+  .luxury-cta {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+// Gallery
+.luxury-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.luxury-gallery-item {
+  aspect-ratio: 1;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+  &:hover img { transform: scale(1.08); }
+  &:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: auto;
+  }
+  @media (max-width: 900px) {
+    &:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 1;
+      aspect-ratio: 16/9;
+    }
+  }
+}
+
+// Footer on luxury/home and all luxury-theme pages (override .nnitec-body .section-footer)
+.page-home .section-footer,
+.footer-luxury,
+.nnitec-body .section-footer.footer-luxury {
+  background: $luxury-bg !important;
+  border-top: 1px solid rgba(242, 232, 216, 0.08) !important;
+  .title { color: $luxury-text !important; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  a { color: $luxury-text-muted !important; }
+  a:hover { color: $luxury-accent !important; }
+  address { color: $luxury-text-muted !important; font-style: normal; line-height: 1.5; }
+  .text-muted { color: $luxury-text-muted !important; }
+}
+.footer-luxury .footer-copyright,
+.nnitec-body .section-footer.footer-luxury .footer-copyright {
+  border-top-color: rgba(242, 232, 216, 0.08) !important;
+}
+
+/* ============================================
+   LUXURY THEME – Inner pages (Shop, Product, Cart, etc.)
+   ============================================ */
+$luxury-bg: #1a140d;
+$luxury-bg-soft: #231c14;
+$luxury-text: #f2e8d8;
+$luxury-text-muted: #c4b8a8;
+$luxury-accent: #b8956b;
+
+.luxury-inner-page {
+  background: $luxury-bg !important;
+  padding-top: 80px;
+}
+
+// Product detail page (PDP) – luxury two-column, refined
+.pdp-luxury {
+  min-height: 60vh;
+  background: $luxury-bg;
+  margin-left: -20px;
+  margin-right: -20px;
+  @media (min-width: 768px) {
+    margin-left: -32px;
+    margin-right: -32px;
+  }
+}
+
+.pdp-luxury-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 0;
+  min-height: 60vh;
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdp-luxury-gallery {
+  background: $luxury-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px;
+  @media (max-width: 991px) {
+    min-height: 45vh;
+    padding: 12px 12px;
+  }
+}
+
+.pdp-luxury-gallery-wrap {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.pdp-luxury-main-img {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  display: block;
+  border: 0.5cm solid $luxury-bg;
+  box-sizing: border-box;
+  @media (max-width: 991px) {
+    max-height: 45vh;
+    border-width: 0.35cm;
+  }
+}
+
+.pdp-luxury-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pdp-luxury-thumb {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 6px;
+  transition: border-color 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  &.active {
+    border-color: $luxury-accent;
+    opacity: 1;
+  }
+  &:not(.active):hover {
+    border-color: rgba(242, 232, 216, 0.4);
+  }
+}
+
+.pdp-luxury-detail {
+  background: $luxury-bg;
+  color: $luxury-text;
+  padding: 48px 44px 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 520px;
+  @media (max-width: 991px) {
+    max-width: none;
+    padding: 36px 24px 48px;
+  }
+}
+
+.pdp-luxury-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.pdp-luxury-back {
+  color: $luxury-text-muted;
+  text-decoration: none;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+  &:hover { color: $luxury-accent; }
+}
+
+.pdp-luxury-category {
+  font-size: 0.75rem;
+  color: $luxury-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.pdp-luxury-title {
+  font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+  font-weight: 500;
+  color: $luxury-text;
+  margin: 0 0 16px 0;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.pdp-luxury-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.pdp-luxury-price {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: $luxury-text;
+}
+
+.pdp-luxury-rating {
+  font-size: 0.9rem;
+  color: $luxury-text-muted;
+  .pdp-luxury-rating-count {
+    font-weight: 400;
+    opacity: 0.85;
+  }
+}
+
+.pdp-luxury-desc {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: $luxury-text-muted;
+  margin-bottom: 28px;
+}
+
+.pdp-luxury-variant {
+  margin-bottom: 22px;
+}
+
+.pdp-luxury-variant-label {
+  font-size: 0.8rem;
+  color: $luxury-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.pdp-luxury-variant-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pdp-luxury-variant-btn {
+  padding: 10px 16px;
+  border: 1px solid rgba(242, 232, 216, 0.25);
+  color: $luxury-text;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  &.active {
+    border-color: $luxury-accent;
+    color: $luxury-accent;
+    background: rgba(184, 149, 107, 0.08);
+  }
+  &:not(.active):hover {
+    border-color: $luxury-accent;
+    color: $luxury-accent;
+  }
+}
+
+.pdp-luxury-select {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(242, 232, 216, 0.2);
+  color: $luxury-text;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  min-width: 160px;
+  border-radius: 4px;
+}
+
+.pdp-luxury-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.pdp-luxury-btn-cart {
+  padding: 16px 32px;
+  background: $luxury-accent;
+  border: 1px solid $luxury-accent;
+  color: $luxury-bg;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  &:hover {
+    background: lighten($luxury-accent, 6%);
+    border-color: lighten($luxury-accent, 6%);
+    color: $luxury-bg;
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.pdp-luxury-btn-wishlist {
+  padding: 16px 18px;
+  background: transparent;
+  border: 1px solid rgba(242, 232, 216, 0.3);
+  color: $luxury-text;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  &.active { color: $luxury-accent; border-color: $luxury-accent; }
+  &:hover { border-color: $luxury-accent; color: $luxury-accent; }
+}
+
+.pdp-luxury-details {
+  border-top: 1px solid rgba(242, 232, 216, 0.12);
+  margin-top: 0;
+  padding-top: 20px;
+}
+
+.pdp-luxury-details-heading {
+  padding: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $luxury-text-muted;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.pdp-luxury-specs {
+  margin: 0;
+  padding: 0 0 8px 0;
+  list-style: none;
+}
+
+.pdp-luxury-spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.08);
+  &:last-child { border-bottom: none; }
+  dt {
+    margin: 0;
+    font-size: 0.875rem;
+    color: $luxury-text-muted;
+    font-weight: 400;
+  }
+  dd {
+    margin: 0;
+    font-size: 0.875rem;
+    color: $luxury-text;
+  }
+}
+
+.luxury-theme .nnitec-container {
+  padding-top: 24px;
+}
+
+.luxury-theme .section-page-info,
+.luxury-theme .section-content {
+  background: transparent !important;
+  color: $luxury-text;
+  .breadcrumb { background: transparent; }
+  .breadcrumb-item a { color: $luxury-text-muted; }
+  .breadcrumb-item.active a,
+  .breadcrumb-item.active { color: $luxury-text; }
+  h1 { color: $luxury-text; }
+}
+
+.luxury-theme .card {
+  background: $luxury-bg-soft !important;
+  border-color: rgba(242, 232, 216, 0.1) !important;
+  color: $luxury-text;
+}
+
+.luxury-theme .product-subcategories-card,
+.luxury-theme .filter-by-brand-card {
+  background: $luxury-bg-soft !important;
+  border-color: rgba(242, 232, 216, 0.1) !important;
+}
+
+.luxury-theme .product-subcategories-header {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.1) !important;
+}
+
+.luxury-theme .product-subcategories-title,
+.luxury-theme .filter-by-brand-title {
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-subcategories-link,
+.luxury-theme .filter-by-brand-name {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .product-subcategories-link:hover,
+.luxury-theme .product-subcategories-item.active .product-subcategories-link {
+  color: $luxury-accent !important;
+}
+
+.luxury-theme .filter-by-brand {
+  background: transparent !important;
+}
+
+.luxury-theme .filter-by-brand-search {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .filter-by-brand-search::placeholder {
+  color: $luxury-text-muted;
+}
+
+.luxury-theme .filter-by-brand-clear-link,
+.luxury-theme .filter-by-brand-row:hover {
+  color: $luxury-accent !important;
+}
+
+.luxury-theme .filter-by-brand-checkbox.checked,
+.luxury-theme .filter-by-brand-circle.selected {
+  background: $luxury-accent !important;
+  border-color: $luxury-accent !important;
+}
+
+.luxury-theme .product-listing-header {
+  border-color: rgba(242, 232, 216, 0.1) !important;
+}
+
+.luxury-theme .product-listing-count {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .product-listing-sort-select {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-list-view {
+  background: transparent !important;
+}
+
+.luxury-theme .product-list-row {
+  background: transparent !important;
+  border-color: rgba(242, 232, 216, 0.08) !important;
+}
+
+.luxury-theme .product-list-row-img-link {
+  background: $luxury-bg-soft !important;
+}
+
+.luxury-theme .product-list-row-brand {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .product-list-row-title {
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-list-row-title:hover {
+  color: $luxury-accent !important;
+}
+
+.luxury-theme .product-list-row-rating-value {
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-list-row-description {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .product-list-row-price-current {
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-list-row-price-original {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .steper-btn-list {
+  background: $luxury-accent !important;
+}
+
+.luxury-theme .steper-btn-list:hover {
+  background: lighten($luxury-accent, 8%) !important;
+}
+
+.luxury-theme .fav-btn-list {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .fav-btn-list:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.luxury-theme .fav-btn-list.active svg {
+  fill: $luxury-accent;
+  stroke: $luxury-accent;
+}
+
+.luxury-theme .notify-btn-list {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .notify-btn-list:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.luxury-theme .product-pagination .page-link {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-pagination .page-link:hover {
+  border-color: $luxury-accent !important;
+  color: $luxury-accent !important;
+}
+
+.luxury-theme .product-pagination .page-item.active .page-link {
+  background: $luxury-accent !important;
+  border-color: $luxury-accent !important;
+  color: $luxury-bg !important;
+}
+
+.luxury-theme .product-pagination .page-item.disabled .page-link {
+  background: transparent !important;
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .filter-by-brand-clear-all-btn {
+  background: transparent !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .filter-by-brand-clear-all-btn:hover {
+  border-color: $luxury-accent !important;
+  color: $luxury-accent !important;
+}
+
+.luxury-theme .filter-by-brand-actions {
+  border-color: rgba(242, 232, 216, 0.1) !important;
+}
+
+.luxury-theme .filter-by-brand-show-more {
+  color: $luxury-accent !important;
+}
+
+/* Product grid – square images */
+.luxury-theme .product-grid-view {
+  background: transparent !important;
+}
+
+.luxury-theme .product-grid-image {
+  background: $luxury-bg-soft !important;
+}
+
+.luxury-theme .product-grid-tag {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .product-grid-price {
+  color: $luxury-accent !important;
+}
+
+.luxury-theme .product-grid-title {
+  color: $luxury-text !important;
+}
+
+.luxury-theme .product-grid-desc {
+  color: $luxury-text-muted !important;
+}
+
+.luxury-theme .steper-btn-grid {
+  background: $luxury-accent !important;
+}
+
+.luxury-theme .steper-btn-grid:hover {
+  background: lighten($luxury-accent, 8%) !important;
+}
+
+.luxury-theme .fav-btn-grid {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .fav-btn-grid:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.luxury-theme .fav-btn-grid.active svg {
+  fill: $luxury-accent;
+  stroke: $luxury-accent;
+}
+
+.luxury-theme .notify-btn-grid {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text !important;
+}
+
+.luxury-theme .notify-btn-grid:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ============================================
+   SHOP LUXURY – Gallery-style, professional
+   ============================================ */
+.shop-luxury {
+  padding: 2rem 0 4rem;
+}
+
+.shop-luxury-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.shop-luxury-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.1);
+}
+
+.shop-luxury-nav-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $luxury-text-muted;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.shop-luxury-nav-link:hover,
+.shop-luxury-nav-link.active {
+  color: $luxury-accent;
+}
+
+.shop-luxury-header {
+  margin-bottom: 3rem;
+}
+
+.shop-luxury-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.shop-luxury-title {
+  font-family: $luxury-font-display;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 500;
+  color: $luxury-text;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.shop-luxury-sort {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.shop-luxury-select {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(242, 232, 216, 0.2);
+  border-radius: 4px;
+  color: $luxury-text;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23c4b8a8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+.shop-luxury-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .shop-luxury-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .shop-luxury-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+}
+
+.shop-luxury-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+
+.shop-luxury-card:hover {
+  opacity: 0.95;
+}
+
+.shop-luxury-image {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.shop-luxury-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.shop-luxury-card:hover .shop-luxury-image img {
+  transform: scale(1.03);
+}
+
+.shop-luxury-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26, 20, 13, 0.4) 0%, transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.shop-luxury-card:hover .shop-luxury-overlay {
+  opacity: 1;
+}
+
+.shop-luxury-tag {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $luxury-text-muted;
+  margin-bottom: 0.35rem;
+}
+
+.shop-luxury-price {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $luxury-accent;
+  margin-bottom: 0.35rem;
+}
+
+.shop-luxury-name {
+  font-family: $luxury-font-display;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $luxury-text;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.shop-luxury-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(242, 232, 216, 0.1);
+}
+
+.shop-luxury-pag-link {
+  font-size: 0.85rem;
+  color: $luxury-text-muted;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.shop-luxury-pag-link:hover {
+  color: $luxury-accent;
+}
+
+.shop-luxury-pag-info {
+  font-size: 0.8rem;
+  color: $luxury-text-muted;
+}
+
+.shop-luxury-empty {
+  text-align: center;
+  color: $luxury-text-muted;
+  padding: 4rem 2rem;
+}
+
+.luxury-theme .text-dark {
+  color: $luxury-text !important;
+}
+
+.luxury-theme .nnitec-inner .pdp-gallery,
+.luxury-theme .nnitec-inner .pdp-detail {
+  background: $luxury-bg-soft !important;
+  border-color: rgba(242, 232, 216, 0.1) !important;
+  color: $luxury-text;
+}
+
+.luxury-theme .nnitec-inner .card,
+.luxury-theme .nnitec-inner .cart-page .card {
+  background: $luxury-bg-soft !important;
+  border-color: rgba(242, 232, 216, 0.1) !important;
+}
+
+.luxury-theme .nnitec-inner .card-product-grid {
+  background: transparent !important;
+  border-color: rgba(242, 232, 216, 0.1) !important;
+}
+
+.luxury-theme .nnitec-inner .steper-btn-modern,
+.luxury-theme .nnitec-inner .btn-primary {
+  background: $luxury-accent !important;
+  border-color: $luxury-accent !important;
+}
+
+.luxury-theme .nnitec-inner .steper-btn-modern:hover,
+.luxury-theme .nnitec-inner .btn-primary:hover {
+  background: lighten($luxury-accent, 8%) !important;
+  border-color: lighten($luxury-accent, 8%) !important;
+}
+
+/* Account nav – used on all account pages (orders, addresses, favourites, profile, etc.) */
+.luxury-theme .account-nav-card {
+  background: $luxury-bg-soft !important;
+  border: 1px solid rgba(242, 232, 216, 0.1) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Account section cards & boxes – consistent styling everywhere (address, profile, etc.) */
+.luxury-theme .section-content .card {
+  background: $luxury-bg-soft !important;
+  border: 1px solid rgba(242, 232, 216, 0.1) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  color: $luxury-text !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+}
+.luxury-theme .section-content .card .card-body {
+  padding: 24px !important;
+}
+.luxury-theme .account-nav-header {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.1) !important;
+  padding: 12px 16px !important;
+}
+.luxury-theme .account-nav-title {
+  color: $luxury-text-muted !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+}
+.luxury-theme .account-nav-body {
+  padding: 12px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.luxury-theme .account-nav-link {
+  color: $luxury-text-muted !important;
+  display: block !important;
+  padding: 10px 16px 10px 12px !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease, border-color 0.2s ease !important;
+  border-left: 3px solid transparent !important;
+}
+.luxury-theme .account-nav-link:hover,
+.luxury-theme .account-nav-link.active {
+  color: $luxury-accent !important;
+  border-left-color: $luxury-accent !important;
+}
+.luxury-theme .account-nav-link.active {
+  font-weight: 600 !important;
+  padding-left: 9px !important;
+}
+.luxury-theme .section-content .card .form-control,
+.luxury-theme .section-content .card select.form-control,
+.luxury-theme .section-content .card .custom-select {
+  background: #2d2720 !important;
+  border: 1px solid rgba(184, 149, 107, 0.25) !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .card select.form-control option {
+  background: #2d2720;
+  color: $luxury-text;
+}
+.luxury-theme .section-content .card .form-control::placeholder {
+  color: rgba(242, 232, 216, 0.5) !important;
+}
+.luxury-theme .section-content .card .form-control:focus,
+.luxury-theme .section-content .card .custom-select:focus {
+  border-color: $luxury-accent !important;
+  box-shadow: 0 0 0 2px rgba(184, 149, 107, 0.2) !important;
+}
+/* Override browser autofill skyblue background */
+.luxury-theme .section-content .card .form-control:-webkit-autofill,
+.luxury-theme .section-content .card .form-control:-webkit-autofill:hover,
+.luxury-theme .section-content .card .form-control:-webkit-autofill:focus,
+.luxury-theme .section-content .card .form-control:-webkit-autofill:active,
+.luxury-theme .section-content .card select.form-control:-webkit-autofill,
+.luxury-theme .section-content .card select.form-control:-webkit-autofill:hover,
+.luxury-theme .section-content .card select.form-control:-webkit-autofill:focus,
+.luxury-theme .section-content .card select.form-control:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #2d2720 inset !important;
+  box-shadow: 0 0 0 30px #2d2720 inset !important;
+  -webkit-text-fill-color: #f2e8d8 !important;
+  caret-color: #f2e8d8;
+  transition: background-color 5000s ease-in-out 0s;
+}
+.luxury-theme .section-content .card .label,
+.luxury-theme .section-content .card label {
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .card .text-danger {
+  color: #c9a878 !important;
+}
+.luxury-theme .section-content .card .custom-control-label {
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .card .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: $luxury-accent !important;
+  border-color: $luxury-accent !important;
+}
+.luxury-theme .section-content .card .btn-primary {
+  background: $luxury-accent !important;
+  border-color: $luxury-accent !important;
+  color: $luxury-bg !important;
+}
+.luxury-theme .section-content .card .btn-primary:hover {
+  background: lighten($luxury-accent, 6%) !important;
+  border-color: lighten($luxury-accent, 6%) !important;
+  color: $luxury-bg !important;
+}
+.luxury-theme .section-content .card .btn-light {
+  background: transparent !important;
+  border: 1px solid rgba(242, 232, 216, 0.3) !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .card .btn-light:hover {
+  border-color: $luxury-accent !important;
+  color: $luxury-accent !important;
+}
+
+/* Account form actions – Save & Cancel buttons */
+.luxury-theme .account-form-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding-top: 8px !important;
+}
+.luxury-theme .account-form-actions .btn-save {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  min-width: 140px !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(184, 149, 107, 0.25) !important;
+}
+.luxury-theme .account-form-actions .btn-save:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(184, 149, 107, 0.35) !important;
+}
+.luxury-theme .account-form-actions .btn-save .icon {
+  flex-shrink: 0 !important;
+}
+.luxury-theme .account-form-actions .btn-cancel {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 12px 24px !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  border: 1px solid rgba(242, 232, 216, 0.35) !important;
+  color: $luxury-text-muted !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+.luxury-theme .account-form-actions .btn-cancel:hover {
+  border-color: rgba(242, 232, 216, 0.5) !important;
+  color: $luxury-text !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.luxury-theme .section-content .box {
+  background: $luxury-bg-soft !important;
+  border: 1px solid rgba(242, 232, 216, 0.1) !important;
+  border-radius: 12px !important;
+  color: $luxury-text !important;
+  padding: 18px !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+}
+.luxury-theme .section-content .box h6 {
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .box .btn-light {
+  background: transparent !important;
+  border: 1px solid rgba(242, 232, 216, 0.3) !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .box .btn-light:hover {
+  border-color: $luxury-accent !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .section-content .box a.btn-light[style*="color"] {
+  border-color: rgba(242, 232, 216, 0.3) !important;
+}
+
+/* Address page – cards, actions, add-new */
+.luxury-theme .address-card {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 200px !important;
+}
+.luxury-theme .address-card-header {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.1) !important;
+}
+.luxury-theme .address-type {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .address-name {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .address-card-body {
+  flex: 1 !important;
+  min-height: 90px !important;
+}
+.luxury-theme .address-line {
+  font-size: 0.9rem !important;
+  color: $luxury-text-muted !important;
+  line-height: 1.5 !important;
+  margin-bottom: 4px !important;
+}
+.luxury-theme .address-line:last-child {
+  margin-bottom: 0 !important;
+}
+.luxury-theme .address-location {
+  margin-top: 4px !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .address-card-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 16px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid rgba(242, 232, 216, 0.08) !important;
+}
+.luxury-theme .address-card-actions .btn-action,
+.luxury-theme .address-card-actions .btn-default-badge {
+  padding: 6px 12px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+.luxury-theme .address-card-actions .btn-default-action {
+  background: transparent !important;
+  border: 1px solid rgba(184, 149, 107, 0.4) !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .address-card-actions .btn-default-action:hover {
+  background: rgba(184, 149, 107, 0.15) !important;
+  border-color: $luxury-accent !important;
+  color: $luxury-accent-hover !important;
+}
+.luxury-theme .address-card-actions .btn-edit {
+  background: transparent !important;
+  border: 1px solid rgba(242, 232, 216, 0.3) !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .address-card-actions .btn-edit:hover {
+  border-color: $luxury-accent !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .address-card-actions .btn-delete {
+  background: transparent !important;
+  border: 1px solid rgba(242, 232, 216, 0.2) !important;
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .address-card-actions .btn-delete:hover {
+  border-color: $luxury-accent !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .address-card-actions .btn-default-badge.disabled {
+  background: rgba(184, 149, 107, 0.2) !important;
+  border: 1px solid rgba(184, 149, 107, 0.3) !important;
+  color: $luxury-accent !important;
+  cursor: default !important;
+}
+.luxury-theme .address-add-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 200px !important;
+  text-decoration: none !important;
+  border: 2px dashed rgba(242, 232, 216, 0.2) !important;
+  transition: all 0.25s ease !important;
+}
+.luxury-theme .address-add-card:hover {
+  border-color: rgba(184, 149, 107, 0.5) !important;
+  background: rgba(184, 149, 107, 0.08) !important;
+}
+.luxury-theme .address-add-icon {
+  color: $luxury-text-muted !important;
+  margin-bottom: 8px !important;
+  transition: color 0.2s ease !important;
+}
+.luxury-theme .address-add-card:hover .address-add-icon {
+  color: $luxury-accent !important;
+}
+.luxury-theme .address-add-text {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: $luxury-text-muted !important;
+  transition: color 0.2s ease !important;
+}
+.luxury-theme .address-add-card:hover .address-add-text {
+  color: $luxury-accent !important;
+}
+.luxury-theme .address-empty-card .empty-content {
+  text-align: center !important;
+}
+.luxury-theme .address-empty-card .btn-primary {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.luxury-theme .section-content .empty-content {
+  padding: 32px 24px !important;
+}
+.luxury-theme .section-content .empty-content .title {
+  color: $luxury-text !important;
+}
+.luxury-theme .section-content .empty-content .text {
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .section-content .empty-content .title {
+  color: $luxury-text !important;
+}
+
+/* Favourites page */
+.luxury-theme .favourite-grid .favourite-card {
+  overflow: hidden !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+.luxury-theme .favourite-grid .favourite-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+.luxury-theme .favourite-card .itemside {
+  align-items: stretch !important;
+}
+.luxury-theme .favourite-card-img {
+  display: block !important;
+  width: 100px !important;
+  min-width: 100px !important;
+  height: 120px !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  flex-shrink: 0 !important;
+}
+.luxury-theme .favourite-card-img .image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.luxury-theme .favourite-card-info {
+  display: flex !important;
+  flex-direction: column !important;
+  padding-left: 16px !important;
+  padding-right: 12px !important;
+  min-width: 0 !important;
+}
+.luxury-theme .favourite-card-title {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: $luxury-text !important;
+  line-height: 1.4 !important;
+  margin-bottom: 8px !important;
+  text-decoration: none !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+.luxury-theme .favourite-card-title:hover {
+  color: $luxury-accent !important;
+}
+.luxury-theme .favourite-card-price {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  margin-bottom: 12px !important;
+}
+.luxury-theme .favourite-selling-price {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .favourite-mrp {
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .favourite-mrp del {
+  text-decoration: line-through !important;
+}
+.luxury-theme .favourite-remove-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 12px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(242, 232, 216, 0.25) !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: $luxury-text-muted !important;
+  transition: all 0.2s ease !important;
+  margin-top: auto !important;
+  align-self: flex-start !important;
+}
+.luxury-theme .favourite-remove-btn .icon {
+  flex-shrink: 0 !important;
+  opacity: 0.9 !important;
+}
+.luxury-theme .favourite-remove-btn:hover {
+  border-color: $luxury-accent !important;
+  background: rgba(184, 149, 107, 0.12) !important;
+  color: $luxury-accent !important;
+}
+.luxury-theme .favourite-empty-card .empty-content {
+  text-align: center !important;
+  padding: 48px 24px !important;
+}
+.luxury-theme .favourite-empty-card .btn-primary {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* Order detail page */
+.luxury-theme .account-main-card {
+  background: $luxury-bg-soft !important;
+  border: 1px solid rgba(242, 232, 216, 0.1) !important;
+}
+.luxury-theme .account-main-card .card-header {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.1) !important;
+  padding: 20px 24px !important;
+}
+.luxury-theme .account-main-card .card-header .ref-no,
+.luxury-theme .account-main-card .card-header .staus {
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .card-header .date-time {
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .account-main-card .card-body {
+  padding: 24px !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .section-title {
+  color: $luxury-text-muted !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 16px !important;
+}
+.luxury-theme .account-main-card .ordered-items .d-flex {
+  padding: 16px 0 !important;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.08) !important;
+}
+.luxury-theme .account-main-card .ordered-items .d-flex:last-of-type {
+  border-bottom: none !important;
+}
+.luxury-theme .account-main-card .ordered-items .image-wrapper {
+  flex-shrink: 0 !important;
+}
+.luxury-theme .account-main-card .ordered-items .item-img {
+  width: 64px !important;
+  min-width: 64px !important;
+  height: 64px !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+.luxury-theme .account-main-card .ordered-items .item-img .image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.luxury-theme .account-main-card .ordered-items .title {
+  color: $luxury-text !important;
+  font-weight: 500 !important;
+}
+.luxury-theme .account-main-card .ordered-items .details {
+  color: $luxury-text-muted !important;
+  font-size: 0.9rem !important;
+}
+.luxury-theme .account-main-card .ordered-items .price {
+  color: $luxury-accent !important;
+  font-weight: 600 !important;
+}
+.luxury-theme .account-main-card .ordered-items-total {
+  padding: 20px 0 !important;
+  border-top: 1px solid rgba(242, 232, 216, 0.1) !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .ordered-items-total .text-highlight {
+  color: $luxury-accent !important;
+  font-weight: 600 !important;
+}
+.luxury-theme .account-main-card .ordered-timeline .timeline::before {
+  background: rgba(184, 149, 107, 0.3) !important;
+}
+.luxury-theme .account-main-card .ordered-timeline .timeline .dot {
+  background: $luxury-accent !important;
+  box-shadow: 0 0 0 3px rgba(184, 149, 107, 0.3) !important;
+}
+.luxury-theme .account-main-card .ordered-timeline .content .title {
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .ordered-timeline .content small {
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .account-main-card .ordered-timeline .content .text {
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .account-main-card .ordered-address {
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(242, 232, 216, 0.1) !important;
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .ordered-address a {
+  color: $luxury-accent !important;
+}
+.luxury-theme .account-main-card .ordered-address a:hover {
+  color: $luxury-accent-hover !important;
+}
+
+/* Order list page (Your Orders) */
+.luxury-theme .account-main-card .custom-list {
+  color: $luxury-text !important;
+  text-decoration: none !important;
+  display: block !important;
+  padding: 20px 24px !important;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.08) !important;
+  transition: background 0.2s !important;
+}
+.luxury-theme .account-main-card .custom-list:hover {
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+.luxury-theme .account-main-card .custom-list:last-child {
+  border-bottom: none !important;
+}
+.luxury-theme .account-main-card .custom-list .ref-no,
+.luxury-theme .account-main-card .custom-list .group {
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .custom-list .date-time {
+  color: $luxury-text-muted !important;
+}
+.luxury-theme .account-main-card .custom-list .icon-box {
+  color: $luxury-accent !important;
+}
+.luxury-theme .account-main-card .account-empty-state {
+  padding: 48px 24px !important;
+}
+.luxury-theme .account-main-card .account-empty-title {
+  color: $luxury-text !important;
+}
+.luxury-theme .account-main-card .account-empty-text {
+  color: $luxury-text-muted !important;
+}

@@ -1,0 +1,11 @@
+// Theme variable overrides – The Canvas Co. Painting Gallery
+// Warm, elegant palette: terracotta, charcoal, cream
+
+// Frontend (_variables-custom.scss)
+$theme-primary: #b85c38 !default;      // Terracotta – warm accent
+$theme-tertiary: #2c2c2c !default;    // Charcoal – elegant dark
+
+// Backend (_variables.scss)
+$backend-theme-primary: #b85c38 !default;
+$backend-theme-secondary: #2c2c2c !default;
+$backend-theme-tertiary: #8b7355 !default;
