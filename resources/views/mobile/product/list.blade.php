@@ -65,6 +65,6 @@
 </div>
 @if($page < $products->lastPage())
 <div class="section full mt-2 mb-5 px-5 pagination" id="pagination-nav-{{ ($page + 1) }}">
-    <a href="{{ route('mobile.products', ['page' => ($page + 1),  'sortby' => $sortby,  'search' => $search, 'category_id' => $category_id]) }}" class="btn btn-secondary btn-md btn-block" style="background: #D4AF37 !important; border-color: #D4AF37 !important; color: white !important; font-weight: bold;">{{ __('Load More') }}</a>     
+    <a href="{{ route('mobile.products', array_merge(request()->query(), ['page' => ($page + 1),  'sortby' => $sortby,  'search' => $search, 'category_id' => $category_id])) }}" class="btn btn-secondary btn-md btn-block" style="background: #D4AF37 !important; border-color: #D4AF37 !important; color: white !important; font-weight: bold;">{{ __('Load More') }}</a>     
 </div>
 @endif

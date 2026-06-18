@@ -7,10 +7,11 @@
     <span></span><span></span><span></span>
   </button>
   <nav class="luxury-menu" id="luxuryMenu">
-    <a href="{{ route('website.products.shop') }}">{{ __('Browse Books') }}</a>
+    <a href="{{ route('home') }}">{{ __('Home') }}</a>
+    <a href="{{ route('website.products.shop') }}">{{ __('Browse Collections') }}</a>
     <a href="{{ route('website.about.us') }}">{{ __('About') }}</a>
     <a href="{{ route('home') }}#featured">{{ __('Featured') }}</a>
-    <a href="{{ route('home') }}#request">{{ __('Request a Book') }}</a>
+    <a href="{{ route('home') }}#request">{{ __('Custom Request') }}</a>
   </nav>
   <div class="luxury-actions">
     <a href="{{ route('website.favourite') }}" class="luxury-icon d-none d-md-flex" aria-label="{{ __('Favourites') }}">

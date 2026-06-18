@@ -88,18 +88,18 @@
 
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                    <label>{{ __('Email') }} </label>
+                                    <label>{{ __('Email') }} <span class="text-muted" style="font-size:11px">(optional)</span></label>
                                         <div>
-                                            <input type="text" name="email" class="form-control input-mask" data-inputmask="'alias': 'email'">
+                                            <input type="email" name="email" class="form-control" placeholder="e.g. user@example.com">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                    <label>{{ __('Mobile Number') }}</label>
+                                    <label>{{ __('Mobile Number') }} <span class="text-muted" style="font-size:11px">(optional, 10 digits)</span></label>
                                         <div>
-                                            <input type="text" name="mobile" class="form-control">
+                                            <input type="text" name="mobile" class="form-control" maxlength="10" placeholder="e.g. 9876543210">
                                         </div>
                                     </div>
                                 </div>

@@ -9,61 +9,59 @@
     </div>
      
     <!-- App Capsule -->
-    <div class="appCapsule" style="background-color: #F8F8F8; padding-bottom: 120px;">
+    <div class="appCapsule" style="background-color: #F8F8F8; padding-bottom: 180px !important;">
 
         <!-- Delivery / Client Site Info -->
         <div class="section full mt-2 px-3">
             <div class="section-title" style="font-family: 'Playfair Display', serif; font-size: 14px; font-weight: bold; color: #1F2937; margin-bottom: 8px;">{{ __('Client & Site Details') }}</div>
-            <div class="deliver-to shadow-sm mb-3" style="background: #fff; border-radius: 8px; padding: 12px; border-left: 4px solid #D4AF37;">
-                <div class="d-flex align-items-center mb-1">
-                    <span class="badge badge-primary mr-2" style="background-color: #1F2937; color: #D4AF37; font-weight: bold; text-transform: uppercase; font-size: 9px; padding: 3px 6px;">{{ __( $defaultAddress->type ) }}</span>
-                    <div class="name" style="font-weight: 700; color: #111827; font-family: 'Playfair Display', serif; font-size: 14px;">{{ $defaultAddress->name }}</div>
+            <div class="card shadow-sm mb-3" style="border-radius: 8px; background: #fff; padding: 16px; border-left: 4px solid #D4AF37;">
+                <input type="hidden" name="address_type" value="Shipping">
+                
+                <!-- Client Name Input -->
+                <div class="form-group basic mb-2">
+                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Client Name <span class="text-danger">*</span></label>
+                    <input type="text" name="address_name" required class="form-control" placeholder="Enter Client Name" style="border-radius: 4px; border: 1px solid #d1d5db; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
                 </div>
-                <div style="font-size: 12px; color: #6B7280; margin-bottom: 4px;">Contact: {{ $defaultAddress->mobile }}</div>
-                <div style="font-size: 12px; color: #374151;">{{ $defaultAddress->line_1 }}, {{ $defaultAddress->line_2 }}</div>
-                @if($defaultAddress->line_3)
-                <div style="font-size: 12px; color: #6B7280; font-style: italic;">Landmark: {{ $defaultAddress->line_3 }}</div>
-                @endif
-                <div style="font-size: 12px; color: #D4AF37; font-weight: bold; margin-top: 4px;">Transportation Zone: {{ _local($defaultAddress->location->name,$defaultAddress->location->local_name) }}</div>
-            </div>
-        </div>
 
-        <!-- Quotation Meta Inputs Card -->
-        <div class="section full px-3 mb-3">
-            <div class="section-title" style="font-family: 'Playfair Display', serif; font-size: 14px; font-weight: bold; color: #1F2937; margin-bottom: 8px;">{{ __('Quotation Options') }}</div>
-            <div class="card shadow-sm border-0" style="border-radius: 8px; background: #fff; padding: 16px;">
-                <!-- Project Type Selection -->
-                <div class="form-group basic mb-3">
-                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Project Type <span class="text-danger">*</span></label>
-                    <select name="project_type" required class="form-control custom-select" style="border-radius: 4px; border: 1px solid #d1d5db; height: auto; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
-                        <option value="Residential" selected>Residential Interior</option>
-                        <option value="Commercial">Commercial Project</option>
-                        <option value="Villa">Luxury Villa</option>
-                        <option value="Hotel">Hotel / Resort</option>
-                        <option value="Apartment">Apartment Complex</option>
+                <!-- Client Mobile Input -->
+                <div class="form-group basic mb-2">
+                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Client Mobile <span class="text-danger">*</span></label>
+                    <input type="tel" name="address_mobile" required class="form-control" placeholder="Enter 10-digit Mobile Number" pattern="[0-9]{10}" maxlength="10" style="border-radius: 4px; border: 1px solid #d1d5db; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
+                </div>
+
+                <!-- Address Line 1 -->
+                <div class="form-group basic mb-2">
+                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Address Line 1 <span class="text-danger">*</span></label>
+                    <input type="text" name="address_line_1" required class="form-control" placeholder="Building/House No, Street name" style="border-radius: 4px; border: 1px solid #d1d5db; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
+                </div>
+
+                <!-- Address Line 2 -->
+                <div class="form-group basic mb-2">
+                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Address Line 2 <span class="text-danger">*</span></label>
+                    <input type="text" name="address_line_2" required class="form-control" placeholder="Locality, Area" style="border-radius: 4px; border: 1px solid #d1d5db; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
+                </div>
+
+                <!-- Address Line 3 / Landmark -->
+                <div class="form-group basic mb-2">
+                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Landmark / Address Line 3</label>
+                    <input type="text" name="address_line_3" class="form-control" placeholder="Nearby landmark (optional)" style="border-radius: 4px; border: 1px solid #d1d5db; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
+                </div>
+
+                <!-- Transportation Zone Select -->
+                <div class="form-group basic mb-0">
+                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Transportation Zone <span class="text-danger">*</span></label>
+                    <select id="location_select" name="location_id" required class="form-control custom-select" style="border-radius: 4px; border: 1px solid #d1d5db; height: auto; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
+                        <option value="" disabled selected>Select Transportation Zone</option>
+                        @foreach($locations as $location)
+                            <option value="{{ $location->id }}" data-charge="{{ $location->delivery_charge }}" data-min="{{ $location->minimum_cart_amount }}" data-free-limit="{{ $location->delivery_cart_amount }}">
+                                {{ _local($location->name, $location->local_name) }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
-
-                <!-- Quotation Type Radio Buttons -->
-                <div class="form-group mb-3">
-                    <label class="label" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase; display: block; margin-bottom: 6px;">Quotation Type</label>
-                    <div class="custom-control custom-radio d-inline mr-3">
-                        <input type="radio" id="q_type_new" name="quotation_type" value="New" checked class="custom-control-input">
-                        <label class="custom-control-label" for="q_type_new" style="font-size: 13px; font-family: 'Inter', sans-serif;">New Project</label>
-                    </div>
-                    <div class="custom-control custom-radio d-inline">
-                        <input type="radio" id="q_type_rev" name="quotation_type" value="Revision" class="custom-control-input">
-                        <label class="custom-control-label" for="q_type_rev" style="font-size: 13px; font-family: 'Inter', sans-serif;">Quotation Revision</label>
-                    </div>
-                </div>
-
-                <!-- Architect / Designer Input -->
-                <div class="form-group basic mb-0">
-                    <label class="label" for="architect_name" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4B5563; text-transform: uppercase;">Architect / Designer Name</label>
-                    <input type="text" id="architect_name" name="architect_name" class="form-control" placeholder="Enter Architect name if applicable" style="border-radius: 4px; border: 1px solid #d1d5db; padding: 8px; font-size: 13px; font-family: 'Inter', sans-serif;">
-                </div>
             </div>
         </div>
+
      
         <!-- Slabs / Materials List -->
         @if($products && $products->count() > 0)
@@ -83,7 +81,7 @@
                             <div class="in pl-2 flex-grow-1" style="padding-left: 10px !important;">
                                 <div class="title" style="font-size: 12px; font-weight: 700; color: #111827; font-family: 'Inter', sans-serif;">{{ strtoupper($product->name) }}</div>
                                 <div class="d-flex justify-content-between align-items-center mt-1">
-                                    <div class="details" style="font-size: 11px; color: #6B7280;">{{ productExistsInCart($product->id, $product->minimum_quantity )}} Sq.Ft @ ₹{{ number_format($product->selling_price, 0) }}/Sq.Ft</div>
+                                    <div class="details" style="font-size: 11px; color: #6B7280;">{{ productExistsInCart($product->id, $product->minimum_quantity )}} {{ _local($product->unit->name, $product->unit->local_name) }} @ ₹{{ number_format($product->selling_price, 0) }}/{{ _local($product->unit->name, $product->unit->local_name) }}</div>
                                     <div class="price" style="font-weight: 700; color: #111827; font-size: 12px;">{!! priceFormat(productTotalSellingPriceInCart( $product->id, minimumQuantityPrice($product->selling_price, $product->minimum_quantity, $product->unit->stepper) ) , '₹') !!}</div>     
                                 </div>
                             </div>
@@ -119,11 +117,6 @@
                 <!-- Transportation Charge Input -->
                 @php
                     $initialDeliveryCharge = 0;
-                    if($defaultAddress->location && $defaultAddress->location->delivery_charge > 0) {
-                        if(!($defaultAddress->location->delivery_cart_amount && $defaultAddress->location->delivery_cart_amount <= cartTotalAmount())) {
-                            $initialDeliveryCharge = $defaultAddress->location->delivery_charge;
-                        }
-                    }
                 @endphp
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div style="font-size: 13px; color: #4B5563; font-family: 'Inter', sans-serif;">Transportation Charges</div>
@@ -162,7 +155,7 @@
                 <!-- Grand Total -->
                 <div class="d-flex justify-content-between align-items-center">
                     <div style="font-size: 14px; font-weight: 700; color: #1F2937; font-family: 'Playfair Display', serif;">Grand Total Estimate</div>
-                    <div style="font-weight: 800; color: #D4AF37; font-size: 18px; font-family: 'Playfair Display', serif;">₹<span id="grand_total_val">{{ priceFormat($cartTotalAmount = cartTotalAmount() + $initialDeliveryCharge, '') }}</span></div>
+                    <div style="font-weight: 800; color: #D4AF37; font-size: 18px; font-family: 'Playfair Display', serif;">₹<span id="grand_total_val">{{ priceFormat(cartTotalAmount(), '') }}</span></div>
                 </div>
             </div>
             
@@ -174,31 +167,29 @@
     </div>
     <!-- * App Capsule -->
      
-    <div class="appBottomMenu" style="border-top: none;">
-        @if($defaultAddress->location && $defaultAddress->location->minimum_cart_amount > cartTotalAmount() )
-        <div class="message" style="background-color: #EF4444; color: #fff;">
+    <div style="position: fixed; bottom: 68px; left: 0; right: 0; z-index: 998; background: transparent; padding: 0 10px;">
+        <div id="min-cart-warning" class="message" style="background-color: #EF4444; color: #fff; position: relative; margin-bottom: 5px; display: none;">
          <span>{{ __('Minimum order value must be') }}</span>
-         <span>{!! priceFormat($defaultAddress->location->minimum_cart_amount) !!}</span>
+         <span id="min-cart-warning-amount"></span>
         </div>
-        @endif
 
-        <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37;">
+        <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37; margin: 0;">
             <div class="checkout-btn-info">
-                <div class="info-small"><span class="cart-item-count text-light">{{ cartItemCount() }}</span> {{ __('Slabs') }}</div>
-                <div class="info-large mt-0"><span class="cart-total-sqft text-light">{{ cartTotalSqft() }}</span> Sq.Ft</div>
+                <div class="info-small"><span class="cart-item-count text-light">{{ cartItemCount() }}</span> {{ cartTotalUnitLabel() }}</div>
+                <div class="info-large mt-0"><span class="cart-total-sqft text-light">{{ cartTotalSqft() }}</span> {{ cartTotalUnitLabel() }}</div>
             </div>
      
-            @if($defaultAddress->location && $defaultAddress->location->minimum_cart_amount > cartTotalAmount() )
-                <a href="{{ route('mobile.home') }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center;">
-                    {{ __('Continue Shopping') }}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </a>
-            @else
-                <button type="submit" id="checkout-btn" class="checkout-btn-title" style="border: none; background: transparent; color: #fff; font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center; cursor: pointer; text-align: left; padding: 0;">
-                    {{ __('Place Quotation') }}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            @endif
+            <!-- Continue shopping link block -->
+            <a id="continue-shopping-btn" href="{{ route('mobile.home') }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: none; align-items: center;">
+                {{ __('Continue Shopping') }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+
+            <!-- Submit button block -->
+            <button type="submit" id="checkout-btn" class="checkout-btn-title" style="border: none; background: transparent; color: #fff; font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center; cursor: pointer; text-align: left; padding: 0;">
+                {{ __('Place Quotation') }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
      
         </div>
     </div>
@@ -212,6 +203,18 @@
         const instEl = document.getElementById('installation_charge');
         const discEl = document.getElementById('manual_discount');
         const grandTotalText = document.getElementById('grand_total_val');
+        const locationSelect = document.getElementById('location_select');
+        const minCartWarning = document.getElementById('min-cart-warning');
+        const minCartWarningAmount = document.getElementById('min-cart-warning-amount');
+        const continueShoppingBtn = document.getElementById('continue-shopping-btn');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        function formatCurrency(val) {
+            return val.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
 
         function updateGrandTotal() {
             const cutting = parseFloat(cuttingEl.value) || 0;
@@ -220,15 +223,56 @@
             const discount = parseFloat(discEl.value) || 0;
 
             const grandTotal = Math.max(0, subtotal + cutting + transportation + installation - discount);
-            grandTotalText.textContent = grandTotal.toLocaleString('en-IN', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            grandTotalText.textContent = formatCurrency(grandTotal);
+        }
+
+        function handleLocationChange() {
+            const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+            if (!selectedOption || selectedOption.value === "") {
+                transEl.value = 0;
+                minCartWarning.style.display = 'none';
+                continueShoppingBtn.style.display = 'none';
+                checkoutBtn.style.display = 'flex';
+                updateGrandTotal();
+                return;
+            }
+
+            const charge = parseFloat(selectedOption.getAttribute('data-charge')) || 0;
+            const minCart = parseFloat(selectedOption.getAttribute('data-min')) || 0;
+            const freeLimit = parseFloat(selectedOption.getAttribute('data-free-limit')) || 0;
+
+            // Calculate delivery charge
+            let deliveryCharge = charge;
+            if (freeLimit > 0 && subtotal >= freeLimit) {
+                deliveryCharge = 0;
+            }
+
+            transEl.value = deliveryCharge;
+
+            // Check minimum cart limit
+            if (minCart > 0 && subtotal < minCart) {
+                minCartWarning.style.display = 'block';
+                minCartWarningAmount.textContent = '₹' + formatCurrency(minCart);
+                continueShoppingBtn.style.display = 'flex';
+                checkoutBtn.style.display = 'none';
+            } else {
+                minCartWarning.style.display = 'none';
+                continueShoppingBtn.style.display = 'none';
+                checkoutBtn.style.display = 'flex';
+            }
+
+            updateGrandTotal();
         }
 
         if (cuttingEl) cuttingEl.addEventListener('input', updateGrandTotal);
         if (transEl) transEl.addEventListener('input', updateGrandTotal);
         if (instEl) instEl.addEventListener('input', updateGrandTotal);
         if (discEl) discEl.addEventListener('input', updateGrandTotal);
+        if (locationSelect) locationSelect.addEventListener('change', handleLocationChange);
+
+        // Run initially in case of preselected value or standard load
+        if (locationSelect) {
+            handleLocationChange();
+        }
     })();
 </script>

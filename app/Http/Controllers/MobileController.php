@@ -38,23 +38,52 @@ class MobileController extends Controller
 
     public function home(Request $request)
     {   
-        // $build = request()->header('Build') ?? null;
-        // $appVersion = request()->header('App-Version') ?? null;
-        // $link = getOption('apple_app_store_link', '#');
-  
-        // if($build == 'pwa' && $appVersion != '2.0.0' ){
-        //     return page('home', route('mobile.home'), view('mobile/update/index', compact('link'))->render());
-        // }
-
         $authUser = authUser('api');
  
         $bannerSliders = BannerSlider::orderBy('priority', 'desc')->get(); 
-        $categories = Category::orderBy('priority', 'desc')->get(); 
         $featuredProducts = Product::featured();
         $offerProducts = Product::offer();
-
         $decimalPlace = decimalPlace();
- 
+
+        // Build the full category tree from DB
+        // Top-level categories (parent_id = null)
+        $topCategories = Category::whereNull('parent_id')->orderBy('priority', 'desc')->get();
+        $topCategoryIds = $topCategories->pluck('id');
+
+        // All subcategories under those parents
+        $allSubcategories = Category::whereIn('parent_id', $topCategoryIds)->get();
+        $subCategoryIds = $allSubcategories->pluck('id');
+
+        // All products under those subcategories
+        $allProducts = Product::whereIn('category_id', $subCategoryIds)
+            ->with('category', 'brand', 'unit')
+            ->get();
+
+        // Build hierarchy: parentSlug => { id, name, slug, image, subcategories: [{ id, name, slug, image, products: [] }] }
+        $categoryTree = [];
+        foreach ($topCategories as $parent) {
+            $subs = $allSubcategories->where('parent_id', $parent->id)->values();
+            $subsWithProducts = $subs->map(function ($sub) use ($allProducts) {
+                return [
+                    'id'       => $sub->id,
+                    'name'     => $sub->name,
+                    'slug'     => $sub->slug,
+                    'image'    => $sub->image,
+                    'products' => $allProducts->where('category_id', $sub->id)->values(),
+                ];
+            })->values();
+
+            $categoryTree[$parent->slug] = [
+                'id'            => $parent->id,
+                'name'          => $parent->name,
+                'slug'          => $parent->slug,
+                'image'         => $parent->image,
+                'subcategories' => $subsWithProducts,
+            ];
+        }
+
+        // $categories used for the top-level card grid in the blade
+        $categories = $topCategories;
  
         $attributes = [
             'jquery' => [
@@ -90,7 +119,7 @@ class MobileController extends Controller
             ];
         }
  
-        return page('home', route('mobile.home'), view('mobile/home/index', compact('bannerSliders', 'categories', 'featuredProducts', 'offerProducts'))->render(), $attributes);
+        return page('home', route('mobile.home'), view('mobile/home/index', compact('bannerSliders', 'categories', 'categoryTree', 'featuredProducts', 'offerProducts'))->render(), $attributes);
     }
  
 
@@ -101,9 +130,35 @@ class MobileController extends Controller
         $search = $request->search ?? '';
         $category_id = $request->category_id ?? null;
         $categories = Category::orderBy('name', 'asc')->orderBy('priority', 'desc')->get();
-        $products = Product::retrieve($sortby, $search, $category_id);
+        
+        // Retrieve dynamic filters
+        $filters = [
+            'brands' => $request->brands ?? [],
+            'price_ranges' => $request->price_ranges ?? [],
+            'exclude' => $request->exclude ?? [],
+        ];
 
-        $title  = __('All Books');
+        // Ensure variables are arrays
+        if (!is_array($filters['brands'])) {
+            $filters['brands'] = $filters['brands'] ? [$filters['brands']] : [];
+        }
+        if (!is_array($filters['price_ranges'])) {
+            $filters['price_ranges'] = $filters['price_ranges'] ? [$filters['price_ranges']] : [];
+        }
+        if (!is_array($filters['exclude'])) {
+            $filters['exclude'] = $filters['exclude'] ? [$filters['exclude']] : [];
+        }
+
+        $featuredProducts = collect();
+        if ($page == 1 && !$category_id && !$search && empty($filters['brands']) && empty($filters['price_ranges'])) {
+            $featuredProducts = Product::featured();
+            $filters['exclude'] = array_merge($filters['exclude'], $featuredProducts->pluck('id')->toArray());
+        }
+
+        $products = Product::retrieve($sortby, $search, $category_id, null, 12, $filters);
+        $brands = \App\Models\Brand::orderBy('name', 'asc')->get();
+
+        $title  = __('All Materials');
 
         if($search){
             $title  = __('Search') .  ': ' . $search;
@@ -121,7 +176,7 @@ class MobileController extends Controller
 
 
         $cart = cartUpdate();
-  
+   
         $request->merge([
             'cart' => json_encode($cart),
         ]);
@@ -135,7 +190,7 @@ class MobileController extends Controller
                     [
                         'element' => '#pagination-id-' . $page,
                         'method' => 'after',
-                        'value' => view('mobile/product/list', compact('page', 'sortby', 'search', 'category_id', 'products'))->render(),
+                        'value' => view('mobile/product/list', compact('page', 'sortby', 'search', 'category_id', 'products', 'filters'))->render(),
                     ],
                     [
                         'element' => '#pagination-nav-' . $page,
@@ -146,9 +201,42 @@ class MobileController extends Controller
             ]);
         }
  
-        return page('products', route('mobile.home'), view('mobile/product/index', compact('title', 'page', 'sortby', 'search', 'category_id', 'categories', 'products'))->render(),[
+        return page('products', route('mobile.home'), view('mobile/product/index', compact('title', 'page', 'sortby', 'search', 'category_id', 'categories', 'products', 'brands', 'filters', 'featuredProducts'))->render(),[
             'cart' => $cart
         ]);
+    }
+
+    public function searchSuggestions(Request $request)
+    {
+        $search = $request->search ?? '';
+        if (strlen($search) < 2) {
+            return response()->json([]);
+        }
+
+        $products = Product::query()->visible()
+            ->where(function ($query) use ($search) {
+                $query->orWhere('name', 'like', '%' . $search . '%')
+                      ->orWhere('local_name', 'like', '%' . $search . '%')
+                      ->orWhere('description', 'like', '%' . $search . '%')
+                      ->orWhere('keywords', 'like', '%' . $search . '%');
+            })
+            ->with('category')
+            ->take(8)
+            ->get();
+
+        $suggestions = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => strtoupper($product->name),
+                'local_name' => $product->local_name,
+                'category' => $product->category ? _local($product->category->name, $product->category->local_name) : '',
+                'url' => route('mobile.product', ['product' => $product->id]),
+                'image' => $product->image ? asset('uploads/' . $product->image) : asset('assets/mobile/img/200x150-blank.png'),
+                'price' => priceFormat($product->selling_price, '₹') . ' / Sq.Ft'
+            ];
+        });
+
+        return response()->json($suggestions);
     }
 
     public function product(Request $request, Product $product)
@@ -171,7 +259,13 @@ class MobileController extends Controller
  
         $returnLink = $request->referral ?? route('mobile.products', ['category_id' => $product->category_id]);
  
-        return page('product', $returnLink, view('mobile/product/view', compact('product', 'returnLink', 'favouriteStatus'))->render(), [
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->visible()
+            ->take(8)
+            ->get();
+ 
+        return page('product', $returnLink, view('mobile/product/view', compact('product', 'returnLink', 'favouriteStatus', 'relatedProducts'))->render(), [
             'cart' => $cart
         ]);
     }
@@ -449,9 +543,7 @@ class MobileController extends Controller
 
         $authUser = authUser();
 
-        $defaultAddress =  $authUser->defaultAddress();
-
-        if(!$authUser || !$defaultAddress) {
+        if(!$authUser) {
             return response()->json([
                 'redirect' => route('mobile.cart'),
                 'toast' => __('Something went wrong.'),
@@ -478,8 +570,10 @@ class MobileController extends Controller
                 'toast' => __('Cart is empty.'),
             ]);   
         }
+
+        $locations = Location::all();
  
-        return page('order-summary', route('mobile.address', ['type' => 'select']), view('mobile/order/summary', compact('defaultAddress', 'products'))->render(), [
+        return page('order-summary', route('mobile.cart'), view('mobile/order/summary', compact('locations', 'products'))->render(), [
             'cart' => $cart
         ]);
     }
@@ -488,13 +582,33 @@ class MobileController extends Controller
     {
         $authUser = authUser();
 
-        $defaultAddress =  $authUser->defaultAddress();
-
-        if(!$authUser || !$defaultAddress) {
+        if(!$authUser) {
             return response()->json([
                 'redirect' => route('mobile.cart'),
                 'toast' => __('Something went wrong.'),
             ]);  
+        }
+
+        $validator = Validator::make($request->all(), [
+            'address_name' => [ 'required', 'max:100' ],
+            'address_mobile' => [ 'required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10', 'max:15' ],
+            'address_line_1' => [ 'required' ],
+            'address_line_2' => [ 'required' ],
+            'address_line_3' => [ 'nullable' ],
+            'location_id' => [ 'required', 'integer' ],
+        ]);
+
+        if (!$validator->passes()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $location = Location::find($request->location_id);
+        if (!$location) {
+            return response()->json([
+                'toast' => __('Invalid transportation zone selected.'),
+            ]);
         }
  
         DB::beginTransaction();
@@ -513,19 +627,29 @@ class MobileController extends Controller
             $cuttingCharge = floatval($request->cutting_charge ?? 0);
             $installationCharge = floatval($request->installation_charge ?? 0);
             $manualDiscount = floatval($request->manual_discount ?? 0);
-            $transportationCharge = floatval($request->transportation_charge ?? ($defaultAddress->location->delivery_charge ?? 0));
+
+            // Calculate default delivery charge from location if not explicitly provided or if empty
+            $defaultDeliveryCharge = 0;
+            if ($location) {
+                if ($location->delivery_cart_amount && $location->delivery_cart_amount <= cartTotalAmount()) {
+                    $defaultDeliveryCharge = 0;
+                } else {
+                    $defaultDeliveryCharge = $location->delivery_charge ?? 0;
+                }
+            }
+            $transportationCharge = floatval($request->has('transportation_charge') ? $request->transportation_charge : $defaultDeliveryCharge);
             $validityDate = now()->addDays(30);
 
             $order = Order::create([
                 'user_id' => $authUser->id,
-                'address_type' => $defaultAddress->type,
-                'address_name' => $defaultAddress->name,
-                'address_mobile' => $defaultAddress->mobile,
-                'address_line_1' => $defaultAddress->line_1,
-                'address_line_2' => $defaultAddress->line_2,
-                'address_line_3' => $defaultAddress->line_3,
-                'address_location' => $defaultAddress->location->name,
-                'address_local_location' => $defaultAddress->location->local_name,
+                'address_type' => $request->address_type ?? 'Shipping',
+                'address_name' => $request->address_name,
+                'address_mobile' => $request->address_mobile,
+                'address_line_1' => $request->address_line_1,
+                'address_line_2' => $request->address_line_2,
+                'address_line_3' => $request->address_line_3,
+                'address_location' => $location->name,
+                'address_local_location' => $location->local_name,
                 'total_amount' => 0,
                 'delivery_charge' => $transportationCharge,
                 'discount_amount' => $manualDiscount,
@@ -1497,16 +1621,7 @@ class MobileController extends Controller
  
     public function signup(Request $request)
     {
-
-        $return = $request->return ?? 'home';
- 
-        $returnLink = route('mobile.account');
-
-        if($return == 'cart'){
-            $returnLink = route('mobile.cart');
-        }
-
-        return page('signup', $returnLink, view('mobile/signup/index', compact('return') )->render());
+        return $this->signin($request);
     }
  
     public function signupRequest(Request $request)
@@ -1782,6 +1897,19 @@ class MobileController extends Controller
                     ]
                 ]);
 
+            }
+
+            // Check if user is Salesman (role_id = 4 or name = Salesman)
+            if (!$authUser->role || ($authUser->role->id != 4 && strtolower($authUser->role->name) !== 'salesman')) {
+                Auth::logout();
+
+                return response()->json([
+                    'errors' => [
+                        'email' => [
+                            __('Only salespersons are authorized to access the mobile website.')
+                        ]
+                    ]
+                ]);
             }
 
             $random = Str::random(40);

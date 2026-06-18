@@ -16,7 +16,7 @@
 					<ul class="list-unstyled">
 						<li> <a href="{{ route('home')  }}">{{ __('Home') }}</a></li>
 						<li> <a href="{{route('website.about.us')}}">{{ __('About') }}</a></li>	
-						<li> <a href="{{ route('website.products.shop') }}">{{ __('Browse Books') }}</a></li>
+						<li> <a href="{{ route('website.products.shop') }}">{{ __('Browse Collections') }}</a></li>
 						<li> <a href="{{route('sitemap')}}" target="_blank">{{ __('Sitemap') }}</a></li>	
 					</ul>
 				</aside>
@@ -24,7 +24,7 @@
 					<h6 class="title">{{ __('Manage') }}</h6>
 					<ul class="list-unstyled">
 						<li> <a href="{{route('website.order')}}">{{ __('Your Orders') }}</a></li>
-						<li> <a href="{{ route('website.favourite')}}">{{ __('Saved Books') }}</a></li>
+						<li> <a href="{{ route('website.favourite')}}">{{ __('Saved Materials') }}</a></li>
 						<li> <a href="{{route('website.address')}}">{{ __('Your Addresses') }}</a></li>	
 						<li> <a href="{{route('website.edit.profile')}}">{{ __('Manage Profile') }}</a></li>
 					</ul>
@@ -73,7 +73,7 @@
 		</section>	<!-- footer-top.// -->
 
 		<section class="footer-copyright border-top" style="{{ $isLuxury ? 'border-color: rgba(242,232,216,0.08) !important; ' : 'border-color: #e8e4df !important; ' }}padding: 20px 0;">
-				<p class="text-muted text-center mb-0" style="font-size: 13px; {{ $isLuxury ? 'color: #c4b8a8 !important;' : 'color: #6b6b6b;' }}">© {{ date('Y') }} {{ config('app.name') }}. {{ __('Books for every reader.') }}</p>	
+				<p class="text-muted text-center mb-0" style="font-size: 13px; {{ $isLuxury ? 'color: #c4b8a8 !important;' : 'color: #6b6b6b;' }}">© {{ date('Y') }} {{ config('app.name') }}. {{ __('Premium stone and interior solutions.') }}</p>	
 		</section>
 	</div><!-- //container -->
 </footer>

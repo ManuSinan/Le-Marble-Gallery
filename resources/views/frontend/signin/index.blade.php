@@ -1,138 +1,219 @@
-@extends('simple-bookstore.layout')
-
-@section('title', 'Sign In | ' . config('app.name', 'KNM Bookstore'))
-@section('description', 'Sign in with your mobile number or username to continue ordering books from the website.')
-
-@section('extra_styles')
-<style>
-    .auth-center-wrap {
-        min-height: calc(100vh - 250px);
-        display: grid;
-        place-items: center;
-    }
-    .auth-modern {
-        width: 100%;
-        max-width: 520px;
-    }
-    .auth-modern .panel {
-        border-radius: 18px;
-        border: 1px solid #d9deea;
-        box-shadow: 0 10px 24px rgba(25, 28, 29, 0.08);
-        padding: 30px 24px 22px;
-        background: #ffffff;
-    }
-    .auth-modern .title {
-        font-size: clamp(34px, 6vw, 44px);
-        line-height: 1;
-        letter-spacing: -0.04em;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-    .auth-modern .subtitle {
-        color: #555d6d;
-        line-height: 1.6;
-        margin-bottom: 24px;
-        text-align: center;
-        font-size: 14px;
-    }
-    .auth-modern .field label {
-        display: none;
-    }
-    .auth-modern .field input {
-        border-radius: 10px;
-        border: 1px solid #cfd5e3;
-        padding: 12px 14px;
-        font-size: 15px;
-    }
-    .auth-modern .field input:focus {
-        border-color: #0d6efd;
-    }
-    .auth-modern .button {
-        background: #0d9373;
-        border-color: #0d9373;
-        border-radius: 10px;
-        min-height: 46px;
-        font-size: 18px;
-        font-weight: 800;
-    }
-    .auth-modern .button:hover {
-        background: #0a7a5f;
-        border-color: #0a7a5f;
-    }
-    .auth-modern .meta-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 4px 2px 10px;
-        font-size: 14px;
-        color: #6b7280;
-    }
-    .auth-modern .meta-row .remember {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .auth-modern .meta-row input[type="checkbox"] {
-        width: 14px;
-        height: 14px;
-    }
-    .auth-modern .meta-row a {
-        color: #0d6efd;
-        font-weight: 700;
-    }
-    .auth-modern .aux {
-        text-align: center;
-        color: #6b7280;
-        font-size: 14px;
-    }
-    .auth-modern .aux a {
-        color: #0d6efd;
-        font-weight: 700;
-    }
-</style>
-@endsection
-
-@section('content')
-<section class="auth-center-wrap">
-    <div class="auth-modern">
-        <div class="panel">
-            <h1 class="title">Sign In</h1>
-            <p class="subtitle">Enter your credentials to access your account</p>
-
-            @if ($errors->any())
-                <div class="notice notice-danger" style="margin-bottom: 16px;">
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('signin') }}" class="form-grid">
-                @csrf
-
-                <div class="field">
-                    <label for="login">Username or Mobile Number</label>
-                    <input type="text" id="login" name="login" value="{{ old('login') }}" placeholder="Username or Mobile Number" required autofocus>
-                </div>
-
-                <div class="field">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                </div>
-
-                <div class="meta-row">
-                    <label class="remember">
-                        <input type="checkbox" name="remember" value="1">
-                        <span>Remember me</span>
-                    </label>
-                    <a href="{{ route('password.reset') }}">Forgot password?</a>
-                </div>
-
-                <button type="submit" class="button block">Sign In</button>
-            </form>
-
-            <p class="aux" style="margin-top: 14px;">Don't have an account? <a href="{{ route('signup') }}">Create one</a></p>
+@php
+    $siteName = config('app.name', 'Le Marble Gallery');
+@endphp
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Sign In | {{ $siteName }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicons/knm-logo.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Remove all scrollability */
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            padding: 36px 30px;
+            margin: 16px;
+        }
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .auth-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: #e8edf7;
+            color: #152B6E;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+        .auth-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #152B6E;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+        .auth-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 0;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-input {
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #111827;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: #152B6E;
+            box-shadow: 0 0 0 3px rgba(21, 43, 110, 0.1);
+        }
+        .meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: -4px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #4b5563;
+            cursor: pointer;
+            user-select: none;
+        }
+        .remember-me input {
+            width: 15px;
+            height: 15px;
+            accent-color: #152B6E;
+            cursor: pointer;
+        }
+        .forgot-link {
+            color: #D4AF37;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+        .forgot-link:hover {
+            color: #bfa02e;
+            text-decoration: underline;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #152B6E;
+            border: 1px solid #152B6E;
+            color: #ffffff;
+            padding: 11px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .submit-btn:hover {
+            background-color: #0f2052;
+            border-color: #0f2052;
+        }
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        .auth-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .auth-footer a {
+            color: #152B6E;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        .alert-error {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-brand">
+            <div style="margin-bottom: 16px; display: flex; justify-content: center; align-items: center;">
+                <img src="{{ asset('assets/backend/logo-dark.png') }}" alt="logo" style="max-height: 54px; width: auto; display: block;">
+            </div>
+            <h1 class="auth-title">Le Marble Gallery</h1>
+            <p class="auth-subtitle">Sign in to your account</p>
         </div>
+
+        @if ($errors->any())
+            <div class="alert-error">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('signin') }}">
+            @csrf
+
+            <div class="form-group">
+                <label for="login" class="form-label">Username / Mobile / Email</label>
+                <input type="text" id="login" name="login" class="form-input" value="{{ old('login') }}" placeholder="Enter username or mobile" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Enter password" required>
+            </div>
+
+            <div class="meta-row">
+                <label class="remember-me">
+                    <input type="checkbox" name="remember" value="1">
+                    <span>Remember me</span>
+                </label>
+                <a href="{{ route('password.reset') }}" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="submit-btn">Sign In</button>
+        </form>
+
+        <p class="auth-footer">Don't have an account? <a href="{{ route('signup') }}">Register here</a></p>
     </div>
-</section>
-@endsection
+</body>
+</html>

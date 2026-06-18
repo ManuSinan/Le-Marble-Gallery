@@ -13,7 +13,9 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        return view('backend/order/index', compact('search'));
+        $salesmanRole = \App\Models\Role::where('name', 'Salesman')->first();
+        $salesmen = $salesmanRole ? User::where('role_id', $salesmanRole->id)->get() : User::where('role_id', 4)->get();
+        return view('backend/order/index', compact('search', 'salesmen'));
     }
  
     function list(Order $order) 
@@ -56,6 +58,9 @@ class OrderController extends Controller
                     }
                 });
 
+                if ($salesmanId = request('salesman_id')) {
+                    $query->where('orders.user_id', $salesmanId);
+                }
 
                 if (!hasPermission('order.full.access')) {
                     $authUser = authUser();

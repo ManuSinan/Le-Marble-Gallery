@@ -20,10 +20,10 @@
                 <div class="font-weight-medium">
                     @if(hasPermission('product'))
                     <a href="{{ route('product') }}">
-                        {{ \App\Models\Product::count() }} {{ __('Books') }}
+                        {{ \App\Models\Product::count() }} {{ __('Products') }}
                     </a>
                     @else
-                        {{ \App\Models\Product::count() }} {{ __('Books') }}
+                        {{ \App\Models\Product::count() }} {{ __('Products') }}
                     @endif
                 </div>
                 <div class="text-muted">

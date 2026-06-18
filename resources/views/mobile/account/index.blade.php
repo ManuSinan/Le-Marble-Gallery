@@ -25,7 +25,7 @@
                 </div>
                 <div class="in">
                     <h3 class="name mb-0" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; color: #111827; letter-spacing: -0.2px;">@if($authUser) {{ strtoupper($authUser->name) }} @else {{ __('GUEST USER') }} @endif</h3>
-                    <h5 class="subtext mb-0" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #6B7280; margin-top: 3px;">@if($authUser) {{ $authUser->mobile }} @else {{ __('Sign in / Register') }} @endif</h5>
+                    <h5 class="subtext mb-0" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #6B7280; margin-top: 3px;">@if($authUser) {{ $authUser->mobile }} @else {{ __('Sign in') }} @endif</h5>
                 </div>
             </div>
             @if($authUser)
@@ -68,19 +68,6 @@
                         </a>
                     </li>
 
-                    <!-- Delivery Sites -->
-                    <li style="border-bottom: 1px solid #F3F4F6;">
-                        <a href="{{ route('mobile.address') }}" class="item d-flex align-items-center justify-content-between p-3 text-dark" style="text-decoration: none; font-family: 'Inter', sans-serif; font-size: 13px;">
-                            <div class="d-flex align-items-center">
-                                <div style="background-color: #E6F7F0; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                </div>
-                                <div style="font-weight: 500; color: #1F2937;">{{ __('Delivery Sites & Addresses') }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </a>
-                    </li>
-
                     <!-- Change Password -->
                     <li style="border-bottom: 1px solid #F3F4F6;">
                         <a href="{{ route('mobile.change.password') }}" class="item d-flex align-items-center justify-content-between p-3 text-dark" style="text-decoration: none; font-family: 'Inter', sans-serif; font-size: 13px;">
@@ -108,26 +95,13 @@
                     </li>
                 @else
                     <!-- Sign In -->
-                    <li style="border-bottom: 1px solid #F3F4F6;">
+                    <li>
                         <a href="{{ route('mobile.signin') }}" class="item d-flex align-items-center justify-content-between p-3 text-dark" style="text-decoration: none; font-family: 'Inter', sans-serif; font-size: 13px;">
                             <div class="d-flex align-items-center">
                                 <div style="background-color: #EEF4FF; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B6EF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
                                 </div>
                                 <div style="font-weight: 500; color: #1F2937;">{{ __('Sign In') }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </a>
-                    </li>
-                    
-                    <!-- Register -->
-                    <li>
-                        <a href="{{ route('mobile.signup') }}" class="item d-flex align-items-center justify-content-between p-3 text-dark" style="text-decoration: none; font-family: 'Inter', sans-serif; font-size: 13px;">
-                            <div class="d-flex align-items-center">
-                                <div style="background-color: #E6F7F0; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                                </div>
-                                <div style="font-weight: 500; color: #1F2937;">{{ __('Register') }}</div>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </a>
@@ -139,4 +113,3 @@
     </div>
 </div>
 <!-- * App Capsule -->
-@include('mobile/layout/bottom-menu')

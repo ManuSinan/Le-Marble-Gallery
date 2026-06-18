@@ -1,6 +1,6 @@
 @extends('simple-bookstore.layout')
 
-@section('title', 'Order your books — ' . ($storeName ?? config('app.name')))
+@section('title', 'Order your products — ' . ($storeName ?? config('app.name')))
 
 @php
     $allCount = $regularClasses->sum('count');
@@ -689,27 +689,27 @@ input[type=number] { -moz-appearance: textfield; }
 <div class="knm-container knm-pb-nav">
     <div class="knm-hero-new">
         <div class="knm-hero-content">
-            <div class="knm-hero-tag">KNM Education Board - {{ date('Y') }}</div>
-            <h1>All Your Class Books<br><em>In One Place</em></h1>
-            <p>Pick your class and find all required textbooks and stationery in one place.</p>
+            <div class="knm-hero-tag">Lee Marble Gallery - {{ date('Y') }}</div>
+            <h1>All Your Products<br><em>In One Place</em></h1>
+            <p>Pick your category and find all required items in one place.</p>
             <div class="knm-hero-glass">
-                <label for="knm-class-select">Select your Class</label>
-                <select id="knm-class-select" name="class" aria-label="Select class" @if($regularClasses->isEmpty()) disabled @endif>
-                    <option value="">{{ $regularClasses->isEmpty() ? 'No classes with books yet' : 'Select class…' }}</option>
+                <label for="knm-class-select">Select your Category</label>
+                <select id="knm-class-select" name="class" aria-label="Select category" @if($regularClasses->isEmpty()) disabled @endif>
+                    <option value="">{{ $regularClasses->isEmpty() ? 'No categories with products yet' : 'Select category…' }}</option>
                     @foreach ($regularClasses as $c)
-                        <option value="{{ $c['id'] }}">{{ $c['name'] }} ({{ $c['count'] }} books)</option>
+                        <option value="{{ $c['id'] }}">{{ $c['name'] }} ({{ $c['count'] }} products)</option>
                     @endforeach
                 </select>
-                <button type="button" class="knm-browse-btn" id="browse-books-btn">Browse Books -&gt;</button>
+                <button type="button" class="knm-browse-btn" id="browse-books-btn">Browse Products -&gt;</button>
                 <div class="knm-stats-strip">
                     <div class="knm-stat">
                         <div class="knm-stat-num">{{ $products->count() }}+</div>
-                        <div class="knm-stat-label">Books</div>
+                        <div class="knm-stat-label">Products</div>
                     </div>
                     <div class="knm-stat-div"></div>
                     <div class="knm-stat">
                         <div class="knm-stat-num">{{ $regularClasses->count() }}</div>
-                        <div class="knm-stat-label">Classes</div>
+                        <div class="knm-stat-label">Categories</div>
                     </div>
 
                 </div>
@@ -719,11 +719,11 @@ input[type=number] { -moz-appearance: textfield; }
 
     <div id="sidebar-overlay" class="knm-overlay knm-hidden" aria-hidden="true">
         <div class="knm-overlay__backdrop" id="sidebar-backdrop"></div>
-        <aside class="knm-drawer knm-drawer--left" aria-label="Classes">
+        <aside class="knm-drawer knm-drawer--left" aria-label="Categories">
             <div class="knm-drawer__head">
                 <div>
-                    <p class="knm-sidebar-title">Choose your class</p>
-                    <p class="knm-muted knm-small">Browse books faster by class</p>
+                    <p class="knm-sidebar-title">Choose your category</p>
+                    <p class="knm-muted knm-small">Browse products faster by category</p>
                 </div>
                 <button type="button" class="knm-btn knm-btn--icon knm-btn--ghost" id="sidebar-close" aria-label="Close menu">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -744,14 +744,14 @@ input[type=number] { -moz-appearance: textfield; }
 
     <div id="store-layout" class="knm-store-layout">
         <aside id="desktop-sidebar" class="knm-desktop-sidebar">
-            <h2 class="knm-sidebar-title">Classes</h2>
+            <h2 class="knm-sidebar-title">Categories</h2>
             <div class="knm-stack knm-gap-2" id="class-list-desktop"></div>
         </aside>
 
         <main id="main-content" class="knm-main">
             @if (session('order_success'))
                 <div class="knm-notice knm-notice--success knm-mb-4" role="status">
-                    Order placed. Reference <strong>{{ session('order_success.ref_no') }}</strong>. Book: {{ session('order_success.book') }}.
+                    Order placed. Reference <strong>{{ session('order_success.ref_no') }}</strong>. Product: {{ session('order_success.book') }}.
                 </div>
             @endif
 
@@ -767,15 +767,15 @@ input[type=number] { -moz-appearance: textfield; }
                 <section class="knm-home-section">
                     <div class="knm-bundle-banner">
                         <div class="knm-bundle-content">
-                            <h3>Get the Full Class Bundle &amp; Save</h3>
-                            <p>Order all books for your class at once and get special bundle pricing + free delivery.</p>
+                            <h3>Get the Full Category Bundle &amp; Save</h3>
+                            <p>Order all products for your category at once and get special bundle pricing + free delivery.</p>
                         </div>
                         <button type="button" class="knm-bundle-cta" id="special-view-all">Order Bundle -&gt;</button>
                     </div>
                 </section>
                 <section class="knm-home-section knm-home-section--popular">
                     <div class="knm-home-sec-hdr" style="padding: 0 4px;">
-                        <h3 class="knm-home-sec-title">Popular Books</h3>
+                        <h3 class="knm-home-sec-title">Popular Products</h3>
                     </div>
                     <div class="knm-carousel-outer">
                         <div class="knm-carousel-track" id="popular-books-track"></div>
@@ -1050,14 +1050,14 @@ input[type=number] { -moz-appearance: textfield; }
         const allBtn = document.createElement('button');
         allBtn.type = 'button';
         allBtn.className = 'knm-chip' + (state.activeSubjectId == null ? ' is-active' : '');
-        allBtn.textContent = 'All subjects';
+        allBtn.textContent = 'All subcategories';
         allBtn.addEventListener('click', () => { state.activeSubjectId = null; renderSubjectChips(); renderBooks(); });
         subjectChipRow.appendChild(allBtn);
         list.forEach((s) => {
             const b = document.createElement('button');
             b.type = 'button';
             b.className = 'knm-chip' + (String(state.activeSubjectId) === String(s.id) ? ' is-active' : '');
-            b.textContent = s.name || 'Subject';
+            b.textContent = s.name || 'Subcategory';
             b.addEventListener('click', () => {
                 state.activeSubjectId = state.activeSubjectId === s.id ? null : s.id;
                 renderSubjectChips();
@@ -1086,7 +1086,7 @@ input[type=number] { -moz-appearance: textfield; }
             return button;
         };
         targetEl.innerHTML = '';
-        targetEl.appendChild(makeBtn(null, 'All classes', allCount));
+        targetEl.appendChild(makeBtn(null, 'All categories', allCount));
         classes.forEach((c) => targetEl.appendChild(makeBtn(c.id, c.name, c.count)));
     }
 
@@ -1352,7 +1352,7 @@ input[type=number] { -moz-appearance: textfield; }
             if (rows.length <= 0) {
                 const empty = document.createElement('p');
                 empty.className = 'knm-muted knm-small';
-                empty.textContent = 'No books in your order yet.';
+                empty.textContent = 'No products in your order yet.';
                 targetEl.appendChild(empty);
                 return;
             }

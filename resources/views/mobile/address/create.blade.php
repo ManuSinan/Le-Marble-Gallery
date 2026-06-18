@@ -145,5 +145,4 @@
 <!-- * App Capsule -->
 
 @if( $type != 'select')
-@include('mobile/layout/bottom-menu')
 @endif

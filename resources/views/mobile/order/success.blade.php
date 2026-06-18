@@ -25,5 +25,3 @@
         </div>
     </div>
 </div>
-
-@include('mobile/layout/bottom-menu')

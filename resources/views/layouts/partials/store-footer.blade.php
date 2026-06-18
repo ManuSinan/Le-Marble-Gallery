@@ -1,5 +1,5 @@
 @php
-    $siteName = $storeName ?? config('app.name', 'KNM Bookstore');
+    $siteName = $storeName ?? config('app.name', 'Lee Marble Gallery');
     $contact = $contactNumber ?? getOption('order_enquiry_number', '');
 @endphp
 <footer class="knm-footer">

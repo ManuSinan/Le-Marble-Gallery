@@ -7,10 +7,10 @@
             <ol class="breadcrumb breadcrumb-alternate" aria-label="breadcrumbs">
                 <li class="breadcrumb-item"><a href="javascript:;">{{ __('Application') }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Reports') }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Publishers') }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Brands') }}</a></li>
             </ol>
         </div>
-        <h2 class="page-title" act-on="click">{{ __('Publishers') }}</h2>
+        <h2 class="page-title" act-on="click">{{ __('Brands') }}</h2>
         <p class="pt-1 mb-0">{{ $dateS->format("Y M d") . ' to ' . $dateE->format("Y M d") }}</p>
     </div>
 </div>
@@ -26,7 +26,7 @@
                 <table class="table table-vcenter report-table">
                     <thead>
                         <tr>
-                            <th>Publisher</th>
+                            <th>Brand</th>
                             <th>Products Sold</th>
                             <th>Total Business</th>
                         </tr>

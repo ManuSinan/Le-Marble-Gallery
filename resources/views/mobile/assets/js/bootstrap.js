@@ -29,6 +29,7 @@ try {
  
     $.fn.act = function(options) {
         var act = {};
+        window.mobileAct = act;
  
         var decimalPlace = localStorage.getItem('__decimal_place');
  
@@ -262,6 +263,21 @@ try {
             }
         };
 
+        act.updateCheckoutBar = function () {
+            var cartCount = 0;
+            try {
+                var cartJSON = $.parseJSON( localStorage.getItem('__cart') );
+                if(cartJSON && cartJSON.products){
+                    cartCount = Object.keys(cartJSON.products).length;
+                }
+            } catch(err) {}
+            if (cartCount > 0) {
+                $('.checkout-bottom-bar').show();
+            } else {
+                $('.checkout-bottom-bar').hide();
+            }
+        };
+
         act.request = function (element, url, data) {
 
             if(!$(element).attr('act-loader') &&  $(element).attr('act-loader') != 'false'){
@@ -320,6 +336,8 @@ try {
             }).done(function (json) {
 
                 act.respond(element, json);
+
+                $('.appBottomMenu').show();
 
                 act.loading(element, false);
 
@@ -591,6 +609,7 @@ try {
             $('.cart-total-amount').html(total.toFixed(decimalPlace));
 
             localStorage.setItem('__cart', JSON.stringify(cart));
+            act.updateCheckoutBar();
 
             if(build == 'ios'){
                 try { 
@@ -659,6 +678,7 @@ try {
                 $('.cart-total-amount').html(total.toFixed(decimalPlace));
     
                 localStorage.setItem('__cart', JSON.stringify(cart));
+                act.updateCheckoutBar();
                 
             }else{
 
@@ -684,6 +704,7 @@ try {
                     $('.cart-total-amount').html(total.toFixed(decimalPlace));
         
                     localStorage.setItem('__cart', JSON.stringify(cart));
+                    act.updateCheckoutBar();
                 }else{
 
                     $(this).closest('.steper-btn').addClass('shake');
@@ -759,6 +780,7 @@ try {
                     $('.cart-total-amount').html(total.toFixed(decimalPlace));
         
                     localStorage.setItem('__cart', JSON.stringify(cart));
+                    act.updateCheckoutBar();
 
                     if(build == 'ios'){
                         try { 
@@ -811,6 +833,7 @@ try {
                 $('.cart-total-amount').html(total.toFixed(decimalPlace));
     
                 localStorage.setItem('__cart', JSON.stringify(cart));
+                act.updateCheckoutBar();
 
                 if(build == 'ios'){
                     try { 
@@ -865,6 +888,7 @@ try {
         });
  
         settings.init(act, this);
+        act.updateCheckoutBar();
     };
 
     

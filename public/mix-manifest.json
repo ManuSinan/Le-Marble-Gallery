@@ -1,8 +1,10 @@
 {
-    "/assets/backend/js/script.js": "/assets/backend/js/script.js?id=6799a1b9a9c1bfa6d6d079ec736eeae4",
-    "/assets/frontend/js/script.js": "/assets/frontend/js/script.js?id=f33c8361965e0ac7852aac77215be553",
-    "/assets/backend/css/style.css": "/assets/backend/css/style.css?id=c29c7601603906de15f4c93272c77583",
-    "/assets/frontend/css/style.css": "/assets/frontend/css/style.css?id=0025701076f7de477413be22b6989085",
-    "/assets/knm/css/admin.css": "/assets/knm/css/admin.css?id=a29da03e97c4ba7d86b9c1aa51cc2cd4",
-    "/assets/knm/css/knm.css": "/assets/knm/css/knm.css?id=0a495aa3e08b0e10ad715c4e4dbcb810"
+    "/assets/mobile/js/script.js": "/assets/mobile/js/script.js?id=e02ea99d341c5e0c4eec5715a76e41f5",
+    "/assets/backend/js/script.js": "/assets/backend/js/script.js?id=302ff51c871f4daa416fad545648eeb5",
+    "/assets/frontend/js/script.js": "/assets/frontend/js/script.js?id=ca6089b63f69c9614baa63f2a48eed9e",
+    "/assets/backend/css/style.css": "/assets/backend/css/style.css?id=b6b51f19412f420c2cdddd8d509e5a0b",
+    "/assets/frontend/css/style.css": "/assets/frontend/css/style.css?id=5ca8784325132ae784d7816c2d4ee4a5",
+    "/assets/mobile/css/style.css": "/assets/mobile/css/style.css?id=6ac24e3b2bfb75e3d6f2c25c7335605c",
+    "/assets/knm/css/admin.css": "/assets/knm/css/admin.css?id=cece390cddc94ca85b9a04f4cd0896dd",
+    "/assets/knm/css/knm.css": "/assets/knm/css/knm.css?id=5a5ad1d62bc5a258ba838c813e29b40f"
 }

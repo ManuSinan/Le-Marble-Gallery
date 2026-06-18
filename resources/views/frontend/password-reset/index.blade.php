@@ -1,7 +1,7 @@
 @extends('simple-bookstore.layout')
 
-@section('title', 'Password Reset | ' . config('app.name', 'KNM Bookstore'))
-@section('description', 'Reset your password using your verified mobile number or email from the public bookstore website.')
+@section('title', 'Password Reset | ' . config('app.name', 'Le Marble Gallery'))
+@section('description', 'Reset your password to continue accessing your Le Marble Gallery account.')
 
 @section('content')
 @php
@@ -26,7 +26,7 @@
             </li>
             <li class="feature-item">
                 <strong>After reset</strong>
-                <span>You are signed in automatically and redirected back to the bookstore homepage.</span>
+                <span>You are signed in automatically and redirected back to the gallery homepage.</span>
             </li>
         </ul>
     </div>

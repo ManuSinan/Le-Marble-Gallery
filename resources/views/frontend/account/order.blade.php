@@ -1,7 +1,7 @@
 @extends('simple-bookstore.layout')
 
-@section('title', 'Your Orders | ' . config('app.name', 'KNM Bookstore'))
-@section('description', 'Review your bookstore orders in the same simple website layout as the homepage.')
+@section('title', 'Your Orders | ' . config('app.name', 'Le Marble Gallery'))
+@section('description', 'Review your material orders in the same simple website layout.')
 
 @section('extra_styles')
 <style>
@@ -223,7 +223,7 @@
     <section class="knm-card orders-hero" style="background: var(--surface-muted);">
         <div>
             <h1>Your orders</h1>
-            <p>Track current and past textbook orders from the same simple website layout used on the homepage.</p>
+            <p>Track current and past material orders from the same simple website layout.</p>
         </div>
 
         <div class="orders-hero__stats">
@@ -288,9 +288,9 @@
     @else
         <section class="order-empty">
             <h2>Your order list is empty.</h2>
-            <p>Select books from the homepage and place your first order. Once an order is placed, it will appear here with its status and amount.</p>
+            <p>Select materials from the gallery and place your first order. Once an order is placed, it will appear here with its status and amount.</p>
             <div class="knm-mt-4">
-                <a href="{{ route('home') }}" class="knm-btn knm-btn--primary">Browse Books</a>
+                <a href="{{ route('home') }}" class="knm-btn knm-btn--primary">Browse Materials</a>
             </div>
         </section>
     @endif

@@ -13,8 +13,8 @@ const mix = require('laravel-mix');
 
 mix
 
-// .js('resources/views/mobile/assets/js/script.js', 'public/assets/mobile/js/')
-// .sass('resources/views/mobile/assets/scss/style.scss', 'public/assets/mobile/css/')
+.js('resources/views/mobile/assets/js/script.js', 'public/assets/mobile/js/')
+.sass('resources/views/mobile/assets/scss/style.scss', 'public/assets/mobile/css/')
 
 // .copyDirectory('public/assets/mobile/js/', 'resources/views/build/cordova-android/www/js/')
 // .copyDirectory('public/assets/mobile/css/', 'resources/views/build/cordova-android/www/css/')

@@ -1,7 +1,7 @@
 @extends('simple-bookstore.layout')
 
-@section('title', 'Register | ' . config('app.name', 'KNM Bookstore'))
-@section('description', 'Create a customer account with your mobile number and password to order books from the website.')
+@section('title', 'Register | ' . config('app.name', 'Le Marble Gallery'))
+@section('description', 'Create an account to explore premium materials and manage your inquiries at Le Marble Gallery.')
 
 @section('content')
 @php
@@ -89,7 +89,7 @@
         @endif
 
         <p class="muted-copy" style="margin-top: 18px;">
-            Want to browse first? <a href="{{ route('home') }}" class="subtle-link">Back to bookstore</a>
+            Want to browse first? <a href="{{ route('home') }}" class="subtle-link">Back to gallery</a>
         </p>
     </div>
 </section>

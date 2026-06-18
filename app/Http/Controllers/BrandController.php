@@ -102,7 +102,7 @@ class BrandController extends Controller
             return response()->json([
                 'alert' => [
                     'icon' => 'error',
-                    'title' => 'Publisher',
+                    'title' => 'Brand',
                     'text' => 'Something went wrong.',
                 ],
             ]);
@@ -115,7 +115,7 @@ class BrandController extends Controller
             ],
             'alert' => [
                 'icon' => 'success',
-                'title' => 'Publisher',
+                'title' => 'Brand',
                 'text' => 'Created successfully.',
             ],
             'datatable' => [
@@ -190,7 +190,7 @@ class BrandController extends Controller
             return response()->json([
                 'alert' => [
                     'icon' => 'error',
-                    'title' => 'Publisher',
+                    'title' => 'Brand',
                     'text' => 'Something went wrong.',
                 ],
             ]);
@@ -203,7 +203,7 @@ class BrandController extends Controller
             ],
             'alert' => [
                 'icon' => 'success',
-                'title' => 'Publisher',
+                'title' => 'Brand',
                 'text' => 'Updated successfully.',
             ],
             'datatable' => [
@@ -220,8 +220,8 @@ class BrandController extends Controller
             return response()->json([
                 'alert' => [
                     'icon' => 'error',
-                    'title' => 'Publisher',
-                    'text' => 'Publisher can\'t be deleted because it is in use.',
+                    'title' => 'Brand',
+                    'text' => 'Brand can\'t be deleted because it is in use.',
                 ],
             ]);
         }
@@ -231,7 +231,7 @@ class BrandController extends Controller
             ],
             'alert' => [
                 'icon' => 'success',
-                'title' => 'Publisher',
+                'title' => 'Brand',
                 'text' => 'Deleted successfully.',
             ],
         ]);

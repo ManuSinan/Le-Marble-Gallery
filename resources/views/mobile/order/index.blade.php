@@ -92,5 +92,3 @@
 
 </div>
 <!-- * App Capsule -->
-
-@include('mobile/layout/bottom-menu')

@@ -18,7 +18,7 @@
     <div class="shop-luxury-container">
       @if($shopCategories->isNotEmpty())
       <nav class="shop-luxury-nav">
-        <a href="{{ route('website.products.shop') }}" class="shop-luxury-nav-link {{ empty($slug) ? 'active' : '' }}">{{ __('All Books') }}</a>
+        <a href="{{ route('website.products.shop') }}" class="shop-luxury-nav-link {{ empty($slug) ? 'active' : '' }}">{{ __('All Materials') }}</a>
         @foreach($shopCategories as $cat)
         <a href="{{ route('website.products', ['slug' => $cat->slug]) }}" class="shop-luxury-nav-link {{ ($slug ?? '') === $cat->slug ? 'active' : '' }}">{{ $cat->name }}</a>
         @endforeach
@@ -76,7 +76,7 @@
     </nav>
     @endif
     @else
-    <p class="shop-luxury-empty">{{ __('No books found.') }}</p>
+    <p class="shop-luxury-empty">{{ __('No materials found.') }}</p>
     @endif
   </div>
 </div>

@@ -14,13 +14,13 @@ return [
 
     'Report' => [
         'Business Overview' => ['report.business.overview'],
-        'Publishers' => ['report.most.purchased.brands'],
+        'Origins' => ['report.most.purchased.brands'],
         'Categories' => ['report.most.purchased.categories'],
-        'Books' => ['report.most.purchased.products'],
+        'Products' => ['report.most.purchased.products'],
         'Location' => ['report.location']
     ],
 
-    'Book' => [
+    'Product' => [
         'Stock' => ['stock', 'product.stocklist'],
         'View' => ['product', 'product.list', 'product.attribute', 'product.unit'],
         'Create' => ['product.create', 'product.copy', 'product.store'],
@@ -63,7 +63,7 @@ return [
         'Delete' => ['unit.destroy'],
     ],
 
-    'Publisher' => [
+    'Origin' => [
         'View' => ['brand', 'brand.list'],
         'Create' => ['brand.store'],
         'Update' => ['brand.edit', 'brand.update'],

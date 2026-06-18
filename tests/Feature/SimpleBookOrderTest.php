@@ -21,9 +21,8 @@ class SimpleBookOrderTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk();
-        $response->assertSee('Order your books');
-        $response->assertSee('Choose your class');
-        $response->assertSee('Search by title or code');
+        $response->assertSee('Order your products');
+        $response->assertSee('Choose your category');
         $response->assertSee('Sign in');
     }
 

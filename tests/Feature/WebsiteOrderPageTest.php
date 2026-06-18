@@ -24,7 +24,7 @@ class WebsiteOrderPageTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Your orders');
-        $response->assertSee('Track current and past textbook orders');
+        $response->assertSee('Track current and past material orders');
         $response->assertSee('Order ' . $order->id . '-' . $order->created_at->format('dmy'));
     }
 

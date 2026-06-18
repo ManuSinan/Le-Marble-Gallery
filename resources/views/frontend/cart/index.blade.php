@@ -1,6 +1,6 @@
 @extends('frontend/layout/main')
 @section('seo')
-<title>{{ __('Booking') }}</title>
+<title>{{ __('Cart') }}</title>
 @endsection
 @section('style')
 <style>

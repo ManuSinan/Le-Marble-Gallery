@@ -23,10 +23,10 @@ class BookstoreSeeder extends Seeder
         $this->seedStatesAndLocations();
         $this->seedUnits();
         $this->seedAttribute();
-        $this->seedCategories();
-        $this->seedOrigins();
-        $this->seedBannerSliders();
-        $this->seedProducts();
+        // $this->seedCategories();
+        // $this->seedOrigins();
+        // $this->seedBannerSliders();
+        // $this->seedProducts();
     }
 
     protected function seedStatesAndLocations()

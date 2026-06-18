@@ -1,5 +1,5 @@
 @php
-    $siteName = config('app.name', 'KNM Bookstore');
+    $siteName = config('app.name', 'Lee Marble Gallery');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

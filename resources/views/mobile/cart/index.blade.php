@@ -17,7 +17,7 @@
 <div id="search" class="appHeader" style="background-color: #1F2937 !important;">
     <form class="search-form" action="/" act-on="submit" act-request="{{ route('mobile.products') }}">
         <div class="form-group searchbox" style="margin: 0 auto; max-width: 95%;">
-            <input type="text" class="form-control" name="search" placeholder="{{ __('Search materials...') }}" style="background-color: #fff; color: #111827; border-radius: 30px; padding-left: 40px;">
+            <input type="text" class="form-control" name="search" placeholder="{{ __('Search materials...') }}" style="background-color: #fff; color: #111827; border-radius: 4px; padding-left: 40px;">
             <i class="input-icon" style="color: #111827;">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
             </i>
@@ -30,7 +30,7 @@
 <!-- * Search Component -->
  
 <!-- App Capsule -->
-<div class="appCapsule" style="background-color: #F8F8F8;">
+<div class="appCapsule" style="background-color: #F8F8F8; padding-bottom: 140px !important;">
  
     @if($products && $products->count() > 0)
         <div class="section full products-list mb-3">
@@ -56,8 +56,7 @@
                                                 {{ strtoupper($product->name) }}
                                             </a>
                                         </div>
-                                        <div style="font-size: 11px; color: #6B7280; margin-top: 2px;">Finish: Polished | Thickness: 18mm</div>
-                                        <div style="font-size: 11px; color: #6B7280;">Area: <span class="unit" style="font-weight: bold; color: #111827;">{{ productExistsInCart($product->id, $product->minimum_quantity) }}</span> Sq.Ft</div>
+                                        <div style="font-size: 11px; color: #6B7280;">{{ $product->unit->name == 'Sq.Ft' ? __('Area') : __('Quantity') }}: <span class="unit" style="font-weight: bold; color: #111827;">{{ productExistsInCart($product->id, $product->minimum_quantity) }}</span> {{ _local($product->unit->name, $product->unit->local_name) }}</div>
                                         <div class="price mt-1" style="font-weight: 700; color: #111827; font-size: 13px;">
                                             {!! priceFormat(productTotalSellingPriceInCart($product->id, minimumQuantityPrice($product->selling_price, $product->minimum_quantity, $product->unit->stepper)), '₹') !!}
                                         </div>
@@ -108,23 +107,21 @@
 <!-- * App Capsule -->
  
 @if($products && $products->count() > 0)
-<div class="appBottomMenu" style="border-top: none;">
-    <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37;">
+<div style="position: fixed; bottom: 68px; left: 0; right: 0; z-index: 998; background: transparent; padding: 0 10px;">
+    <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37; margin: 0;">
         <div class="checkout-btn-info">
             <div class="info-small"><span class="cart-item-count">{{ cartItemCount() }}</span> {{ __('MATERIALS') }}</div>
-            <div class="info-large mt-0"><span class="cart-total-sqft">{{ cartTotalSqft() }}</span> Sq.Ft</div>
+            <div class="info-large mt-0"><span class="cart-total-sqft">{{ cartTotalSqft() }}</span> {{ cartTotalUnitLabel() }}</div>
         </div>
  
         @if($authUser)
-        <a href="{{ route('mobile.address', ['type' => 'select']) }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center;">
+        <a href="{{ route('mobile.order.summary') }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center;">
         @else
-        <a href="{{ route('mobile.signup', ['return' => 'cart']) }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center;">
+        <a href="{{ route('mobile.signin', ['return' => 'cart']) }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center;">
         @endif
             {{ __('Review Quotation' ) }}
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
     </div>
 </div>
-@else
-@include('mobile/layout/bottom-menu')
 @endif

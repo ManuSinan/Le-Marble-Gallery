@@ -494,6 +494,29 @@ if (!function_exists('cartTotalSqft')) {
     }
 }
 
+if (!function_exists('cartTotalUnitLabel')) {
+    function cartTotalUnitLabel() {
+        $cart = getCart();
+        $units = [];
+        if (isset($cart['products'])) {
+            foreach ($cart['products'] as $id => $data) {
+                $product = \App\Models\Product::with('unit')->find($id);
+                if ($product && $product->unit) {
+                    $units[$product->unit->name] = true;
+                }
+            }
+        }
+        
+        if (count($units) === 1) {
+            return __(key($units));
+        } elseif (count($units) > 1) {
+            return __('Items');
+        }
+        
+        return __('Sq.Ft');
+    }
+}
+
 if (!function_exists('cartUpdate')) {
     function cartUpdate($clear = false){
 
@@ -619,7 +642,13 @@ if (!function_exists('authUser')) {
     {
         if($type == 'web'){
 
-            return Auth::user();
+            $user = Auth::user();
+            if ($user && (request()->is('mobile*') || request()->routeIs('mobile.*'))) {
+                if (!$user->role || ($user->role->id != 4 && strtolower($user->role->name) !== 'salesman')) {
+                    return null;
+                }
+            }
+            return $user;
 
         }else if( $type == 'api' ){
             $token = request()->header('Authorization');
@@ -640,7 +669,9 @@ if (!function_exists('authUser')) {
                             if($user){
                                if($user->status == 'active'){
                                     if(Hash::check($token, $user->api_token)){
-                                        return $user;
+                                        if ($user->role && ($user->role->id == 4 || strtolower($user->role->name) === 'salesman')) {
+                                            return $user;
+                                        }
                                     }
                                }
                             }

@@ -152,7 +152,7 @@ class WebsiteController extends Controller
         $products = Product::retrieve($sortby, $search, $categoryId, $brandId);
         $brands = Brand::all();
 
-        $title  = __('All Books');
+        $title  = __('All Materials');
         if($search){
             $title  = __('Search') .  ': ' . $search;
         }

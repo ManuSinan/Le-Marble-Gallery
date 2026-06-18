@@ -29,14 +29,14 @@
 <div class="pdp-luxury">
   <div class="knm-class-hero" aria-label="Class selector">
     <div class="knm-class-hero__inner">
-      <div class="knm-class-hero__title">{{ __('Unlock Your Learning') }}</div>
-      <div class="knm-class-hero__subtitle">{{ __('Choose a class to find all your required books in one place.') }}</div>
+      <div class="knm-class-hero__title">{{ __('Select Premium Materials') }}</div>
+      <div class="knm-class-hero__subtitle">{{ __('Filter by category to find the perfect stone or marble for your project.') }}</div>
       <div class="knm-class-hero__glass">
-        <label for="knm-class-select" class="knm-class-hero__label">{{ __('Select your Class') }}</label>
-        <select id="knm-class-select" name="class" aria-label="Select class" data-class-base-url="{{ route('website.products') }}" @if(empty($classes) || (is_object($classes) && method_exists($classes,'isEmpty') && $classes->isEmpty())) disabled @endif>
-          <option value="">{{ (empty($classes) || (is_object($classes) && method_exists($classes,'isEmpty') && $classes->isEmpty())) ? __('No classes with books yet') : __('Select class…') }}</option>
+        <label for="knm-class-select" class="knm-class-hero__label">{{ __('Select Category') }}</label>
+        <select id="knm-class-select" name="class" aria-label="Select category" data-class-base-url="{{ route('website.products') }}" @if(empty($classes) || (is_object($classes) && method_exists($classes,'isEmpty') && $classes->isEmpty())) disabled @endif>
+          <option value="">{{ (empty($classes) || (is_object($classes) && method_exists($classes,'isEmpty') && $classes->isEmpty())) ? __('No categories with materials yet') : __('Select category…') }}</option>
           @foreach(($classes ?? []) as $c)
-            <option value="{{ $c['slug'] ?? '' }}">{{ $c['name'] ?? '' }} @if(isset($c['count']))({{ $c['count'] }} {{ __('books') }})@endif</option>
+            <option value="{{ $c['slug'] ?? '' }}">{{ $c['name'] ?? '' }} @if(isset($c['count']))({{ $c['count'] }} {{ __('items') }})@endif</option>
           @endforeach
         </select>
       </div>
@@ -64,7 +64,7 @@
 
     <div class="pdp-luxury-detail">
       <div class="pdp-luxury-top-row">
-        <a href="{{ route('website.products.shop') }}" class="pdp-luxury-back">{{ __('Back to Books') }}</a>
+        <a href="{{ route('website.products.shop') }}" class="pdp-luxury-back">{{ __('Back to Materials') }}</a>
         @if($product->category)
         <span class="pdp-luxury-category">{{ $product->category->name }}</span>
         @endif
@@ -128,11 +128,11 @@
       </div>
 
       <div class="pdp-luxury-details">
-        <p class="pdp-luxury-details-heading">{{ __('Book Details') }}</p>
+        <p class="pdp-luxury-details-heading">{{ __('Material Details') }}</p>
         <dl class="pdp-luxury-specs">
           @if($product->brand)
           <div class="pdp-luxury-spec-row">
-            <dt>{{ __('Publisher') }}</dt>
+            <dt>{{ __('Brand') }}</dt>
             <dd>{{ $product->brand->name }}</dd>
           </div>
           @endif

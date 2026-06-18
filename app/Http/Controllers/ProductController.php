@@ -193,7 +193,7 @@ class ProductController extends Controller
     {
         $attributes = Attribute::all();
         $brands = Brand::all();
-        $categories = Category::whereNull('parent_id')->get();
+        $categories = Category::whereNotNull('parent_id')->with('parent')->orderBy('parent_id')->get();
         $units = Unit::all();
         $taxs = Tax::all();
 
@@ -504,7 +504,7 @@ class ProductController extends Controller
             return response()->json([
                 'alert' => [
                     'icon' => 'error',
-                    'title' => 'Book',
+                    'title' => 'Product',
                     'text' => config('app.debug')
                         ? ('Something went wrong: ' . $e->getMessage())
                         : 'Something went wrong.',
@@ -517,7 +517,7 @@ class ProductController extends Controller
             'reset' => true,
             'alert' => [
                 'icon' => 'success',
-                'title' => 'Book',
+                'title' => 'Product',
                 'text' => 'Created successfully.',
                 'redirect' => route('product'),
             ],
@@ -528,7 +528,7 @@ class ProductController extends Controller
     {
         $attributes = Attribute::all();
         $brands = Brand::all();
-        $categories = Category::whereNull('parent_id')->get();
+        $categories = Category::whereNotNull('parent_id')->with('parent')->orderBy('parent_id')->get();
         $units = Unit::all();
         $taxs = Tax::all();
  
@@ -863,7 +863,7 @@ class ProductController extends Controller
             return response()->json([
                 'alert' => [
                     'icon' => 'error',
-                    'title' => 'Book',
+                    'title' => 'Product',
                     'text' => config('app.debug')
                         ? ('Something went wrong: ' . $e->getMessage())
                         : 'Something went wrong.',
@@ -877,7 +877,7 @@ class ProductController extends Controller
         return response()->json([
             'alert' => [
                 'icon' => 'success',
-                'title' => 'Book',
+                'title' => 'Product',
                 'text' => 'Updated successfully.',
             ],
         ]);
@@ -888,7 +888,7 @@ class ProductController extends Controller
     {
         $attributes = Attribute::all();
         $brands = Brand::all();
-        $categories = Category::all();
+        $categories = Category::whereNotNull('parent_id')->with('parent')->orderBy('parent_id')->get();
         $units = Unit::all();
         $taxs = Tax::all();
 
@@ -914,8 +914,8 @@ class ProductController extends Controller
             return response()->json([
                 'alert' => [
                     'icon' => 'error',
-                    'title' => 'Book',
-                    'text' => 'Book can\'t be deleted! as it is in use',
+                    'title' => 'Product',
+                    'text' => 'Product can\'t be deleted! as it is in use',
                 ],
             ]);
         }
@@ -927,7 +927,7 @@ class ProductController extends Controller
             ],
             'alert' => [
                 'icon' => 'success',
-                'title' => 'Book',
+                'title' => 'Product',
                 'text' => 'Deleted successfully.',
             ],
         ]);

@@ -1,5 +1,13 @@
 @import "../../../build/theme";
 
+// Default theme fallbacks
+$theme-primary: #dd0053 !default;
+$theme-secondary: #fde5ee !default;
+$theme-tertiary: #3a3335 !default;
+$theme-fourthiary: #dd0053 !default;
+$theme-primary-color: #ffffff !default;
+$theme-secondary-color: #dd0053 !default;
+
 
 ////////////////////////////////////////////////////
 // ------ C O L O R S ------------------------------

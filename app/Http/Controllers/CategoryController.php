@@ -45,9 +45,11 @@ class CategoryController extends Controller
                 $count = $totalFiltered - $start;
                 $start = $start + 1;
                 foreach ($rows as $row) {
+                    $subCount = Category::where('parent_id', $row->id)->count();
                     $data[] = [
                     'id' => $order == 'desc' ? $start++ : $count--, 
                     'name' => $row->name,
+                    'subcategories' => '<a href="' . route('subcategory.index', $row->id) . '" class="badge bg-blue-lt">' . $subCount . ' Sub-categories</a>',
                     'actions' => view('backend/category/actions', compact('row'))->render(),
                     ];
                 }
@@ -248,6 +250,176 @@ class CategoryController extends Controller
                 'title' => 'Category',
                 'text' => 'Deleted successfully.',
             ],
+        ]);
+    }
+
+    // ─── Subcategory Methods ──────────────────────────────────────────────────
+
+    public function subcategoryIndex(Category $category)
+    {
+        $search = request()->get('search');
+        return view('backend/category/subcategory/index', compact('category', 'search'));
+    }
+
+    public function subcategoryList(Category $category)
+    {
+        $query = Category::select('categories.id', 'categories.name')
+            ->where('categories.parent_id', $category->id);
+
+        $data = $this->datatable(
+            $query,
+            function ($query) {
+                $search = request('search.value') ?? '';
+                if (!empty($search)) {
+                    $query->where('categories.name', 'LIKE', "%{$search}%");
+                }
+            },
+            function ($rows, $totalFiltered, $totalData) use ($category) {
+                $data = [];
+                $start = request('start') ?? 0;
+                $order = request('order.0.dir') ?? 'desc';
+                $count = $totalFiltered - $start;
+                $start = $start + 1;
+                foreach ($rows as $row) {
+                    $data[] = [
+                        'id'      => $order == 'desc' ? $start++ : $count--,
+                        'name'    => $row->name,
+                        'actions' => view('backend/category/subcategory/actions', compact('row', 'category'))->render(),
+                    ];
+                }
+                return $data;
+            }
+        );
+        return response()->json($data);
+    }
+
+    public function subcategoryStore(Request $request, Category $category)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => ['required', 'max:100'],
+            'slug'     => ['required', 'unique:categories,slug', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'max:255'],
+            'priority' => ['required', 'integer'],
+            'image'    => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:10240'],
+        ]);
+
+        if (!$validator->passes()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        DB::beginTransaction();
+        try {
+            $input = $request->only(['name', 'slug', 'local_name', 'priority', 'description']);
+            $input['parent_id'] = $category->id;
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $directory = Str::slug($request->name, '-');
+                $fileName = fileName($file->extension());
+                Storage::disk('public')->putFileAs('category/' . $directory . '/original', $file, $fileName);
+                $large = $this->imageResizeAndSave($file, 'category/' . $directory . '/large/' . $fileName, 400, 400);
+                $base  = $this->imageResizeAndSave($file, 'category/' . $directory . '/base/' . $fileName, 200, 200);
+                if ($large && $base) {
+                    $input['image'] = 'category/' . $directory . '/base/' . $fileName;
+                } else {
+                    return response()->json(['errors' => ['image' => ['Unable to process image.']]]);
+                }
+            }
+
+            $subcategory = Category::create($input);
+            setOption('category_' . $subcategory->id . '_meta_title', $request->meta_title);
+            setOption('category_' . $subcategory->id . '_meta_description', $request->meta_description);
+            setOption('category_' . $subcategory->id . '_meta_keywords', $request->meta_keywords);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['alert' => ['icon' => 'error', 'title' => 'Sub-category', 'text' => 'Something went wrong.']]);
+        }
+
+        DB::commit();
+        return response()->json([
+            'reset'     => true,
+            'modal'     => ['hide' => '#subcategory-create-form'],
+            'alert'     => ['icon' => 'success', 'title' => 'Sub-category', 'text' => 'Created successfully.'],
+            'datatable' => ['reload' => true],
+        ]);
+    }
+
+    public function subcategoryEdit(Category $category, Category $subcategory)
+    {
+        return response()->json([
+            'jquery' => [
+                [
+                    'element' => '#subcategory-edit-form .modal-content',
+                    'method'  => 'html',
+                    'value'   => view('backend/category/subcategory/edit', compact('category', 'subcategory'))->render(),
+                ],
+            ],
+            'init'  => ['#subcategory-edit-form .modal-content'],
+            'modal' => ['show' => '#subcategory-edit-form'],
+        ]);
+    }
+
+    public function subcategoryUpdate(Request $request, Category $category, Category $subcategory)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => ['required', 'max:100'],
+            'slug'     => ['required', 'unique:categories,slug,' . $subcategory->id . ',id', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'max:255'],
+            'priority' => ['required', 'integer'],
+            'image'    => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:10240'],
+        ]);
+
+        if (!$validator->passes()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        DB::beginTransaction();
+        try {
+            $input = $request->only(['name', 'slug', 'local_name', 'priority', 'description']);
+            $input['parent_id'] = $category->id;
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $directory = Str::slug($request->name, '-');
+                $fileName = fileName($file->extension());
+                Storage::disk('public')->putFileAs('category/' . $directory . '/original', $file, $fileName);
+                $large = $this->imageResizeAndSave($file, 'category/' . $directory . '/large/' . $fileName, 400, 400);
+                $base  = $this->imageResizeAndSave($file, 'category/' . $directory . '/base/' . $fileName, 200, 200);
+                if ($large && $base) {
+                    $input['image'] = 'category/' . $directory . '/base/' . $fileName;
+                } else {
+                    return response()->json(['errors' => ['image' => ['Unable to process image.']]]);
+                }
+            }
+
+            $subcategory->update($input);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['alert' => ['icon' => 'error', 'title' => 'Sub-category', 'text' => 'Something went wrong.']]);
+        }
+        DB::commit();
+
+        setOption('category_' . $subcategory->id . '_meta_title', $request->meta_title);
+        setOption('category_' . $subcategory->id . '_meta_description', $request->meta_description);
+        setOption('category_' . $subcategory->id . '_meta_keywords', $request->meta_keywords);
+
+        return response()->json([
+            'reset'     => true,
+            'modal'     => ['hide' => '#subcategory-edit-form'],
+            'alert'     => ['icon' => 'success', 'title' => 'Sub-category', 'text' => 'Updated successfully.'],
+            'datatable' => ['reload' => true],
+        ]);
+    }
+
+    public function subcategoryDestroy(Category $category, Category $subcategory)
+    {
+        try {
+            $subcategory->delete();
+        } catch (\Exception $e) {
+            return response()->json(['alert' => ['icon' => 'error', 'title' => 'Sub-category', 'text' => "Sub-category can't be deleted! as it is in use"]]);
+        }
+        return response()->json([
+            'datatable' => ['reload' => true],
+            'alert'     => ['icon' => 'success', 'title' => 'Sub-category', 'text' => 'Deleted successfully.'],
         ]);
     }
 }

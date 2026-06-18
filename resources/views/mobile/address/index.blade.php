@@ -19,7 +19,7 @@
 </div>
  
 <!-- App Capsule -->
-<div class="appCapsule" style="background-color: #F8F8F8;">
+<div class="appCapsule" style="background-color: #F8F8F8; padding-bottom: 180px !important;">
  
 
     <div class="section full mt-0">
@@ -70,19 +70,19 @@
 
     @if($defaultAddress)
 
-    <div class="appBottomMenu" style="border-top: none;">
+    <div style="position: fixed; bottom: 68px; left: 0; right: 0; z-index: 998; background: transparent; padding: 0 10px;">
  
     @if($defaultAddress->location && $defaultAddress->location->minimum_cart_amount > cartTotalAmount() )
-    <div class="message" style="background-color: #EF4444; color: #fff;">
+    <div class="message" style="background-color: #EF4444; color: #fff; position: relative; margin-bottom: 5px;">
      <span>{{ __('Minimum order value must be') }}</span>
      <span>{!! priceFormat($defaultAddress->location->minimum_cart_amount) !!}</span>
     </div>
     @endif
 
-        <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37;">
+        <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37; margin: 0;">
             <div class="checkout-btn-info">
-                <div class="info-small"><span class="cart-item-count text-light">{{ cartItemCount() }}</span> {{ __('Items') }}</div>
-                <div class="info-large mt-0"><span class="cart-total-sqft text-light">{{ cartTotalSqft() }}</span> Sq.Ft</div>
+                <div class="info-small"><span class="cart-item-count text-light">{{ cartItemCount() }}</span> {{ cartTotalUnitLabel() }}</div>
+                <div class="info-large mt-0"><span class="cart-total-sqft text-light">{{ cartTotalSqft() }}</span> {{ cartTotalUnitLabel() }}</div>
             </div>
             
             <a href="{{ route('mobile.order.summary') }}" class="checkout-btn-title" style="font-family: 'Inter', sans-serif; font-weight: bold; display: flex; align-items: center;">
@@ -94,6 +94,4 @@
     </div>
     @endif
 
-@else
-    @include('mobile/layout/bottom-menu')
 @endif

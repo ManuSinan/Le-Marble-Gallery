@@ -20,7 +20,7 @@
 
         @if(hasPermission('product'))
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('product') }}"  data-bs-toggle="tooltip" data-bs-placement="right" title="Books">
+            <a class="nav-link" href="{{ route('product') }}"  data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" /><line x1="12" y1="12" x2="20" y2="7.5" /><line x1="12" y1="12" x2="12" y2="21" /><line x1="12" y1="12" x2="4" y2="7.5" /><line x1="16" y1="5.25" x2="8" y2="9.75" /></svg>
             </a>
         </li>
@@ -39,6 +39,14 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('category') }}"  data-bs-toggle="tooltip" data-bs-placement="right" title="Categories">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" /></svg>
+            </a>
+        </li>
+        @endif
+
+        @if(hasPermission('brand'))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('brand') }}"  data-bs-toggle="tooltip" data-bs-placement="right" title="Brands">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M9 16v-8h4a2 2 0 0 1 0 4h-4m3 0l3 4" /></svg>
             </a>
         </li>
         @endif

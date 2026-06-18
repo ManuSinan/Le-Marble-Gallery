@@ -5,10 +5,10 @@
         <div class="mb-1">
             <ol class="breadcrumb breadcrumb-alternate" aria-label="breadcrumbs">
             <li class="breadcrumb-item"><a href="javascript:;">{{ __('Application') }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Publishers') }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Brands') }}</a></li>
             </ol>
         </div>
-        <h2 class="page-title" act-on="click">{{ __('Publishers') }}</h2>
+        <h2 class="page-title" act-on="click">{{ __('Brands') }}</h2>
     </div>
     <div class="col-auto ms-auto d-print-none filters">
         <div class="d-flex">
@@ -52,7 +52,7 @@
                 <div class="modal-content fix-padding">
                     <form act-on="submit" act-request="{{ route('brand.store') }}" act-image-compress="image">
                         <div class="modal-header">
-                            <h4 class="modal-title">{{ __('Add Publisher') }}</h4>
+                            <h4 class="modal-title">{{ __('Add Brand') }}</h4>
                                 </div>
                                 <div class="modal-body">
                             <div class="row">

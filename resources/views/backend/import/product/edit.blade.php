@@ -6,10 +6,10 @@
         <div class="mb-3">
             <ol class="breadcrumb breadcrumb-alternate" aria-label="breadcrumbs">
                 <li class="breadcrumb-item"><a href="javascript:;">{{ __('Application') }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Book Bulk Update') }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Product Bulk Update') }}</a></li>
             </ol>
         </div>
-        <h2 class="page-title" act-on="click">{{ __('Book Bulk Update') }}</h2>
+        <h2 class="page-title" act-on="click">{{ __('Product Bulk Update') }}</h2>
     </div>
 </div>
 @endsection

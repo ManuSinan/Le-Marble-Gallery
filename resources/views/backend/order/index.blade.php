@@ -12,6 +12,14 @@
     </div>
     <div class="col-auto ms-auto d-print-none">
         <div class="d-flex">
+            <div class="me-2" style="min-width: 180px;">
+                <select name="salesman_id" class="form-select datatable-fliter">
+                    <option value="">All Salesmen</option>
+                    @foreach($salesmen as $salesman)
+                        <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="filter search">
                 <div class="input-icon">
                     <form act-on="submit" action="/">

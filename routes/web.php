@@ -41,7 +41,9 @@ Route::get('signout', [SigninController::class, 'logout'])->name('signout');
 Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
-Route::get('signup', [SignupController::class, 'index'])->name('signup');
+Route::get('signup', function () {
+    return redirect()->route('signin');
+})->name('signup');
 Route::post('signup', [SignupController::class, 'store'])->name('signup.store');
 Route::post('signup/request', [SignupController::class, 'requestOtp'])->name('signup.request');
 Route::post('signup/verify', [SignupController::class, 'verify'])->name('signup.verify');
@@ -54,8 +56,20 @@ Route::post('payment-response', [WebsiteController::class, 'paymentResponse'])->
 
 
  
-Route::get('/', function () { return redirect('/mobile'); })->name('home');
-Route::get('index', function () { return redirect('/mobile'); });
+Route::get('/', function () {
+    $agent = new \Jenssegers\Agent\Agent();
+    if ($agent->isMobile()) {
+        return redirect('/mobile');
+    }
+    return app(SimpleBookOrderController::class)->index(request());
+})->name('home');
+Route::get('index', function () {
+    $agent = new \Jenssegers\Agent\Agent();
+    if ($agent->isMobile()) {
+        return redirect('/mobile');
+    }
+    return app(SimpleBookOrderController::class)->index(request());
+});
 Route::post('quick-order', [SimpleBookOrderController::class, 'store'])->middleware('auth')->name('quick-order.store');
 Route::get('simple-checkout', [SimpleBookOrderController::class, 'checkout'])->middleware('auth')->name('simple-bookstore.checkout');
 Route::post('simple-checkout', [SimpleBookOrderController::class, 'placeOrder'])->middleware('auth')->name('simple-bookstore.place-order');
@@ -227,6 +241,14 @@ Route::middleware(['auth', 'admin', 'permission'])->prefix('acp')->group(functio
     Route::post('category/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::patch('category/edit/{category}', [CategoryController::class, 'update'])->name('category.update');
     Route::post('category/delete/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    // Subcategory routes
+    Route::get('category/{category}/subcategory', [CategoryController::class, 'subcategoryIndex'])->name('subcategory.index');
+    Route::post('category/{category}/subcategory', [CategoryController::class, 'subcategoryList'])->name('subcategory.list');
+    Route::post('category/{category}/subcategory/create', [CategoryController::class, 'subcategoryStore'])->name('subcategory.store');
+    Route::post('category/{category}/subcategory/edit/{subcategory}', [CategoryController::class, 'subcategoryEdit'])->name('subcategory.edit');
+    Route::patch('category/{category}/subcategory/edit/{subcategory}', [CategoryController::class, 'subcategoryUpdate'])->name('subcategory.update');
+    Route::post('category/{category}/subcategory/delete/{subcategory}', [CategoryController::class, 'subcategoryDestroy'])->name('subcategory.destroy');
 
     Route::get('brand', [BrandController::class, 'index'])->name('brand');
     Route::post('brand', [BrandController::class, 'list'])->name('brand.list');

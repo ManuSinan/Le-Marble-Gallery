@@ -69,16 +69,16 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'name' => [ 'required', 'max:100' ],
-            'role_id' => [ 'required', 'integer' ],
-            'mobile' => [ 'required', Rule::unique('users')->where(function($query) use ($request){
+            'name'     => [ 'required', 'max:100' ],
+            'role_id'  => [ 'required', 'integer' ],
+            'mobile'   => [ 'nullable', Rule::unique('users')->where(function($query) use ($request){
                 $query->where('mobile_verified', 1);
             }), 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10', 'max:10' ],
-            'email' => [ 'nullable', Rule::unique('users')->where(function($query) use ($request){
+            'email'    => [ 'nullable', Rule::unique('users')->where(function($query) use ($request){
                 $query->where('email_verified', 1);
             }), 'email', 'max:100' ],
             'password' => [ 'nullable', 'min:6' ],
-            'status' => [ 'required', 'max:10' ],
+            'status'   => [ 'required', 'max:10' ],
         ]);
  
         $validator->setAttributeNames([
@@ -95,12 +95,38 @@ class UserController extends Controller
         try {
             $input = $request->only([ 'name', 'email', 'mobile', 'username', 'role_id',  'status']);
             
-            $input['password'] = Hash::make($request->password);  
+            $input['password'] = Hash::make($request->password);
 
-            $input['mobile_verified'] = true;
+            if (!empty($input['mobile'])) {
+                $input['mobile_verified'] = true;
+            } else {
+                $input['mobile_verified'] = false;
+            }
 
-            if($input['email'] != ''){
+            if (!empty($input['email'])) {
                 $input['email_verified'] = true;
+            } else {
+                $input['email_verified'] = false;
+            }
+
+            // Auto-generate a unique username if not provided
+            if (empty($input['username'])) {
+                if (!empty($input['mobile'])) {
+                    $username = $input['mobile'];
+                } elseif (!empty($input['email'])) {
+                    $username = explode('@', $input['email'])[0];
+                } else {
+                    $username = \Illuminate\Support\Str::slug($input['name']);
+                }
+
+                // Ensure username is unique in database
+                $originalUsername = $username;
+                $counter = 1;
+                while (User::where('username', $username)->exists()) {
+                    $username = $originalUsername . $counter;
+                    $counter++;
+                }
+                $input['username'] = $username;
             }
          
             User::create($input);
@@ -130,11 +156,11 @@ class UserController extends Controller
             ],
         ]);
     }
- 
+  
     public function edit(User $user)
     {
         $roles = Role::all();
- 
+  
         return response()->json([
             'jquery' => [
                 [
@@ -149,7 +175,7 @@ class UserController extends Controller
             ]
         ]);
     }
- 
+  
     public function update(Request $request, User $user)
     {
         $validator = Validator::make(request()->all(), [
@@ -158,7 +184,7 @@ class UserController extends Controller
             'email' => [ 'nullable', Rule::unique('users')->where(function($query) use ($request, $user){
                 $query->where('id', '!=' ,$user->id)->where('email_verified', 1);
             }), 'email', 'max:100' ],
-            'mobile' => [ 'required', Rule::unique('users')->where(function($query) use ($request, $user){
+            'mobile' => [ 'nullable', Rule::unique('users')->where(function($query) use ($request, $user){
                 $query->where('id', '!=' ,$user->id)->where('mobile_verified', 1);
             }), 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10', 'max:10' ],
             'password' => [ 'nullable', 'min:6' ],
@@ -168,27 +194,37 @@ class UserController extends Controller
         $validator->setAttributeNames([
             'mobile' => 'Mobile Number',
         ]);
- 
+  
         if (!$validator->passes()) {
             return response()->json([
                 'errors' => $validator->errors(),
             ]);
         }
- 
+  
         DB::beginTransaction();
         try {
             $input = $request->only([ 'name', 'email', 'mobile', 'role_id',  'status']);
- 
+  
             if($request->password){
                 $input['password'] = Hash::make($request->password);
             }
 
-            if($input['email'] != ''){
-                if($input['role_id'] != 1){
-                    $input['email_verified'] = true;
-                }    
+            if (!empty($input['mobile'])) {
+                $input['mobile_verified'] = true;
+            } else {
+                $input['mobile_verified'] = false;
             }
- 
+
+            if (!empty($input['email'])) {
+                if ($input['role_id'] != 1) {
+                    $input['email_verified'] = true;
+                } else {
+                    $input['email_verified'] = false;
+                }
+            } else {
+                $input['email_verified'] = false;
+            }
+  
             $user->update($input);
         } catch (\Exception $e) {
             DB::rollback();

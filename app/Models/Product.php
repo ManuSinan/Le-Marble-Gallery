@@ -103,7 +103,7 @@ class Product extends Model
         return $this->hasMany(ProductReview::class);
     }
  
-    public static function retrieve($sortby = 'featured', $search = '', $categoryId = null, $brandId = null, $limit = 12)
+    public static function retrieve($sortby = 'featured', $search = '', $categoryId = null, $brandId = null, $limit = 12, $filters = [])
     {
         // $query = Product::where(function($query){
         //     $query->orWhere(function($query){
@@ -111,7 +111,7 @@ class Product extends Model
         //         $query->whereColumn('stock_available', '>=', 'minimum_quantity');
         //         $query->where('stock_available', '>', 0);
         //     });
-
+ 
         //     $query->orWhere(function($query){
         //         $query->where('stock_status', 'unlimited');
         //     });
@@ -154,6 +154,23 @@ class Product extends Model
         // Filter by brand
         if ($brandId) {
             $query->where('brand_id', $brandId);
+        } elseif (!empty($filters['brands'])) {
+            $query->whereIn('brand_id', $filters['brands']);
+        }
+
+        // Filter by price ranges
+        if (!empty($filters['price_ranges'])) {
+            $query->where(function ($q) use ($filters) {
+                foreach ($filters['price_ranges'] as $range) {
+                    $parts = explode('-', $range);
+                    if (count($parts) === 2) {
+                        $q->orWhereBetween('selling_price', [(float)$parts[0], (float)$parts[1]]);
+                    } elseif (strpos($range, '+') !== false) {
+                        $minPrice = (float)str_replace('+', '', $range);
+                        $q->orWhere('selling_price', '>=', $minPrice);
+                    }
+                }
+            });
         }
         
         // Basic search
@@ -166,13 +183,25 @@ class Product extends Model
                       ->orWhere('keywords', 'like', '%' . $search . '%');
             });
         }
+
+        // Exclude products
+        if (!empty($filters['exclude'])) {
+            $query->whereNotIn('products.id', $filters['exclude']);
+        }
         
         // Paginate results
         $products = $query->paginate($limit);
         
         // Append sorting and search parameters to pagination links
         if ($products) {
-            $products->appends(['sortby' => $sortby, 'search' => $search]);
+            $products->appends([
+                'sortby' => $sortby,
+                'search' => $search,
+                'category_id' => $categoryId,
+                'brands' => $filters['brands'] ?? [],
+                'price_ranges' => $filters['price_ranges'] ?? [],
+                'exclude' => $filters['exclude'] ?? []
+            ]);
         }
         
         return $products;

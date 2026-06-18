@@ -25,9 +25,9 @@ class SimpleBookOrderController extends Controller
         $classCounts = Product::query()
             ->whereIn('products.status', ['published', 'active'])
             ->join('categories as subject_categories', 'products.category_id', '=', 'subject_categories.id')
-            ->selectRaw('COALESCE(subject_categories.parent_id, subject_categories.id) as class_id, COUNT(*) as books_count')
+            ->selectRaw('COALESCE(subject_categories.parent_id, subject_categories.id) as class_id, COUNT(*) as products_count')
             ->groupByRaw('COALESCE(subject_categories.parent_id, subject_categories.id)')
-            ->pluck('books_count', 'class_id');
+            ->pluck('products_count', 'class_id');
 
         $classIds = $classCounts->keys()->filter(function ($id) {
             return $id !== null && $id !== '';
@@ -178,7 +178,7 @@ class SimpleBookOrderController extends Controller
             'subjectsByClass' => $subjectsByClass,
             'search' => $search,
             'sortby' => $sortby,
-            'storeName' => config('app.name', 'KNM Bookstore'),
+            'storeName' => config('app.name', 'Lee Marble Gallery'),
             'contactNumber' => getOption('order_enquiry_number', ''),
             'currencySymbol' => html_entity_decode(trim(strip_tags(currency()))),
             'authUser' => $authUser,
@@ -210,7 +210,7 @@ class SimpleBookOrderController extends Controller
 
         if (!$class) {
             return back()->withErrors([
-                'class_id' => 'Select a valid class.',
+                'class_id' => 'Select a valid category.',
             ])->withInput();
         }
 
@@ -220,7 +220,7 @@ class SimpleBookOrderController extends Controller
 
         if (!$subject) {
             return back()->withErrors([
-                'subject_id' => 'Select a valid subject.',
+                'subject_id' => 'Select a valid subcategory.',
             ])->withInput();
         }
 
@@ -231,13 +231,13 @@ class SimpleBookOrderController extends Controller
 
         if (!$product) {
             return back()->withErrors([
-                'subject_id' => 'No book is available for the selected subject.',
+                'subject_id' => 'No product is available for the selected subcategory.',
             ])->withInput();
         }
 
         if ($validated['quantity'] < $product->minimum_quantity) {
             return back()->withErrors([
-                'quantity' => 'Minimum quantity for this book is ' . $product->minimum_quantity . '.',
+                'quantity' => 'Minimum quantity for this product is ' . $product->minimum_quantity . '.',
             ])->withInput();
         }
 
@@ -299,7 +299,7 @@ class SimpleBookOrderController extends Controller
             OrderStatus::create([
                 'order_id' => $order->id,
                 'status' => 'placed',
-                'public_note' => 'Quick order placed from class and subject form.',
+                'public_note' => 'Quick order placed from category and subcategory form.',
             ]);
 
             if ($product->stock_status === 'limited') {
@@ -343,7 +343,7 @@ class SimpleBookOrderController extends Controller
         $subtotal = collect($cartItems)->sum('line_total');
 
         return view('simple-bookstore.checkout', [
-            'storeName' => config('app.name', 'KNM Bookstore'),
+            'storeName' => config('app.name', 'Lee Marble Gallery'),
             'authUser' => $authUser,
             'items' => $cartItems,
             'subtotal' => $subtotal,
@@ -380,7 +380,7 @@ class SimpleBookOrderController extends Controller
             $subtotal = collect($cartItems)->sum('line_total');
 
             $notes = [];
-            $notes[] = 'Order source: Simple bookstore checkout';
+            $notes[] = 'Order source: Simple checkout';
             if (!empty($validated['school'])) {
                 $notes[] = 'School/Madrasa: ' . $validated['school'];
             }
@@ -451,7 +451,7 @@ class SimpleBookOrderController extends Controller
             OrderStatus::create([
                 'order_id' => $order->id,
                 'status' => 'placed',
-                'public_note' => 'Order placed from simple bookstore checkout.',
+                'public_note' => 'Order placed from simple checkout.',
             ]);
 
             return $order;
@@ -460,9 +460,9 @@ class SimpleBookOrderController extends Controller
         $createdAt = Carbon::parse($order->created_at);
         $orderSuccess = [
             'ref_no' => $order->id . '-' . $createdAt->format('dmy'),
-            'book' => 'Multiple books',
-            'class' => 'Selected classes',
-            'subject' => 'Selected subjects',
+            'book' => 'Multiple products',
+            'class' => 'Selected categories',
+            'subject' => 'Selected subcategories',
         ];
 
         webhookEvents('order/placed', $order->id);
@@ -474,9 +474,9 @@ class SimpleBookOrderController extends Controller
     protected function buildOrderNote(string $className, string $subjectName, ?string $note): string
     {
         $lines = [
-            'Order source: Simple class and subject form',
-            'Class: ' . $className,
-            'Subject: ' . $subjectName,
+            'Order source: Simple category and subcategory form',
+            'Category: ' . $className,
+            'Subcategory: ' . $subjectName,
         ];
 
         if ($note) {

@@ -67,6 +67,14 @@ class SigninController extends Controller
             ];
         }
 
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            return [
+                'email' => $login,
+                'password' => $request->password,
+                'status' => 'active',
+            ];
+        }
+
         return [
             'username' => $login,
             'password' => $request->password,

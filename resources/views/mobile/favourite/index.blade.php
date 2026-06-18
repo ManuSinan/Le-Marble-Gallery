@@ -72,11 +72,8 @@
                 </div>
             </div>
 
-    <div>
+    </div>
     @endif
  
 </div>
 <!-- * App Capsule -->
- 
- 
-@include('mobile/layout/bottom-menu')

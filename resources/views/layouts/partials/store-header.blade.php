@@ -1,5 +1,5 @@
 @php
-    $siteName = $storeName ?? config('app.name', 'KNM Bookstore');
+    $siteName = $storeName ?? config('app.name', 'Lee Marble Gallery');
     $authViewer = authUser();
     $accountUrl = $authViewer ? route('website.account') : route('signin');
     $ordersUrl = $authViewer ? route('website.order') : route('signin');
@@ -32,11 +32,12 @@
         </button>
 
         <a href="{{ route('home') }}" class="knm-brand">
-            <img src="{{ asset('favicons/knm-logo-navbar.png') }}" alt="">
+            <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="" style="max-height: 32px;">
             <span>{{ \Illuminate\Support\Str::limit($siteName, 28) }}</span>
         </a>
 
         <nav class="knm-nav-desktop" aria-label="Account links">
+            <a href="{{ route('home') }}" class="knm-btn knm-btn--sm knm-btn--ghost">Home</a>
             @if ($isAuthPage)
                 @if(request()->routeIs('signin'))
                     <a href="{{ route('signin') }}" class="knm-btn knm-btn--sm knm-btn--ghost is-active">Sign in</a>

@@ -1,7 +1,7 @@
 @extends('simple-bookstore.layout')
 
-@section('title', 'Order Details | ' . config('app.name', 'KNM Bookstore'))
-@section('description', 'Review the full details, items, status history, and contact information for your bookstore order.')
+@section('title', 'Order Details | ' . config('app.name', 'Le Marble Gallery'))
+@section('description', 'Review the full details, items, status history, and contact information for your order.')
 
 @section('extra_styles')
 <style>
@@ -235,7 +235,7 @@
         <div class="section-head">
             <div>
                 <h1>Order {{ $order->id }}-{{ $createdAt->format('dmy') }}</h1>
-                <p>Review the ordered books, current status, updates, and delivery information from the same website layout as the homepage.</p>
+                <p>Review the ordered materials, current status, updates, and delivery information.</p>
             </div>
 
             <span class="status-pill {{ $statusClass }}">
@@ -251,7 +251,7 @@
 
         <div class="knm-flex knm-gap-2 knm-mt-4">
             <a href="{{ route('website.order') }}" class="knm-btn knm-btn--ghost">Back to Orders</a>
-            <a href="{{ route('home') }}" class="knm-btn knm-btn--primary">Browse More Books</a>
+            <a href="{{ route('home') }}" class="knm-btn knm-btn--primary">Browse More Materials</a>
         </div>
     </section>
 
@@ -261,7 +261,7 @@
                 <div class="section-head">
                     <div>
                         <h2>Ordered items</h2>
-                        <p class="section-copy">Every book included in this order is listed below with quantity and price.</p>
+                        <p class="section-copy">Every material included in this order is listed below with quantity and price.</p>
                     </div>
                 </div>
 

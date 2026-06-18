@@ -5,11 +5,11 @@
       <div class="mb-1">
          <ol class="breadcrumb breadcrumb-alternate" aria-label="breadcrumbs">
             <li class="breadcrumb-item"><a href="javascript:;">{{ __('Application') }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('product') }}">{{ __('Book') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('product') }}">{{ __('Product') }}</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('New') }}</a></li>
          </ol>
       </div>
-      <h2 class="page-title" act-on="click">{{ __('New Book') }}</h2>
+      <h2 class="page-title" act-on="click">{{ __('New Product') }}</h2>
    </div>
    <div class="col-auto ms-auto d-print-none">
       <div class="d-flex">
@@ -24,7 +24,7 @@
                <line x1="5" y1="12" x2="5" y2="12.01" />
                <line x1="5" y1="18" x2="5" y2="18.01" />
             </svg>
-            View All Books
+            View All Products
          </a>
          @endif
       </div>
@@ -61,7 +61,7 @@
                               <div class="row">
                                  <div class="col-lg-4 col-sm-12">
                                     <div class="form-group">
-                                       <label>{{ __('Book Name') }}  <span class="text-danger">*</span></label>
+                                       <label>{{ __('Product Name') }}  <span class="text-danger">*</span></label>
                                        <div>
                                           <input type="text"  slug-generate="#slug" name="name"  required   class="form-control">
                                        </div>
@@ -79,7 +79,7 @@
                                  
                                  <div class="col-lg-4 col-sm-12">
                                     <div class="form-group">
-                                       <label>{{ __('Variable Book') }} <span class="text-danger">*</span></label>
+                                       <label>{{ __('Variable Product') }} <span class="text-danger">*</span></label>
                                        <div>
                                           <select id="variable-product" name="variable_product" class="form-select select2">
                                              <option value="no">No</option>
@@ -106,12 +106,19 @@
                                     <div class="form-group">
                                        <label>{{ __('Category') }} <span class="text-danger">*</span></label>
                                        <div>
-                                          <select name="category_id" required class="form-select select2">
-                                             <option disabled selected value="">{{ __('Select Category') }}</option>
-                                             @php
-                                                 renderCategoryOptions($categories);
-                                             @endphp
-                                         </select>
+                                           <select name="category_id" required class="form-select select2">
+                                              <option disabled selected value="">{{ __('Select Sub-category') }}</option>
+                                              @php
+                                                  $grouped = $categories->groupBy(fn($c) => $c->parent->name ?? 'Uncategorized');
+                                              @endphp
+                                              @foreach($grouped as $parentName => $subs)
+                                                  <optgroup label="{{ $parentName }}">
+                                                      @foreach($subs as $sub)
+                                                          <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                                                      @endforeach
+                                                  </optgroup>
+                                              @endforeach
+                                          </select>
                                          
                                        </div>
                                     </div>
@@ -132,7 +139,7 @@
 
                                  <div class="col-lg-4 col-sm-12">
                                     <div class="form-group">
-                                       <label>{{ __('Book Code') }} </label>
+                                       <label>{{ __('Product Code') }} </label>
                                        <div>
                                           <input type="text" name="product_code" class="form-control">
                                        </div>
@@ -500,18 +507,18 @@
                                  </div>
                                  <div class="col-sm-12">
                                     <div class="form-group">
-                                       <label>{{ __('Related Books') }} </label>
+                                       <label>{{ __('Related Products') }} </label>
                                        <div>
-                                          <textarea class="form-control"  name="related" placeholder="Enter comma separated related book keywords" rows="1"></textarea>
+                                          <textarea class="form-control"  name="related" placeholder="Enter comma separated related product keywords" rows="1"></textarea>
                                        </div>
                                     </div>
                                  </div>
 
                                  <div class="col-sm-12">
                                     <div class="form-group">
-                                       <label>{{ __('Frequently Bought Together Books') }} </label>
+                                       <label>{{ __('Frequently Bought Together Products') }} </label>
                                        <div>
-                                          <textarea class="form-control"  name="fbt" placeholder="Enter comma separated frequently bought together book keywords" rows="1"></textarea>
+                                          <textarea class="form-control"  name="fbt" placeholder="Enter comma separated frequently bought together product keywords" rows="1"></textarea>
                                        </div>
                                     </div>
                                  </div>

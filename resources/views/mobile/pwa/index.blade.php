@@ -39,21 +39,44 @@
             history.forward();
         }  
     </script>
-     <style> 
+     <style>
+        * {
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            -moz-box-shadow: none !important;
+        }
         body, p, span, div, strong, small, label, input, select, textarea, button, a {
             font-family: 'Inter', sans-serif;
         }
         h1, h2, h3, h4, h5, h6, .pageTitle, .section-title, .title {
-            font-family: 'Playfair Display', serif !important;
+            font-family: 'Inter', sans-serif !important;
         }
         body {
-            background-color: #F8F8F8 !important;
+            background-color: #F2F4F8 !important;
         }
         ::-moz-selection, ::selection {
             background: {{ config('app.theme_primary') }}
         }
+        /* ── Navy header override ── */
+        .appHeader {
+            background-color: #152B6E !important;
+        }
         .appHeader:before {
-            background: {{ config('app.theme_primary') }}
+            background: #152B6E
+        }
+        /* ── White bottom nav override ── */
+        .appBottomMenu {
+            background: #ffffff !important;
+            border-top: 1px solid #e5e9f2 !important;
+            z-index: 99999999 !important;
+        }
+        .appBottomMenu .item {
+            color: #9ca3af !important;
+        }
+        .appBottomMenu .item.active,
+        .appBottomMenu .item.active svg,
+        .appBottomMenu .item.active span {
+            color: #152B6E !important;
         }
 
         .appHeader.scrolled.bg-primary .headerButton {
@@ -600,8 +623,8 @@
         /* Centered Mobile Emulator View on Desktop/Tablet Screens */
         @media (min-width: 576px) {
             body {
-                background-color: #111827 !important;
-                background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95)), url('{{ asset('images/knm-page-bg.png') }}') !important;
+                background-color: #0d1b3e !important;
+                background-image: linear-gradient(135deg, rgba(13,27,62,0.96), rgba(21,43,110,0.92)) !important;
                 background-repeat: no-repeat !important;
                 background-size: cover !important;
                 background-position: center !important;
@@ -660,6 +683,17 @@
                 transform: translateX(-50%) !important;
                 border-left: 1px solid #374151 !important;
                 border-right: 1px solid #374151 !important;
+                z-index: 99999999 !important;
+            }
+
+            #cat-overlay {
+                max-width: 480px !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%) !important;
+                border-left: 1px solid #374151 !important;
+                border-right: 1px solid #374151 !important;
+                bottom: 68px !important;
             }
 
             #sidebar, .sidebar {
@@ -728,6 +762,14 @@
                 left: 50% !important;
                 transform: translateX(-50%) !important;
             }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake 0.5s;
         }
     </style>
 
@@ -886,6 +928,8 @@
             </div>
         </div>
     </div>
+
+    @include('mobile/layout/bottom-menu')
  
     <div id="toast" class="toast-box toast-bottom">
         <div class="in">
@@ -1022,6 +1066,774 @@
             $('html').css('cursor', 'row-resize');
             $(window).scrollTop($(window).scrollTop() + (clickY - e.pageY));
         }
+
+        // ────────────────────────────────────────────────────────────────────
+        // TWO-STEP CATEGORY OVERLAY CONTROLLER
+        // Step 1: subcategory list  →  Step 2: product list
+        // ────────────────────────────────────────────────────────────────────
+        $(document).ready(function () {
+
+            var catOverlayStep = 1;          // 1 = subcategory list, 2 = product list
+            var activeCategorySlug  = null;  // e.g. 'bath-accessories'
+            var activeSubcategorySlug = null;
+            var activeBrandsFilter = [];
+            var activePricesFilter = [];
+
+            /* ── helpers ── */
+            function getCart() {
+                try {
+                    var c = $.parseJSON(localStorage.getItem('__cart'));
+                    return (c && c.products) ? c : { products: {} };
+                } catch(e) { return { products: {} }; }
+            }
+            function saveCart(cart) {
+                localStorage.setItem('__cart', JSON.stringify(cart));
+            }
+            function formatPrice(n) {
+                return '₹' + parseFloat(n || 0).toFixed(2);
+            }
+            function toast(msg) {
+                if ($('#toast').length) {
+                    $('#toast').find('.text').text(msg);
+                    $('#toast').toast('show');
+                }
+            }
+            function vibrate() {
+                try { navigator.vibrate(40); } catch(e) {}
+            }
+
+            /* ── Subcategory icon SVG map ── */
+            function subIcon(slug) {
+                var icons = {
+                    'toilet-paper-holders' : '<path d="M9 3v18M15 3v18M3 9h18M3 15h18" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'towel-bars'           : '<path d="M7 3h10v18H7z" stroke="currentColor" stroke-width="2" fill="none"/><line x1="5" y1="3" x2="19" y2="3" stroke="currentColor" stroke-width="2"/>',
+                    'soap-dispensers'      : '<path d="M8 3h8v5l2 2v11H6V10l2-2V3z" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'mirror-cabinets'      : '<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'shower-shelves'       : '<rect x="3" y="10" width="18" height="4" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><line x1="7" y1="10" x2="7" y2="21" stroke="currentColor" stroke-width="2"/><line x1="17" y1="10" x2="17" y2="21" stroke="currentColor" stroke-width="2"/>',
+                    'hooks-hangers'        : '<path d="M12 3v4m0 0c-3.3 0-6 2.7-6 6H6" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="7" r="1" fill="currentColor"/>',
+                    'basin-taps'           : '<path d="M12 3v9m-6 4h12" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="18" r="3" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'shower-systems'       : '<circle cx="12" cy="6" r="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M7 14h2m2 0h2m2 0h2M7 17h2m2 0h2m2 0h2M12 9v5" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'flush-valves'         : '<rect x="4" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M8 18v3m8-3v3" stroke="currentColor" stroke-width="2"/>',
+                    'bathtub-faucets'      : '<path d="M4 18h16M4 18V9a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v9" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'concealed-cisterns'   : '<rect x="5" y="5" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2"/><line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2"/>',
+                    'kitchen-taps'         : '<path d="M12 3v7m0 0c-3 0-5 2-5 5h10c0-3-2-5-5-5z" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'floor-tiles'          : '<rect x="3" y="3" width="8" height="8" stroke="currentColor" stroke-width="2" fill="none"/><rect x="13" y="3" width="8" height="8" stroke="currentColor" stroke-width="2" fill="none"/><rect x="3" y="13" width="8" height="8" stroke="currentColor" stroke-width="2" fill="none"/><rect x="13" y="13" width="8" height="8" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'wall-tiles'           : '<rect x="3" y="3" width="18" height="7" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><rect x="3" y="14" width="18" height="7" rx="1" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'mosaic-tiles'         : '<circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17" cy="7" r="3" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="7" cy="17" r="3" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17" cy="17" r="3" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'sanitaryware'         : '<path d="M5 20h14M5 20V10a7 7 0 0 1 14 0v10" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'outdoor-tiles'        : '<path d="M3 12l9-9 9 9" stroke="currentColor" stroke-width="2" fill="none"/><path d="M5 10v9h14v-9" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'wall-hung-wc'         : '<rect x="6" y="8" width="12" height="10" rx="4" stroke="currentColor" stroke-width="2" fill="none"/><line x1="4" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="2"/>',
+                    'floor-mounted-wc'     : '<rect x="6" y="10" width="12" height="10" rx="4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M6 10V6h12v4" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'bidet-seats'          : '<ellipse cx="12" cy="16" rx="7" ry="5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M8 6h8v10H8V6z" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'toilet-tanks'         : '<rect x="7" y="3" width="10" height="8" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'freestanding-tubs'    : '<path d="M4 16h16M4 16V12a8 4 0 0 1 16 0v4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M6 16v2m12-2v2" stroke="currentColor" stroke-width="2"/>',
+                    'built-in-tubs'        : '<rect x="3" y="10" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'corner-tubs'          : '<path d="M3 21V6l9-3 9 3v15H3z" stroke="currentColor" stroke-width="2" fill="none"/>',
+                    'whirlpool-tubs'       : '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" fill="none"/>',
+                };
+                var path = icons[slug] || '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>';
+                return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">' + path + '</svg>';
+            }
+
+            /* ── Open overlay showing subcategory list ── */
+            function openCategoryOverlay(catSlug) {
+                activeCategorySlug   = catSlug;
+                activeSubcategorySlug = null;
+                catOverlayStep = 1;
+
+                var catData = window.bathCategoryTree ? window.bathCategoryTree[catSlug] : null;
+                var catName = catData ? catData.name : catSlug.replace(/-/g,' ').toUpperCase();
+
+                // Update header
+                $('#cat-overlay-title').text(catName);
+                $('#cat-overlay-subtitle').text('Select a sub-category');
+
+                // Render subcategory list
+                renderSubcategoryList(catData);
+
+                // Show overlay (flex)
+                $('#cat-overlay').css('display','flex');
+                $('#cat-step-subcategory').css('display','block');
+                $('#cat-step-products').css('display','none');
+
+                // Hide filter icon, show spacer
+                $('#cat-overlay-filter').hide();
+                $('#cat-overlay-spacer').show();
+
+                updateCartDrawer();
+            }
+
+            /* ── Render subcategory list (Step 1) ── */
+            function renderSubcategoryList(catData) {
+                var container = $('#cat-step-subcategory').empty();
+
+                if (!catData || !catData.subcategories || catData.subcategories.length === 0) {
+                    container.html('<div style="text-align:center; padding:40px 20px; color:#6b7280; font-size:14px;">No sub-categories found.</div>');
+                    return;
+                }
+
+                var subs = catData.subcategories;
+
+                // Section label
+                container.append(
+                    '<div style="font-size:11px; font-weight:700; color:#9ca3af; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:12px; padding:0 2px;">' +
+                        (subs.length) + ' Sub-categories' +
+                    '</div>'
+                );
+
+                subs.forEach(function (sub) {
+                    var productCount = sub.products ? sub.products.length : 0;
+                    
+                    // Determine subcategory image: 
+                    // 1. sub.image (if populated)
+                    // 2. Fallback to first product's image in the subcategory
+                    // 3. Fallback to default subcategory SVG icon
+                    var subImg = sub.image ? sub.image : ((sub.products && sub.products.length > 0 && sub.products[0].image) ? sub.products[0].image : null);
+                    if (subImg) {
+                        subImg = subImg.replace('/base/', '/original/');
+                    }
+                    var iconWrapperContent = subImg 
+                        ? '<img src="/uploads/' + subImg + '" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">'
+                        : subIcon(sub.slug);
+
+                    var html =
+                        '<div class="cat-subcat-row" data-subcat-slug="' + sub.slug + '" ' +
+                             'style="background:#fff; border:1px solid #e5e7eb; border-radius:10px; margin-bottom:10px; padding:14px 16px; ' +
+                                    'display:flex; align-items:center; gap:14px; cursor:pointer;">' +
+                            '<div style="width:42px; height:42px; background:#eef2fb; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#152B6E; flex-shrink:0; overflow:hidden;">' +
+                                iconWrapperContent +
+                            '</div>' +
+                            '<div style="flex:1;">' +
+                                '<div style="font-size:14px; font-weight:700; color:#111827; font-family:\'Inter\',sans-serif;">' + sub.name + '</div>' +
+                                '<div style="font-size:11px; color:#6b7280; margin-top:2px; font-family:\'Inter\',sans-serif;">' + productCount + ' product' + (productCount !== 1 ? 's' : '') + '</div>' +
+                            '</div>' +
+                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>' +
+                        '</div>';
+                    container.append(html);
+                });
+            }
+
+            /* ── Open product list for a subcategory (Step 2) ── */
+            function openSubcategoryProducts(subSlug) {
+                activeSubcategorySlug = subSlug;
+                catOverlayStep = 2;
+
+                var catData = window.bathCategoryTree ? window.bathCategoryTree[activeCategorySlug] : null;
+                var sub = catData && catData.subcategories
+                    ? catData.subcategories.find(function(s){ return s.slug === subSlug; })
+                    : null;
+
+                // Reset overlay active filters
+                activeBrandsFilter = [];
+                activePricesFilter = [];
+                $('#cat-overlay-filter').css('color', '#FFFFFF');
+
+                // Update header
+                var subName = sub ? sub.name : subSlug.replace(/-/g,' ');
+                var catName = catData ? catData.name : '';
+                $('#cat-overlay-title').text(subName);
+                $('#cat-overlay-subtitle').text(catName + ' › ' + subName);
+
+                // Render products
+                renderProductList(sub ? (sub.products || []) : []);
+
+                // Show step 2
+                $('#cat-step-subcategory').css('display','none');
+                $('#cat-step-products').css('display','block');
+                // scroll to top
+                $('#cat-step-products').scrollTop(0);
+
+                // Show filter icon, hide spacer
+                $('#cat-overlay-filter').css('display','flex');
+                $('#cat-overlay-spacer').hide();
+
+                updateCartDrawer();
+            }
+
+            /* ── Render product list (Step 2) ── */
+            function renderProductList(products) {
+                var container = $('#cat-step-products').empty();
+                var cart = getCart();
+
+                if (!products || products.length === 0) {
+                    container.html('<div style="text-align:center; padding:40px 20px; color:#6b7280; font-size:14px;">No products in this sub-category yet.</div>');
+                    return;
+                }
+
+                container.append(
+                    '<div style="font-size:11px; font-weight:700; color:#9ca3af; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:12px; padding:0 2px;">' +
+                        products.length + ' Product' + (products.length !== 1 ? 's' : '') +
+                    '</div>'
+                );
+
+                products.forEach(function (product) {
+                    var cartItem = cart.products[product.id];
+                    var qty = cartItem ? parseFloat(cartItem.quantity) : 0;
+                    var imgSrc = product.image ? ('/uploads/' + product.image) : '/assets/mobile/img/200x150-blank.png';
+                    var price = formatPrice(product.selling_price);
+                    var stockText = product.stock_status === 'limited' ? (product.stock_available + ' left') : 'In stock';
+                    var isOut = product.stock_status === 'limited' && product.stock_available <= 0;
+                    var stockColor = isOut ? '#ef4444' : '#22c55e';
+                    var qtyLabel = qty > 0
+                        ? '<div style="font-size:11px; color:#6b7280; margin-top:3px;">Qty: <span style="font-weight:700; color:#111827;">' + qty + ' items</span></div>'
+                        : '';
+
+                    var row =
+                        '<div class="cat-product-row" data-id="' + product.id + '" ' +
+                             'style="background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:12px; margin-bottom:10px; cursor:pointer;">' +
+                            '<div style="display:flex; align-items:center; gap:12px;">' +
+                                '<div style="display:flex; align-items:center; gap:12px; flex:1; min-width:0;">' +
+                                    '<div style="width:64px; height:64px; border-radius:6px; overflow:hidden; border:1px solid #f0f0f0; flex-shrink:0;">' +
+                                        '<img src="' + imgSrc + '" alt="' + product.name + '" style="width:100%; height:100%; object-fit:cover;">' +
+                                    '</div>' +
+                                    '<div style="flex:1; min-width:0;">' +
+                                        '<div style="font-size:13px; font-weight:700; color:#111827; font-family:\'Inter\',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-transform:uppercase;">' + product.name + '</div>' +
+                                        qtyLabel +
+                                        '<div style="font-size:15px; font-weight:800; color:#152B6E; margin-top:3px;">' + price + '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div style="flex-shrink:0;">' +
+                                    '<div class="cat-stepper" style="display:flex; align-items:center; border:1.5px solid #e5e7eb; border-radius:6px; overflow:hidden; height:36px;">' +
+                                        '<button class="cat-minus-btn" data-id="' + product.id + '" ' +
+                                                'style="border:none; background:#f9fafb; color:#152B6E; width:32px; height:100%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; padding:0; font-weight:700;">−</button>' +
+                                        '<div class="cat-qty-val" style="width:30px; text-align:center; font-size:13px; font-weight:700; color:#111827;">' + qty + '</div>' +
+                                        '<button class="cat-plus-btn" data-id="' + product.id + '" ' +
+                                                'style="border:none; background:#f9fafb; color:#152B6E; width:32px; height:100%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; padding:0; font-weight:700;">+</button>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div style="margin-top:10px; padding-top:8px; border-top:1px solid #f3f4f6; display:flex; align-items:center; gap:6px;">' +
+                                '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:' + stockColor + ';"></span>' +
+                                '<span style="font-size:11px; color:#6b7280;">' + stockText + '</span>' +
+                            '</div>' +
+                        '</div>';
+                    container.append(row);
+                });
+            }
+
+            /* ── Back button ── */
+            $(document).on('click', '#cat-overlay-back', function(e) {
+                e.preventDefault();
+                if (catOverlayStep === 2) {
+                    // go back to subcategory list
+                    catOverlayStep = 1;
+                    var catData = window.bathCategoryTree ? window.bathCategoryTree[activeCategorySlug] : null;
+                    var catName = catData ? catData.name : activeCategorySlug;
+                    $('#cat-overlay-title').text(catName);
+                    $('#cat-overlay-subtitle').text('Select a sub-category');
+                    $('#cat-step-products').css('display','none');
+                    $('#cat-step-subcategory').css('display','block');
+
+                    // Hide filter icon, show spacer
+                    $('#cat-overlay-filter').hide();
+                    $('#cat-overlay-spacer').show();
+                } else {
+                    // close overlay
+                    $('#cat-overlay').css('display','none');
+                }
+            });
+
+            /* ── Open overlay from category cards ── */
+            $(document).on('click', '.category-card-custom, .view-all-categories-link', function(e) {
+                e.preventDefault();
+                var slug = $(this).attr('data-category');
+                // If no slug (e.g. "View All" link), open first available category from the tree
+                if (!slug && window.bathCategoryTree) {
+                    slug = Object.keys(window.bathCategoryTree)[0] || '';
+                }
+                if (slug) openCategoryOverlay(slug);
+            });
+
+            /* ── Click subcategory row ── */
+            $(document).on('click', '.cat-subcat-row', function(e) {
+                e.preventDefault();
+                var slug = $(this).attr('data-subcat-slug');
+                openSubcategoryProducts(slug);
+            });
+
+            /* ── Plus / Minus stepper buttons ── */
+            $(document).on('click', '.cat-plus-btn', function(e) {
+                e.preventDefault();
+                adjustQty($(this).attr('data-id'), +1);
+            });
+            $(document).on('click', '.cat-minus-btn', function(e) {
+                e.preventDefault();
+                adjustQty($(this).attr('data-id'), -1);
+            });
+
+            /* ── Click product row in overlay to view details ── */
+            $(document).on('click', '.cat-product-row', function(e) {
+                // If clicked inside the stepper, do not trigger navigation
+                if ($(e.target).closest('.cat-stepper').length) {
+                    return;
+                }
+                
+                e.preventDefault();
+                var productId = $(this).attr('data-id');
+                var url = '/api/mobile/product/' + productId;
+                
+                // Close overlay
+                $('#cat-overlay').css('display','none');
+                
+                // Route dynamically via window.mobileAct
+                if (window.mobileAct) {
+                    window.mobileAct.request(this, url, null);
+                } else {
+                    location.href = url;
+                }
+            });
+
+            function findProductData(productId) {
+                // Search through all subcategories in tree
+                if (!window.bathCategoryTree) return null;
+                var found = null;
+                Object.values(window.bathCategoryTree).forEach(function(cat) {
+                    if (found) return;
+                    (cat.subcategories || []).forEach(function(sub) {
+                        if (found) return;
+                        (sub.products || []).forEach(function(p) {
+                            if (p.id == productId) found = p;
+                        });
+                    });
+                });
+                return found;
+            }
+
+            function adjustQty(productId, diff) {
+                var product = findProductData(productId);
+                if (!product) return;
+
+                var stepper = (product.unit && product.unit.stepper) ? parseFloat(product.unit.stepper) : 1;
+                var cart = getCart();
+                var curQty = cart.products[productId] ? parseFloat(cart.products[productId].quantity) : 0;
+                var newQty = Math.max(0, curQty + (diff * stepper));
+
+                if (diff > 0 && product.stock_status === 'limited' && newQty > product.stock_available) {
+                    newQty = product.stock_available;
+                    toast('Cannot exceed available stock.');
+                    return;
+                }
+
+                if (newQty === 0) {
+                    delete cart.products[productId];
+                    if (curQty > 0) toast('Removed from basket.');
+                } else {
+                    cart.products[productId] = {
+                        price: parseFloat(product.price),
+                        selling_price: parseFloat(product.selling_price),
+                        quantity: newQty,
+                        steper: stepper,
+                        total_price: parseFloat(product.price) * newQty,
+                        total_selling_price: parseFloat(product.selling_price) * newQty,
+                        message: ''
+                    };
+                    if (curQty === 0) toast('Added to basket!');
+                }
+
+                saveCart(cart);
+                vibrate();
+
+                // update UI
+                var card = $('.cat-product-row[data-id="' + productId + '"]');
+                if (card.length) {
+                    card.find('.cat-qty-val').text(newQty);
+                    var qtyLabel = card.find('.cat-qty-label-text');
+                    if (newQty > 0) {
+                        if (!qtyLabel.length) {
+                            var qtyDiv = $('<div style="font-size:11px; color:#6b7280; margin-top:3px;">Qty: <span class="cat-qty-label-text" style="font-weight:700; color:#111827;">' + newQty + ' items</span></div>');
+                            card.find('[style*="font-size:15px"]').before(qtyDiv);
+                        } else {
+                            qtyLabel.text(newQty + ' items');
+                        }
+                    } else {
+                        qtyLabel.parent().remove();
+                    }
+                }
+
+                updateCartDrawer();
+                updateGlobalBadge();
+            }
+
+            /* ── Cart drawer ── */
+            function updateCartDrawer() {
+                var cart = getCart();
+                var totalQty = 0, totalPrice = 0, count = 0;
+
+                Object.keys(cart.products).forEach(function(id) {
+                    if (!findProductData(id)) return;
+                    var item = cart.products[id];
+                    totalQty   += parseFloat(item.quantity);
+                    totalPrice += parseFloat(item.total_selling_price || (item.selling_price * item.quantity));
+                    count++;
+                });
+
+                if (count > 0) {
+                    $('#cat-cart-qty').text(totalQty + ' ITEMS');
+                    $('#cat-cart-price').text(formatPrice(totalPrice));
+                    $('#cat-cart-drawer').css('display','flex');
+                } else {
+                    $('#cat-cart-drawer').hide();
+                }
+            }
+
+            /* ── Global header cart badge ── */
+            function updateGlobalBadge() {
+                var cart = getCart();
+                var n = Object.keys(cart.products).length;
+                var btn = $('.headerButton.cart');
+                if (!btn.length) return;
+                var badge = btn.find('.badge');
+                if (n > 0) {
+                    if (badge.length) { badge.text(n); }
+                    else {
+                        btn.append('<span class="badge badge-danger" style="position:absolute;top:10px;right:2px;background:#e53e3e!important;color:#fff;font-size:9px;min-width:16px;height:16px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 4px;font-weight:700;">' + n + '</span>');
+                    }
+                } else {
+                    badge.remove();
+                }
+            }
+
+            /* ── Category Overlay Filter Logic ── */
+            $(document).on('click', '#cat-overlay-filter', function(e) {
+                e.preventDefault();
+                
+                // Show filter modal
+                $('#cat-filter-overlay').css('display', 'flex');
+
+                // Get products of the current subcategory to extract unique brands
+                var catData = window.bathCategoryTree ? window.bathCategoryTree[activeCategorySlug] : null;
+                var sub = catData && catData.subcategories
+                    ? catData.subcategories.find(function(s){ return s.slug === activeSubcategorySlug; })
+                    : null;
+                var products = sub ? (sub.products || []) : [];
+
+                // Extract unique brands present in these products
+                var uniqueBrands = {};
+                products.forEach(function(product) {
+                    if (product.brand) {
+                        uniqueBrands[product.brand.id] = product.brand.name;
+                    }
+                });
+
+                // Render brand choices
+                var brandsContainer = $('#cat-filter-brands-list').empty();
+                var brandIds = Object.keys(uniqueBrands);
+                if (brandIds.length === 0) {
+                    brandsContainer.html('<div style="font-size:12px; color:#9CA3AF; padding:8px 4px;">No brands available</div>');
+                } else {
+                    brandIds.forEach(function(brandId) {
+                        var brandName = uniqueBrands[brandId];
+                        var isChecked = activeBrandsFilter.indexOf(brandId) !== -1;
+                        var html = 
+                            '<label class="cat-filter-checkbox-label" style="display:flex; align-items:center; justify-content:space-between; padding:12px 4px; font-size:13px; color:#1F2937; cursor:pointer; border-bottom:1px solid #F3F4F6; margin:0; font-family:\'Inter\',sans-serif;">' +
+                                '<span>' + brandName + '</span>' +
+                                '<input type="checkbox" class="cat-brand-checkbox" value="' + brandId + '" ' + (isChecked ? 'checked' : '') + ' style="width:18px; height:18px; accent-color:#152B6E; border-radius:4px; border:1.5px solid #D1D5DB; margin-left:auto;">' +
+                            '</label>';
+                        brandsContainer.append(html);
+                    });
+                }
+
+                // Render price range choices
+                var priceRanges = {
+                    '0-500': 'Under ₹500',
+                    '500-5000': '₹500 - ₹5,000',
+                    '5000-20000': '₹5,000 - ₹20,000',
+                    '20000-100000': '₹20,000 - ₹1,00,000',
+                    '100000+': '₹1,00,000+'
+                };
+                var pricesContainer = $('#cat-filter-prices-list').empty();
+                Object.keys(priceRanges).forEach(function(rangeKey) {
+                    var rangeLabel = priceRanges[rangeKey];
+                    var isChecked = activePricesFilter.indexOf(rangeKey) !== -1;
+                    var html = 
+                        '<label class="cat-filter-checkbox-label" style="display:flex; align-items:center; justify-content:space-between; padding:12px 4px; font-size:13px; color:#1F2937; cursor:pointer; border-bottom:1px solid #F3F4F6; margin:0; font-family:\'Inter\',sans-serif;">' +
+                            '<span>' + rangeLabel + '</span>' +
+                            '<input type="checkbox" class="cat-price-checkbox" value="' + rangeKey + '" ' + (isChecked ? 'checked' : '') + ' style="width:18px; height:18px; accent-color:#152B6E; border-radius:4px; border:1.5px solid #D1D5DB; margin-left:auto;">' +
+                        '</label>';
+                    pricesContainer.append(html);
+                });
+
+                // Reset active tab display styles
+                $('.cat-filter-tab[data-tab="brand"]').css({
+                    'background-color': '#FFFFFF',
+                    'color': '#152B6E',
+                    'font-weight': '700',
+                    'border-left': '4px solid #D4AF37'
+                });
+                $('.cat-filter-tab[data-tab="price"]').css({
+                    'background-color': '#F3F4F6',
+                    'color': '#4B5563',
+                    'font-weight': '600',
+                    'border-left': 'none'
+                });
+                $('#cat-filter-group-brand').show();
+                $('#cat-filter-group-price').hide();
+            });
+
+            // Tab switching
+            $(document).on('click', '.cat-filter-tab', function(e) {
+                e.preventDefault();
+                var tab = $(this).attr('data-tab');
+                $('.cat-filter-tab').css({
+                    'background-color': '#F3F4F6',
+                    'color': '#4B5563',
+                    'font-weight': '600',
+                    'border-left': 'none'
+                });
+                $(this).css({
+                    'background-color': '#FFFFFF',
+                    'color': '#152B6E',
+                    'font-weight': '700',
+                    'border-left': '4px solid #D4AF37'
+                });
+                if (tab === 'brand') {
+                    $('#cat-filter-group-brand').show();
+                    $('#cat-filter-group-price').hide();
+                } else {
+                    $('#cat-filter-group-brand').hide();
+                    $('#cat-filter-group-price').show();
+                }
+            });
+
+            // Clear filter inputs
+            $(document).on('click', '#cat-filter-clear', function(e) {
+                e.preventDefault();
+                $('#cat-filter-overlay input[type="checkbox"]').prop('checked', false);
+            });
+
+            // Close filter modal without applying
+            $(document).on('click', '#cat-filter-close', function(e) {
+                e.preventDefault();
+                $('#cat-filter-overlay').hide();
+            });
+
+            // Apply filters
+            $(document).on('click', '#cat-filter-apply', function(e) {
+                e.preventDefault();
+                
+                activeBrandsFilter = [];
+                $('.cat-brand-checkbox:checked').each(function() {
+                    activeBrandsFilter.push($(this).val());
+                });
+
+                activePricesFilter = [];
+                $('.cat-price-checkbox:checked').each(function() {
+                    activePricesFilter.push($(this).val());
+                });
+
+                // Get products of the current subcategory
+                var catData = window.bathCategoryTree ? window.bathCategoryTree[activeCategorySlug] : null;
+                var sub = catData && catData.subcategories
+                    ? catData.subcategories.find(function(s){ return s.slug === activeSubcategorySlug; })
+                    : null;
+                var products = sub ? (sub.products || []) : [];
+
+                // Filter locally
+                var filtered = products.filter(function(product) {
+                    // Brand match
+                    if (activeBrandsFilter.length > 0) {
+                        var brandId = product.brand ? String(product.brand.id) : '';
+                        if (activeBrandsFilter.indexOf(brandId) === -1) {
+                            return false;
+                        }
+                    }
+                    
+                    // Price range match
+                    if (activePricesFilter.length > 0) {
+                        var sellingPrice = parseFloat(product.selling_price || 0);
+                        var matched = false;
+                        activePricesFilter.forEach(function(range) {
+                            if (range === '0-500' && sellingPrice < 500) matched = true;
+                            else if (range === '500-5000' && sellingPrice >= 500 && sellingPrice < 5000) matched = true;
+                            else if (range === '5000-20000' && sellingPrice >= 5000 && sellingPrice < 20000) matched = true;
+                            else if (range === '20000-100000' && sellingPrice >= 20000 && sellingPrice < 100000) matched = true;
+                            else if (range === '100000+' && sellingPrice >= 100000) matched = true;
+                        });
+                        if (!matched) return false;
+                    }
+                    return true;
+                });
+
+                // Render filtered list
+                renderProductList(filtered);
+
+                // Update filter icon color to denote active state (Gold/Yellow vs White)
+                if (activeBrandsFilter.length > 0 || activePricesFilter.length > 0) {
+                    $('#cat-overlay-filter').css('color', '#D4AF37');
+                } else {
+                    $('#cat-overlay-filter').css('color', '#FFFFFF');
+                }
+
+                // Hide filter panel
+                $('#cat-filter-overlay').hide();
+            });
+
+            /* ── MutationObserver to dynamically update persistent bottom menu active highlights & visibility ── */
+            function updateBottomNavbar(pageName) {
+                var hidePages = ['signin', 'signup', 'password-reset', 'password-reset-verify'];
+                if (hidePages.indexOf(pageName) !== -1) {
+                    $('.appBottomMenu').hide();
+                    return;
+                } else {
+                    $('.appBottomMenu').show();
+                }
+
+                // Reset all states
+                $('.appBottomMenu .item').removeClass('active').css('color', '#9ca3af');
+                $('.appBottomMenu .item svg').attr('fill', 'none').attr('stroke', '#9ca3af');
+                $('.appBottomMenu .item span').css('font-weight', '400');
+                $('.appBottomMenu .item .active-indicator').remove();
+
+                var activeTab = null;
+                if (pageName === 'home') {
+                    activeTab = 'home';
+                } else if (pageName === 'products' || pageName === 'product') {
+                    activeTab = 'products';
+                } else if (['orders', 'order-summary', 'order.success', 'cart'].indexOf(pageName) !== -1) {
+                    activeTab = 'orders';
+                } else if (['account', 'address', 'address-create', 'address-edit', 'change-password', 'update-profile'].indexOf(pageName) !== -1) {
+                    activeTab = 'account';
+                }
+
+                if (activeTab) {
+                    var $el = $('.appBottomMenu .item[data-tab="' + activeTab + '"]');
+                    $el.addClass('active').css('color', '#152B6E');
+                    if (activeTab === 'home') {
+                        $el.find('svg').attr('fill', '#152B6E').attr('stroke', '#152B6E');
+                    } else {
+                        $el.find('svg').attr('stroke', '#152B6E');
+                    }
+                    $el.find('span').css('font-weight', '700');
+                    $el.append('<div class="active-indicator" style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:32px; height:3px; background:#152B6E; border-radius:0 0 3px 3px;"></div>');
+                }
+            }
+
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === "attributes" && mutation.attributeName === "page-name") {
+                        var pageName = $('#page').attr('page-name');
+                        updateBottomNavbar(pageName);
+                    }
+                });
+            });
+            var pageNode = document.getElementById('page');
+            if (pageNode) {
+                observer.observe(pageNode, {
+                    attributes: true,
+                    attributeFilter: ['page-name']
+                });
+                // Initial check
+                var initPageName = $('#page').attr('page-name');
+                if (initPageName) {
+                    updateBottomNavbar(initPageName);
+                }
+            }
+
+            // Search Autocomplete Suggestion Logic
+            var searchTimeout = null;
+            $(document).on('input', 'input[name="search"]', function() {
+                var $input = $(this);
+                var query = $input.val().trim();
+                var $container = $input.parent();
+                
+                // Find or create suggestions dropdown div
+                var $dropdown = $container.find('.search-suggestions-dropdown');
+                if ($dropdown.length === 0) {
+                    $dropdown = $('<div class="search-suggestions-dropdown" style="position: absolute; left: 0; right: 0; top: 100%; background: #ffffff; border: 1px solid #E5E7EB; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); z-index: 10005; max-height: 320px; overflow-y: auto; margin-top: 5px; display: none;"></div>');
+                    $container.append($dropdown);
+                    $container.css('position', 'relative');
+                }
+                
+                if (query.length < 2) {
+                    $dropdown.hide().empty();
+                    return;
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function() {
+                    var language = localStorage.getItem('__language') || 'en';
+                    var headers = {
+                        'Accept': 'application/json',
+                        'Language': language,
+                        'Build': window.build || 'pwa'
+                    };
+                    var authorization = localStorage.getItem('__authorization');
+                    if (authorization) {
+                        headers['Authorization'] = authorization;
+                    }
+                    
+                    $.ajax({
+                        url: "{{ route('mobile.search.suggestions') }}",
+                        type: 'POST',
+                        headers: headers,
+                        data: { search: query },
+                        success: function(data) {
+                            $dropdown.empty();
+                            if (data && data.length > 0) {
+                                data.forEach(function(item) {
+                                    var html = 
+                                        '<a href="' + item.url + '" class="suggestion-item" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; text-decoration: none; border-bottom: 1px solid #F3F4F6; color: #111827; transition: background 0.2s;">' +
+                                            '<img src="' + item.image + '" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover; background: #e5e7eb;">' +
+                                            '<div style="flex: 1; min-width: 0;">' +
+                                                '<div class="suggestion-name" style="font-weight: 700; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + item.name + '</div>' +
+                                                '<div style="font-size: 11px; color: #6B7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + item.category + '</div>' +
+                                            '</div>' +
+                                            '<div style="font-weight: 700; font-size: 12px; color: #111827; flex-shrink: 0;">' + item.price + '</div>' +
+                                        '</a>';
+                                    $dropdown.append(html);
+                                });
+                                $dropdown.show();
+                            } else {
+                                $dropdown.append('<div style="padding: 16px; text-align: center; color: #6B7280; font-size: 13px;">No suggestions found</div>');
+                                $dropdown.show();
+                            }
+                        }
+                    });
+                }, 200);
+            });
+            
+            // Intercept suggestion click and perform dynamic search
+            $(document).on('click', '.suggestion-item', function(e) {
+                e.preventDefault();
+                
+                var suggestionText = $(this).find('.suggestion-name').text().trim();
+                
+                // Find parent container or related search input
+                var $container = $(this).closest('.searchbox, .search-form');
+                var $input = $container.find('input[name="search"]');
+                if ($input.length === 0) {
+                    $input = $('input[name="search"]');
+                }
+                
+                // Fill the search bar with suggestion
+                $input.val(suggestionText);
+                
+                // Hide dropdown
+                $('.search-suggestions-dropdown').hide();
+                
+                // Trigger form submit
+                var $form = $input.closest('form');
+                if ($form.length > 0) {
+                    $form.submit();
+                }
+            });
+
+            // Hide dropdown when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.searchbox, .search-form').length) {
+                    $('.search-suggestions-dropdown').hide();
+                }
+            });
+            
+            // Hover styling for suggestion items
+            $(document).on('mouseenter', '.suggestion-item', function() {
+                $(this).css('background-color', '#F3F4F6');
+            }).on('mouseleave', '.suggestion-item', function() {
+                $(this).css('background-color', '#ffffff');
+            });
+
+        });
+        
     </script>
 </body>
 

@@ -1,7 +1,7 @@
 @extends('simple-bookstore.layout')
 
-@section('title', 'Checkout | ' . ($storeName ?? config('app.name', 'KNM Bookstore')))
-@section('description', 'Complete your bookstore order with delivery details.')
+@section('title', 'Checkout | ' . ($storeName ?? config('app.name', 'Lee Marble Gallery')))
+@section('description', 'Complete your order with delivery details.')
 
 @section('extra_styles')
 <style>
@@ -85,7 +85,7 @@
         </div>
 
         <aside class="knm-card">
-            <h2 class="knm-acp-title knm-mb-4">Selected Books</h2>
+            <h2 class="knm-acp-title knm-mb-4">Selected Products</h2>
             <div class="knm-stack-2">
                 @foreach($items as $item)
                     <div class="knm-order-item">

@@ -6,10 +6,10 @@
         <div class="mb-3">
             <ol class="breadcrumb breadcrumb-alternate" aria-label="breadcrumbs">
                 <li class="breadcrumb-item"><a href="javascript:;">{{ __('Application') }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Book Bulk Insert') }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:;">{{ __('Product Bulk Insert') }}</a></li>
             </ol>
         </div>
-        <h2 class="page-title" act-on="click">{{ __('Book Bulk Insert') }}</h2>
+        <h2 class="page-title" act-on="click">{{ __('Product Bulk Insert') }}</h2>
     </div>
 </div>
 @endsection
@@ -31,7 +31,7 @@
 
               <li>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" /><path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" /><line x1="9.7" y1="17" x2="14.3" y2="17" /></svg>
-              {{ __('Add Max 1000 Books to Excel') }}
+              {{ __('Add Max 1000 Products to Excel') }}
               </li>
 
               <li>

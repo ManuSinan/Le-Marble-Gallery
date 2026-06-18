@@ -1,6 +1,6 @@
 <form method="post" act-on="submit" act-request="{{ route('category.update', ['category' => $category->id]) }}" act-image-compress="image">
     <div class="modal-header">
-        <h4 class="modal-title">{{ __('Edit Class') }}</h4>
+        <h4 class="modal-title">{{ __('Edit Category') }}</h4>
     </div>
     <div class="modal-body">
         <input type="hidden" name="_method" value="patch">        

@@ -17,6 +17,7 @@ Route::middleware(['localize'])->prefix('mobile')->group(function () {
     Route::post('home', [MobileController::class, 'home'])->name('mobile.home');
  
     Route::post('products', [MobileController::class, 'products'])->name('mobile.products');
+    Route::post('search-suggestions', [MobileController::class, 'searchSuggestions'])->name('mobile.search.suggestions');
     Route::post('product/{product}', [MobileController::class, 'product'])->name('mobile.product');
     Route::post('product-zoom/{product}', [MobileController::class, 'productZoom'])->name('mobile.product.zoom');
 
