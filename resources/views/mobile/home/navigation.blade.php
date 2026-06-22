@@ -47,6 +47,24 @@
             </a>
         </li>
 
+        @if($authUser)
+        <li>
+            <a href="{{ route('mobile.signout') }}" class="item sidenav-close text-danger" style="color: #EF4444 !important;">
+                <div class="in text-danger" style="color: #EF4444 !important; font-weight: 600;">
+                    {{  __('Sign Out') }}
+                </div>
+            </a>
+        </li>
+        @else
+        <li>
+            <a href="{{ route('mobile.signin') }}" class="item sidenav-close">
+                <div class="in">
+                    {{  __('Sign In') }}
+                </div>
+            </a>
+        </li>
+        @endif
+
  
     </ul>
 

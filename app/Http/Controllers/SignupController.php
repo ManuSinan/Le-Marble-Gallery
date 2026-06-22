@@ -78,10 +78,27 @@ class SignupController extends Controller
         try {
             $otp = (string) mt_rand(100000, 999999);
 
+            $baseUsername = Str::slug($request->name);
+            if (empty($baseUsername)) {
+                $baseUsername = 'user';
+            }
+            $username = $baseUsername;
+            $counter = 1;
+            $existingPending = User::query()
+                ->where('mobile', $request->mobile)
+                ->where('status', 'created')
+                ->where('mobile_verified', 0)
+                ->first();
+            $currentUserId = $existingPending ? $existingPending->id : 0;
+            while (User::where('username', $username)->where('id', '!=', $currentUserId)->exists()) {
+                $username = $baseUsername . $counter;
+                $counter++;
+            }
+
             $payload = [
                 'name' => $request->name,
                 'mobile' => $request->mobile,
-                'username' => $request->mobile,
+                'username' => $username,
                 'password' => Hash::make($request->password),
                 'role_id' => 1,
                 'status' => 'created',
@@ -286,7 +303,7 @@ class SignupController extends Controller
                 'mobile_verified' => 1,
                 'otp' => null,
                 'verification_code' => unicode(),
-                'username' => $user->mobile ?: $user->username ?: Str::slug($user->name . '-' . $user->id),
+                'username' => $user->username ?: Str::slug($user->name . '-' . $user->id),
             ]);
         } catch (\Throwable $e) {
             DB::rollBack();

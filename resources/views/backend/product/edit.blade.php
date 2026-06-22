@@ -211,6 +211,42 @@
                                  </div>
 
 
+                                  <div class="col-lg-4 col-sm-12">
+                                     <div class="form-group">
+                                        <label>{{ __('Finish / Colour') }}</label>
+                                        <div>
+                                           <input type="text" value="{{ $product->finish_colour }}" name="finish_colour" class="form-control">
+                                        </div>
+                                     </div>
+                                  </div>
+
+                                  <div class="col-lg-4 col-sm-12">
+                                     <div class="form-group">
+                                        <label>{{ __('Product Type') }}</label>
+                                        <div>
+                                           <input type="text" value="{{ $product->product_type }}" name="product_type" class="form-control">
+                                        </div>
+                                     </div>
+                                  </div>
+
+                                  <div class="col-lg-4 col-sm-12">
+                                     <div class="form-group">
+                                        <label>{{ __('Installation Type') }}</label>
+                                        <div>
+                                           <input type="text" value="{{ $product->installation_type }}" name="installation_type" class="form-control">
+                                        </div>
+                                     </div>
+                                  </div>
+
+                                  <div class="col-lg-8 col-sm-12">
+                                     <div class="form-group">
+                                        <label>{{ __('Compatibility / Notes') }}</label>
+                                        <div>
+                                           <input type="text" value="{{ $product->compatibility_notes }}" name="compatibility_notes" class="form-control">
+                                        </div>
+                                     </div>
+                                  </div>
+
                                  
                                  <div class="col-sm-12">
                                     <div class="row">

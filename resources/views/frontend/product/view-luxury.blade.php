@@ -142,6 +142,25 @@
             <dd>{{ $product->category->name }}</dd>
           </div>
           @endif
+
+          @if($product->finish_colour)
+          <div class="pdp-luxury-spec-row">
+            <dt>{{ __('Finish / Colour') }}</dt>
+            <dd>{{ $product->finish_colour }}</dd>
+          </div>
+          @endif
+          @if($product->product_type)
+          <div class="pdp-luxury-spec-row">
+            <dt>{{ __('Product Type') }}</dt>
+            <dd>{{ $product->product_type }}</dd>
+          </div>
+          @endif
+          @if($product->installation_type)
+          <div class="pdp-luxury-spec-row">
+            <dt>{{ __('Installation Type') }}</dt>
+            <dd>{{ $product->installation_type }}</dd>
+          </div>
+          @endif
           @if($product->unit)
           <div class="pdp-luxury-spec-row">
             <dt>{{ __('Order Unit') }}</dt>
@@ -152,6 +171,12 @@
           <div class="pdp-luxury-spec-row">
             <dt>{{ __('SKU') }}</dt>
             <dd>{{ $product->product_code }}</dd>
+          </div>
+          @endif
+          @if($product->compatibility_notes)
+          <div class="pdp-luxury-spec-row">
+            <dt>{{ __('Compatibility / Notes') }}</dt>
+            <dd>{{ $product->compatibility_notes }}</dd>
           </div>
           @endif
           <div class="pdp-luxury-spec-row">

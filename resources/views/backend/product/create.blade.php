@@ -195,6 +195,41 @@
                                     </div>
                                  </div>
 
+                                 <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                       <label>{{ __('Finish / Colour') }}</label>
+                                       <div>
+                                          <input type="text" name="finish_colour" class="form-control">
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                       <label>{{ __('Product Type') }}</label>
+                                       <div>
+                                          <input type="text" name="product_type" class="form-control">
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                       <label>{{ __('Installation Type') }}</label>
+                                       <div>
+                                          <input type="text" name="installation_type" class="form-control">
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-8 col-sm-12">
+                                    <div class="form-group">
+                                       <label>{{ __('Compatibility / Notes') }}</label>
+                                       <div>
+                                          <input type="text" name="compatibility_notes" class="form-control">
+                                       </div>
+                                    </div>
+                                 </div>
 
                                  
                                  <div class="col-sm-12">

@@ -1654,11 +1654,23 @@ class MobileController extends Controller
         DB::beginTransaction();
         try {
 
-            $input  = $request->only(['name', 'email', 'mobile']);
- 
-            $input['password'] = Hash::make($request->password);  
+            $input = $request->only(['name', 'email', 'mobile']);
+            $input['password'] = Hash::make($request->password);
 
-            $input['username'] = $input['mobile'];
+            $baseUsername = Str::slug($request->name);
+            if (empty($baseUsername)) {
+                $baseUsername = 'user';
+            }
+            $username = $baseUsername;
+            $counter = 1;
+            $existingPending = User::where('mobile', $request->mobile)->where('status', 'created')->first();
+            $currentUserId = $existingPending ? $existingPending->id : 0;
+            while (User::where('username', $username)->where('id', '!=', $currentUserId)->exists()) {
+                $username = $baseUsername . $counter;
+                $counter++;
+            }
+
+            $input['username'] = $username;
 
             $input['status'] = 'created';
         
@@ -1833,13 +1845,28 @@ class MobileController extends Controller
 
     public function signinRequest(Request $request)
     {
- 
-        if( is_numeric( $request->email ) ){
-            
-            $validator = Validator::make(request()->all(), [
-                'email' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10', 'max:10'],
+        $loginInput = trim((string) $request->input('email', ''));
+        $mobileClean = preg_replace('/\D/', '', $loginInput);
+
+        // Check if input is a valid 10-digit mobile number format
+        if ($mobileClean !== '' && is_numeric($mobileClean) && strlen($mobileClean) == 10 && preg_match('/^[0-9\s\-\+\(\)]+$/', $loginInput)) {
+            $isMobile = true;
+            $isEmail = false;
+        } elseif (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
+            $isMobile = false;
+            $isEmail = true;
+        } else {
+            $isMobile = false;
+            $isEmail = false;
+        }
+
+        if ($isMobile) {
+            $request->merge(['email' => $mobileClean]);
+
+            $validator = Validator::make($request->all(), [
+                'email' => ['required', 'regex:/^[0-9]+$/', 'min:10', 'max:10'],
                 'password' => ['required', 'string'],
-            ],[
+            ], [
                 'email.min' => __('The Mobile Number may not be less than 10 digits.'),
                 'email.max' => __('The Mobile Number may not be greater than 10 digits.')
             ]);
@@ -1847,18 +1874,26 @@ class MobileController extends Controller
             $validator->setAttributeNames([
                 'email' => 'Mobile Number',
             ]);
- 
-        }else{
-
-            $validator = Validator::make(request()->all(), [
+        } elseif ($isEmail) {
+            $validator = Validator::make($request->all(), [
                 'email' => ['required', 'email'],
                 'password' => ['required', 'string'],
-            ],[
-                'email.email' => __('The Email / Mobile Number must be a valid email address or mobile number.'), 
+            ], [
+                'email.email' => __('The Email Address must be a valid email address.')
             ]);
 
             $validator->setAttributeNames([
-                'email' => 'Email / Mobile Number',
+                'email' => 'Email Address',
+            ]);
+        } else {
+            // Treat as username
+            $validator = Validator::make($request->all(), [
+                'email' => ['required', 'string', 'min:2', 'max:100'],
+                'password' => ['required', 'string'],
+            ]);
+
+            $validator->setAttributeNames([
+                'email' => 'Username',
             ]);
         }
 
@@ -1868,17 +1903,22 @@ class MobileController extends Controller
             ]);
         }
 
-        if( is_numeric( $request->email ) ){
+        if ($isMobile) {
             $credentials = [
-                'mobile' => $request->email,
+                'mobile' => $mobileClean,
                 'password' => $request->password,
                 'mobile_verified' => 1,
             ];
-        }else{
+        } elseif ($isEmail) {
             $credentials = [
-                'email' => $request->email,
+                'email' => $loginInput,
                 'password' => $request->password,
                 'email_verified' => 1,
+            ];
+        } else {
+            $credentials = [
+                'username' => $loginInput,
+                'password' => $request->password,
             ];
         }
 

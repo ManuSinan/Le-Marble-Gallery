@@ -244,6 +244,11 @@ class ProductController extends Controller
             
             'local_name' => [ 'nullable', 'max:100' ],
             'local_description' => [ 'nullable' ],
+            'model_name' => [ 'nullable', 'max:255' ],
+            'finish_colour' => [ 'nullable', 'max:255' ],
+            'product_type' => [ 'nullable', 'max:255' ],
+            'installation_type' => [ 'nullable', 'max:255' ],
+            'compatibility_notes' => [ 'nullable' ],
         ]);
  
         if (!$validator->passes()) {
@@ -253,7 +258,7 @@ class ProductController extends Controller
         }
 
  
-        $input = $request->only([ 'name', 'slug', 'attribute_id', 'brand_id', 'category_id', 'attribute_id', 'unit_id', 'product_code', 'stock_status', 'stock_available', 'minimum_quantity',  'price',  'selling_price',  'description',  'keywords',  'priority', 'status', 'combination_key', 'local_name', 'local_description', 'rich_description', 'gallery_video' ]);
+        $input = $request->only([ 'name', 'slug', 'attribute_id', 'brand_id', 'category_id', 'attribute_id', 'unit_id', 'product_code', 'stock_status', 'stock_available', 'minimum_quantity',  'price',  'selling_price',  'description',  'keywords',  'priority', 'status', 'combination_key', 'local_name', 'local_description', 'rich_description', 'gallery_video', 'model_name', 'finish_colour', 'product_type', 'installation_type', 'compatibility_notes' ]);
       
         
         if($request->variable_product == 'yes' && $input['attribute_id'] == ''){
@@ -438,6 +443,7 @@ class ProductController extends Controller
                 }
             }
 
+            $input['model_name'] = $input['name'];
             $product = Product::create($input);
             Cache::forget('prodata');
             setOption( 'product_' . $product->id . '_private_note', $request->private_note);
@@ -581,6 +587,11 @@ class ProductController extends Controller
 
             'local_name' => [ 'nullable', 'max:100' ],
             'local_description' => [ 'nullable' ],
+            'model_name' => [ 'nullable', 'max:255' ],
+            'finish_colour' => [ 'nullable', 'max:255' ],
+            'product_type' => [ 'nullable', 'max:255' ],
+            'installation_type' => [ 'nullable', 'max:255' ],
+            'compatibility_notes' => [ 'nullable' ],
         ]);
  
         if (!$validator->passes()) {
@@ -589,7 +600,7 @@ class ProductController extends Controller
             ]);
         }
  
-        $input = $request->only([ 'name', 'slug', 'attribute_id', 'brand_id', 'category_id', 'attribute_id', 'unit_id', 'product_code', 'stock_status', 'stock_available', 'minimum_quantity',  'price',  'selling_price',  'description',  'keywords',  'priority', 'status', 'combination_key', 'local_name', 'local_description', 'rich_description', 'gallery_video' ]);
+        $input = $request->only([ 'name', 'slug', 'attribute_id', 'brand_id', 'category_id', 'attribute_id', 'unit_id', 'product_code', 'stock_status', 'stock_available', 'minimum_quantity',  'price',  'selling_price',  'description',  'keywords',  'priority', 'status', 'combination_key', 'local_name', 'local_description', 'rich_description', 'gallery_video', 'model_name', 'finish_colour', 'product_type', 'installation_type', 'compatibility_notes' ]);
       
         if($request->variable_product == 'yes' && $input['attribute_id'] == ''){
             return response()->json([
@@ -772,6 +783,7 @@ class ProductController extends Controller
                 }
             }
  
+            $input['model_name'] = $input['name'];
             $product->update($input);
             Cache::forget('prodata');
 

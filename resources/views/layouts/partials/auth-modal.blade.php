@@ -19,7 +19,7 @@
             </div>
             <form id="auth-signin-form" class="knm-stack knm-gap-3">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input class="knm-auth-input" name="login" type="text" placeholder="Username or mobile" required autocomplete="username">
+                <input class="knm-auth-input" name="login" type="text" placeholder="Username" required autocomplete="username">
                 <input class="knm-auth-input" name="password" type="password" placeholder="Password" required autocomplete="current-password">
                 <button type="submit" class="knm-btn knm-btn--primary knm-btn--block">Continue</button>
             </form>

@@ -193,8 +193,8 @@
             @csrf
 
             <div class="form-group">
-                <label for="login" class="form-label">Username / Mobile / Email</label>
-                <input type="text" id="login" name="login" class="form-input" value="{{ old('login') }}" placeholder="Enter username or mobile" required autofocus>
+                <label for="login" class="form-label">Username</label>
+                <input type="text" id="login" name="login" class="form-input" value="{{ old('login') }}" placeholder="Enter username" required autofocus>
             </div>
 
             <div class="form-group">

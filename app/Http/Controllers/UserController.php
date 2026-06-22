@@ -111,12 +111,15 @@ class UserController extends Controller
 
             // Auto-generate a unique username if not provided
             if (empty($input['username'])) {
-                if (!empty($input['mobile'])) {
-                    $username = $input['mobile'];
-                } elseif (!empty($input['email'])) {
-                    $username = explode('@', $input['email'])[0];
-                } else {
-                    $username = \Illuminate\Support\Str::slug($input['name']);
+                $username = \Illuminate\Support\Str::slug($input['name']);
+                if (empty($username)) {
+                    if (!empty($input['email'])) {
+                        $username = explode('@', $input['email'])[0];
+                    } elseif (!empty($input['mobile'])) {
+                        $username = $input['mobile'];
+                    } else {
+                        $username = 'user';
+                    }
                 }
 
                 // Ensure username is unique in database

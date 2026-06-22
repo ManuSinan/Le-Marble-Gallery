@@ -25,7 +25,7 @@
                 <form id="loginModalForm" method="post" action="{{ route('signin') }}" class="auth-modal-form">
                     @csrf
                     <div class="auth-modal-field">
-                        <input type="text" id="loginEmail" name="login" required class="auth-modal-input" placeholder="{{ __('Username / Mobile Number') }}" autocomplete="username" autofocus>
+                        <input type="text" id="loginEmail" name="login" required class="auth-modal-input" placeholder="{{ __('Username') }}" autocomplete="username" autofocus>
                         <div id="loginEmailError" class="auth-modal-error" style="display: none;"></div>
                     </div>
                     <div class="auth-modal-field">

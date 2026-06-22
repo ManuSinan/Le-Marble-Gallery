@@ -189,6 +189,43 @@
                         {!! nl2br($compatibility == true ? str_replace($title, $requestCompatible, _local($product->description, $product->local_description)) : _local($product->description, $product->local_description)) !!}
                     </div>
                 </div>
+
+                @if($product->model_name || $product->finish_colour || $product->product_type || $product->installation_type || $product->compatibility_notes)
+                <div class="pdp-specs mt-4 pt-3 border-top">
+                    <h3 class="pdp-desc-title mb-3">{{ __('Specifications') }}</h3>
+                    <div class="pdp-specs-grid">
+
+                        
+                        @if($product->finish_colour)
+                        <div class="pdp-spec-item">
+                            <span class="pdp-spec-label">{{ __('Finish / Colour') }}</span>
+                            <span class="pdp-spec-value">{{ $product->finish_colour }}</span>
+                        </div>
+                        @endif
+
+                        @if($product->product_type)
+                        <div class="pdp-spec-item">
+                            <span class="pdp-spec-label">{{ __('Product Type') }}</span>
+                            <span class="pdp-spec-value">{{ $product->product_type }}</span>
+                        </div>
+                        @endif
+
+                        @if($product->installation_type)
+                        <div class="pdp-spec-item">
+                            <span class="pdp-spec-label">{{ __('Installation Type') }}</span>
+                            <span class="pdp-spec-value">{{ $product->installation_type }}</span>
+                        </div>
+                        @endif
+                    </div>
+
+                    @if($product->compatibility_notes)
+                    <div class="pdp-compat-notes mt-3 p-3 bg-light rounded border-start border-warning border-3">
+                        <strong class="text-dark d-block mb-1">{{ __('Compatibility & Notes') }}</strong>
+                        <span class="text-muted small">{{ $product->compatibility_notes }}</span>
+                    </div>
+                    @endif
+                </div>
+                @endif
             </div>
         </div>
 
@@ -434,6 +471,15 @@
 .pdp-description { }
 .pdp-desc-title { font-size: 16px; font-weight: 600; color: #282c3f; margin: 0 0 10px; }
 .pdp-desc-text { font-size: 14px; line-height: 1.6; color: #535766; }
+
+.pdp-specs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 24px; }
+.pdp-spec-item { display: flex; flex-direction: column; padding: 8px 0; border-bottom: 1px solid #f5f5f6; }
+.pdp-spec-label { font-size: 12px; color: #9496a5; font-weight: 500; text-transform: uppercase; margin-bottom: 2px; }
+.pdp-spec-value { font-size: 14px; color: #282c3f; font-weight: 600; }
+.pdp-compat-notes { font-size: 13px; background-color: #fff9e6 !important; border-left-color: #ffc107 !important; }
+@media (max-width: 576px) {
+    .pdp-specs-grid { grid-template-columns: 1fr; }
+}
 
 /* Review section - Myntra-style layout */
 .pdp-reviews-layout { display: grid; grid-template-columns: 320px 1fr; gap: 32px; align-items: start; }
