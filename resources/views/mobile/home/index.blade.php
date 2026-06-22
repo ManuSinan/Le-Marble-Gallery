@@ -9,7 +9,7 @@
         </a>
     </div>
     <div class="pageTitle" style="text-align:center; color:#fff !important; display:flex; flex-direction:column; align-items:center; justify-content:center; height:64px !important; padding: 2px 0;">
-        <img src="{{ asset('assets/backend/logo-dark.png') }}" alt="logo" style="max-height: 42px; width: auto; display: block; margin-bottom: 0px;">
+        <img src="{{ asset('assets/mobile/logo-symbol.png') }}" alt="logo" style="max-height: 48px; width: auto; display: block; margin-bottom: 0px;">
         <span style="font-size: 8px; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; color: rgba(255,255,255,0.85); text-transform: uppercase; line-height: 1; display: block; margin-top: 2px;">No. 1 Building Material Company</span>
     </div>
     <div class="right" style="height: 64px !important;">
