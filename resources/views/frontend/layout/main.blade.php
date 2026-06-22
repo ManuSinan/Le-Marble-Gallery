@@ -18,11 +18,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     
-    <link rel="icon" type="image/png" href="{{ asset('assets/frontend/images/logo.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/frontend/images/logo.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/frontend/images/logo.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/frontend/images/logo.png') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/frontend/images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicons/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicons/favicon-32x32.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
