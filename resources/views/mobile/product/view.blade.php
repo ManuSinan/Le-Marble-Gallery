@@ -166,6 +166,42 @@
             <p style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4B5563; line-height: 1.6; margin-bottom: 0;">{!! nl2br(_local($product->description, $product->local_description)) !!}</p>
         </div>
 
+        @if($product->model_name || $product->finish_colour || $product->product_type || $product->installation_type || $product->compatibility_notes)
+        <div class="wide-block mb-3" style="border-radius: 8px; margin: 12px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 16px;">
+            <div class="section-title pl-0" style="font-family: 'Playfair Display', serif; font-weight: bold; font-size: 14px; color: #1F2937; margin-bottom: 12px;">Specifications</div>
+            
+            <div class="pdp-specs-list" style="display: flex; flex-direction: column; gap: 10px;">
+                @if($product->finish_colour)
+                <div class="spec-row" style="display: flex; justify-content: space-between; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px;">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #6B7280;">{{ __('Finish / Colour') }}</span>
+                    <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1F2937;">{{ $product->finish_colour }}</span>
+                </div>
+                @endif
+
+                @if($product->product_type)
+                <div class="spec-row" style="display: flex; justify-content: space-between; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px;">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #6B7280;">{{ __('Product Type') }}</span>
+                    <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1F2937;">{{ $product->product_type }}</span>
+                </div>
+                @endif
+
+                @if($product->installation_type)
+                <div class="spec-row" style="display: flex; justify-content: space-between; border-bottom: 1px solid #F3F4F6; padding-bottom: 8px;">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #6B7280;">{{ __('Installation Type') }}</span>
+                    <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1F2937;">{{ $product->installation_type }}</span>
+                </div>
+                @endif
+            </div>
+
+            @if($product->compatibility_notes)
+            <div class="compat-notes mt-2" style="background-color: #FFFDF5 !important; border-left: 3px solid #ffc107 !important; border-radius: 4px; padding: 12px; margin-top: 12px;">
+                <strong style="font-family: 'Inter', sans-serif; font-size: 12px; color: #1F2937; display: block; margin-bottom: 4px;">{{ __('Compatibility & Notes') }}</strong>
+                <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #4B5563;">{{ $product->compatibility_notes }}</span>
+            </div>
+            @endif
+        </div>
+        @endif
+
         <div class="wide-block mb-3" style="border-radius: 8px; margin: 12px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 12px 16px; background-color: #FFFDF5; border-left: 3px solid #D4AF37;">
             <p class="mb-0" style="font-family: 'Inter', sans-serif; font-size: 11px; color: #856404; line-height: 1.5;">* {{ __('Slab images are for reference only. Natural veins and patterns will vary from batch to batch.') }}</p>
         </div>
