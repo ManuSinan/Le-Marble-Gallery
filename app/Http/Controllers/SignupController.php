@@ -17,12 +17,6 @@ class SignupController extends Controller
     public function index(Request $request)
     {
         if(Auth::check()){
-            $user = Auth::user();
-
-            if ($user && $user->role && $user->role->type === 'private') {
-                return redirect()->route('dashboard');
-            }
-
             return redirect()->route('home');
         }
 

@@ -6,9 +6,7 @@
     </div>
     <div class="pageTitle" style="font-family: 'Playfair Display', serif; font-weight: 600; color: #fff !important; padding-left: 8px !important; font-size: 18px; display: flex; align-items: center; justify-content: flex-start; margin: 0; left: auto !important; position: relative !important; top: auto !important; transform: none !important;">{{ Str::limit($title, 18) }}</div>
     <div class="right" style="display: flex; align-items: center; height: 56px; position: relative !important; right: auto !important; top: auto !important; margin-left: auto;">
-        <a href="#" class="headerButton" data-toggle="modal" data-target="#action-sort" style="color: #fff !important; display: flex; align-items: center; justify-content: center; padding: 0 8px; height: 56px;">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 9l4 -4l4 4m-4 -4v14" /><path d="M21 15l-4 4l-4 -4m4 4v-14" /></svg>
-        </a>
+
         <a href="#" class="headerButton toggle-searchbox" style="color: #fff !important; display: flex; align-items: center; justify-content: center; padding: 0 8px; height: 56px;">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
         </a>
@@ -29,15 +27,9 @@
             <i class="input-icon" style="color: #111827; position: absolute; left: 8px; top: 0; height: 40px; display: flex; align-items: center; justify-content: center; width: 36px; pointer-events: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
             </i>
-            @if($search)
-            <a href="{{ route('mobile.products', ['sortby' => $sortby, 'category_id' => $category_id]) }}" class="ml-1 close loading-fix" style="color: #A1A1A2 !important; position: absolute; right: 8px; top: 0; height: 40px; display: flex; align-items: center; justify-content: center; width: 36px; opacity: 1;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </a>
-            @else
             <a href="#" class="ml-1 close toggle-searchbox" style="color: #A1A1A2 !important; position: absolute; right: 8px; top: 0; height: 40px; display: flex; align-items: center; justify-content: center; width: 36px; opacity: 1;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </a>
-            @endif
         </div>
     </form>
 </div>
@@ -131,33 +123,7 @@
 </div>
 <!-- * App Capsule -->
 
-<!-- Default Action Sheet -->
-<div class="modal fade action-sheet" id="action-sort" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="border-radius: 12px 12px 0 0;">
-            <div class="modal-body">
-                <ul class="action-button-list">
-                    <li>
-                        <a href="{{ route('mobile.products', ['sortby' => 'featured',  'search' => $search, 'category_id' => $category_id]) }}" class="btn btn-list" data-dismiss="modal" style="font-family: 'Inter', sans-serif;">
-                            <span>{{ __('Featured') }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('mobile.products', ['sortby' => 'price-low-to-high',  'search' => $search, 'category_id' => $category_id]) }}" class="btn btn-list" data-dismiss="modal" style="font-family: 'Inter', sans-serif;">
-                            <span>{{ __('Price -- Low to High') }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('mobile.products', ['sortby' => 'price-high-to-low',  'search' => $search, 'category_id' => $category_id]) }}" class="btn btn-list" data-dismiss="modal" style="font-family: 'Inter', sans-serif;">
-                            <span>{{ __('Price -- High to Low') }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- * Default Action Sheet -->
+
  
 <div class="checkout-bottom-bar" style="position: fixed; bottom: 68px; left: 0; right: 0; z-index: 998; background: transparent; padding: 0 10px; @if(cartItemCount() == 0) display: none; @endif">
     <div class="checkout-btn bg-primary text-light" style="background-color: #1F2937 !important; border-top: 2px solid #D4AF37; margin: 0;">

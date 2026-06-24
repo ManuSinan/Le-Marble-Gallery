@@ -19,12 +19,6 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            $user = Auth::guard($guard)->user();
-
-            if ($user && $user->role && $user->role->type === 'private') {
-                return redirect()->route('dashboard');
-            }
-
             return redirect(RouteServiceProvider::HOME);
         }
 

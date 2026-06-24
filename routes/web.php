@@ -56,20 +56,8 @@ Route::post('payment-response', [WebsiteController::class, 'paymentResponse'])->
 
 
  
-Route::get('/', function () {
-    $agent = new \Jenssegers\Agent\Agent();
-    if ($agent->isMobile()) {
-        return redirect('/mobile');
-    }
-    return app(SimpleBookOrderController::class)->index(request());
-})->name('home');
-Route::get('index', function () {
-    $agent = new \Jenssegers\Agent\Agent();
-    if ($agent->isMobile()) {
-        return redirect('/mobile');
-    }
-    return app(SimpleBookOrderController::class)->index(request());
-});
+Route::get('/', [MobileController::class, 'pwa'])->name('home');
+Route::get('index', [MobileController::class, 'pwa']);
 Route::post('quick-order', [SimpleBookOrderController::class, 'store'])->middleware('auth')->name('quick-order.store');
 Route::get('simple-checkout', [SimpleBookOrderController::class, 'checkout'])->middleware('auth')->name('simple-bookstore.checkout');
 Route::post('simple-checkout', [SimpleBookOrderController::class, 'placeOrder'])->middleware('auth')->name('simple-bookstore.place-order');
@@ -84,7 +72,7 @@ Route::post('favourite/toggle/{product}', [WebsiteController::class, 'favouriteT
 Route::post('notify/{product}', [WebsiteController::class, 'notify'])->name('website.notify');
 
 Route::get('pwa', [BaseController::class, 'home'])->name('pwa.home');
-Route::get('mobile', [MobileController::class, 'pwa'])->name('mobile');
+Route::get('mobile', function() { return redirect()->route('home'); })->name('mobile');
 Route::get('offline', [BaseController::class, 'offline'])->name('offline');
 Route::get('sw.js', [BaseController::class, 'swjs'])->name('swjs');
 Route::get('firebase-messaging-sw.js', [BaseController::class, 'firebasejs'])->name('firebasejs');

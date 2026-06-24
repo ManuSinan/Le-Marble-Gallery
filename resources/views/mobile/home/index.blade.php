@@ -60,44 +60,58 @@
         </div>
 
         <!-- Dynamic category cards from DB -->
+        <style>
+            .category-card-img-wrapper {
+                height: 140px;
+                overflow: hidden;
+                position: relative;
+                background: #f3f4f6;
+                transition: transform 0.3s ease;
+            }
+            .category-card-custom:hover .category-card-img-wrapper img {
+                transform: scale(1.05);
+            }
+            .category-card-img-wrapper img {
+                transition: transform 0.3s ease;
+            }
+            @media (min-width: 576px) {
+                .category-card-img-wrapper {
+                    height: 180px;
+                }
+            }
+            @media (min-width: 992px) {
+                .category-card-img-wrapper {
+                    height: 200px;
+                }
+            }
+        </style>
         <div class="row" style="margin: 0 -6px;">
-            @php
-                $catCount = $categories->count();
-                $catIndex = 0;
-            @endphp
             @foreach($categories as $cat)
                 @php
-                    $catIndex++;
-                    // Last card if odd total gets full width
-                    $isLastOdd = ($catCount % 2 !== 0 && $catIndex === $catCount);
-                    $colClass  = $isLastOdd ? 'col-12' : 'col-6';
-                    $imgHeight = $isLastOdd ? '160px' : '140px';
-                    // Use uploaded image if available (original size for perfect clarity), else a placeholder bg
                     $imgSrc = $cat->image ? asset('uploads/' . str_replace('/base/', '/original/', $cat->image)) : null;
                 @endphp
-                <div class="{{ $colClass }}" style="padding: 0 6px 12px;">
+                <div class="col-6 col-sm-4 col-md-3" style="padding: 0 6px 12px;">
                     <div class="category-card-custom"
                          data-category="{{ $cat->slug }}"
-                         style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; cursor: pointer;">
-                        <div style="height: {{ $imgHeight }}; overflow: hidden; position: relative; background: #f3f4f6;">
+                         style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; cursor: pointer; height: 100%; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <div class="category-card-img-wrapper">
                             @if($imgSrc)
                                 <img src="{{ $imgSrc }}" alt="{{ $cat->name }}"
                                      style="width: 100%; height: 100%; object-fit: cover;">
                             @else
-                                <!-- Gradient placeholder when no image set -->
                                 <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg,#e8edf7 0%,#d0daf0 100%);">
                                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#152B6E" stroke-width="1.5" opacity="0.35"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
                                 </div>
                             @endif
                         </div>
-                        <div style="padding: {{ $isLastOdd ? '14px 16px' : '12px' }}; display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: {{ $isLastOdd ? '10px' : '8px' }};">
-                                <div style="width: {{ $isLastOdd ? '32px' : '28px' }}; height: {{ $isLastOdd ? '32px' : '28px' }}; background: #e8edf7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #152B6E;">
-                                    <svg width="{{ $isLastOdd ? '16' : '14' }}" height="{{ $isLastOdd ? '16' : '14' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
+                        <div style="padding: 12px; display: flex; align-items: center; justify-content: space-between; flex-grow: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                                <div style="width: 28px; height: 28px; background: #e8edf7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #152B6E;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
                                 </div>
-                                <span style="font-size: {{ $isLastOdd ? '14px' : '13px' }}; font-weight: 700; color: #111827; font-family: 'Inter', sans-serif;">{{ $cat->name }}</span>
+                                <span style="font-size: 13px; font-weight: 700; color: #111827; font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $cat->name }}</span>
                             </div>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.5" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"/></svg>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
@@ -162,13 +163,22 @@ class SimpleBookOrderController extends Controller
 
         $cartSummary = $this->cartSummary();
 
-        $regularClasses = $classes->filter(static function (array $c) {
+        $hasSchoolClasses = $classes->contains(static function (array $c) {
             return preg_match('/^\d+(st|nd|rd|th)$/i', (string) ($c['name'] ?? '')) === 1;
-        })->values();
+        });
 
-        $specialClasses = $classes->reject(static function (array $c) {
-            return preg_match('/^\d+(st|nd|rd|th)$/i', (string) ($c['name'] ?? '')) === 1;
-        })->values();
+        if ($hasSchoolClasses) {
+            $regularClasses = $classes->filter(static function (array $c) {
+                return preg_match('/^\d+(st|nd|rd|th)$/i', (string) ($c['name'] ?? '')) === 1;
+            })->values();
+
+            $specialClasses = $classes->reject(static function (array $c) {
+                return preg_match('/^\d+(st|nd|rd|th)$/i', (string) ($c['name'] ?? '')) === 1;
+            })->values();
+        } else {
+            $regularClasses = $classes;
+            $specialClasses = collect();
+        }
 
         return view('simple-bookstore.index', [
             'products' => $products,
@@ -341,6 +351,7 @@ class SimpleBookOrderController extends Controller
         }
 
         $subtotal = collect($cartItems)->sum('line_total');
+        $locations = Location::orderBy('name')->get();
 
         return view('simple-bookstore.checkout', [
             'storeName' => config('app.name', 'Lee Marble Gallery'),
@@ -349,6 +360,7 @@ class SimpleBookOrderController extends Controller
             'subtotal' => $subtotal,
             'currencySymbol' => html_entity_decode(trim(strip_tags(currency()))),
             'contactNumber' => getOption('order_enquiry_number', ''),
+            'locations' => $locations,
         ]);
     }
 
@@ -360,14 +372,27 @@ class SimpleBookOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100'],
-            'phone' => ['required', 'regex:/^[0-9]{10,15}$/'],
-            'school' => ['nullable', 'string', 'max:150'],
-            'place' => ['required', 'string', 'max:120'],
-            'address' => ['required', 'string', 'max:500'],
-            'pincode' => ['nullable', 'string', 'max:20'],
+            'address_name' => ['required', 'string', 'max:100'],
+            'address_mobile' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10', 'max:15'],
+            'address_line_1' => ['required', 'string', 'max:500'],
+            'address_line_2' => ['required', 'string', 'max:500'],
+            'address_line_3' => ['nullable', 'string', 'max:500'],
+            'location_id' => ['required', 'integer'],
+            'project_type' => ['nullable', 'string', 'max:100'],
+            'architect_name' => ['nullable', 'string', 'max:150'],
+            'cutting_charge' => ['nullable', 'numeric', 'min:0'],
+            'transportation_charge' => ['nullable', 'numeric', 'min:0'],
+            'installation_charge' => ['nullable', 'numeric', 'min:0'],
+            'manual_discount' => ['nullable', 'numeric', 'min:0'],
             'notes' => ['nullable', 'string', 'max:500'],
         ]);
+
+        $location = Location::find($validated['location_id']);
+        if (!$location) {
+            return redirect()->back()->withErrors([
+                'location_id' => 'Invalid transportation zone selected.',
+            ])->withInput();
+        }
 
         $cartItems = $this->cartItemsFromCookie();
         if (empty($cartItems)) {
@@ -376,17 +401,18 @@ class SimpleBookOrderController extends Controller
             ]);
         }
 
-        $order = DB::transaction(function () use ($authUser, $validated, $cartItems) {
+        $order = DB::transaction(function () use ($authUser, $validated, $cartItems, $location) {
             $subtotal = collect($cartItems)->sum('line_total');
 
+            $cuttingCharge = floatval($validated['cutting_charge'] ?? 0);
+            $transportationCharge = floatval($validated['transportation_charge'] ?? 0);
+            $installationCharge = floatval($validated['installation_charge'] ?? 0);
+            $manualDiscount = floatval($validated['manual_discount'] ?? 0);
+            $finalAmount = max(0, $subtotal + $cuttingCharge + $transportationCharge + $installationCharge - $manualDiscount);
+            $validityDate = now()->addDays(30);
+
             $notes = [];
-            $notes[] = 'Order source: Simple checkout';
-            if (!empty($validated['school'])) {
-                $notes[] = 'School/Madrasa: ' . $validated['school'];
-            }
-            if (!empty($validated['pincode'])) {
-                $notes[] = 'Pincode: ' . $validated['pincode'];
-            }
+            $notes[] = 'Order source: Responsive Storefront';
             if (!empty($validated['notes'])) {
                 $notes[] = 'Customer note: ' . $validated['notes'];
             }
@@ -394,22 +420,29 @@ class SimpleBookOrderController extends Controller
             $order = Order::create([
                 'user_id' => $authUser->id,
                 'address_type' => 'home',
-                'address_name' => $validated['name'],
-                'address_mobile' => $validated['phone'],
-                'address_line_1' => $validated['address'],
-                'address_line_2' => $validated['school'] ?? null,
-                'address_line_3' => $validated['pincode'] ?? null,
-                'address_location' => $validated['place'],
-                'address_local_location' => $validated['place'],
+                'address_name' => $validated['address_name'],
+                'address_mobile' => $validated['address_mobile'],
+                'address_line_1' => $validated['address_line_1'],
+                'address_line_2' => $validated['address_line_2'],
+                'address_line_3' => $validated['address_line_3'] ?? null,
+                'address_location' => $location->name,
+                'address_local_location' => $location->local_name,
                 'discount_code' => null,
                 'total_amount' => $subtotal,
-                'delivery_charge' => 0,
-                'discount_amount' => 0,
+                'delivery_charge' => $transportationCharge,
+                'discount_amount' => $manualDiscount,
                 'canceled_amount' => 0,
-                'final_amount' => $subtotal,
+                'final_amount' => $finalAmount,
                 'note' => implode("\n", $notes),
                 'notes' => $validated['notes'] ?? null,
                 'status' => 'placed',
+                'project_type' => $validated['project_type'] ?? 'Residential',
+                'architect_name' => $validated['architect_name'] ?? null,
+                'cutting_charge' => $cuttingCharge,
+                'transportation_charge' => $transportationCharge,
+                'installation_charge' => $installationCharge,
+                'manual_discount' => $manualDiscount,
+                'validity_date' => $validityDate,
                 'assign_user_id' => null,
             ]);
 
@@ -439,19 +472,22 @@ class SimpleBookOrderController extends Controller
                     'selling_price' => $product->selling_price,
                     'final_price' => $lineTotal,
                     'status' => 'placed',
+                    'area_sqft' => $quantity,
+                    'thickness' => '18mm',
+                    'finish_type' => 'Polished',
                 ]);
 
                 if ($product->stock_status === 'limited') {
                     $product->update([
                         'stock_available' => max(0, (int) $product->stock_available - (int) $quantity),
-                    ]);
+                      ]);
                 }
             }
 
             OrderStatus::create([
                 'order_id' => $order->id,
                 'status' => 'placed',
-                'public_note' => 'Order placed from simple checkout.',
+                'public_note' => 'Order placed from responsive checkout.',
             ]);
 
             return $order;
@@ -465,6 +501,7 @@ class SimpleBookOrderController extends Controller
             'subject' => 'Selected subcategories',
         ];
 
+        sendPushNotificationWithTopic($authUser->name . ' placed new order');
         webhookEvents('order/placed', $order->id);
 
         return redirect()->route('home')->with('order_success', $orderSuccess)

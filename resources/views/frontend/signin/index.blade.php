@@ -8,212 +8,318 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Sign In | {{ $siteName }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('favicons/knm-logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        html, body {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden; /* Remove all scrollability */
+        body {
+            margin: 0;
+            min-height: 100vh;
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #F2F4F8;
             display: flex;
-            align-items: center;
             justify-content: center;
-        }
-        .auth-card {
-            width: 100%;
-            max-width: 420px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
-            padding: 36px 30px;
-            margin: 16px;
-        }
-        .auth-brand {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .auth-logo-icon {
-            width: 44px;
-            height: 44px;
-            background: #e8edf7;
-            color: #152B6E;
-            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            margin-bottom: 12px;
         }
-        .auth-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 700;
-            font-size: 24px;
-            color: #152B6E;
-            margin-bottom: 6px;
-            line-height: 1.2;
-        }
-        .auth-subtitle {
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 0;
-        }
-        .form-group {
-            margin-bottom: 18px;
-        }
-        .form-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .form-input {
+        .login-screen-wrap {
+            background: #F2F4F8 !important;
+            min-height: 100vh;
             width: 100%;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            color: #111827;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
-            background-color: #fff;
-            transition: all 0.2s ease-in-out;
-            outline: none;
+            position: relative;
+            padding-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .form-input:focus {
-            border-color: #152B6E;
-            box-shadow: 0 0 0 3px rgba(21, 43, 110, 0.1);
-        }
-        .meta-row {
+        /* Top Navigation Header styled exactly like mobile appHeader */
+        .appHeader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #152B6E !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: -4px;
-            margin-bottom: 20px;
-            font-size: 13px;
+            padding: 0 16px;
+            z-index: 1000;
+        }
+        .appHeader .left {
+            display: flex;
+            align-items: center;
+        }
+        .appHeader .back {
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .appHeader .back:hover {
+            opacity: 0.8;
+        }
+        .appHeader .pageTitle {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+        }
+        .appHeader .right {
+            width: 24px;
+        }
+        .appCapsule {
+            padding-top: 80px !important;
+            background: transparent !important;
+            width: 100%;
+            max-width: 440px;
+            padding: 0 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-card {
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 24px 0 !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .brand-logo-container {
+            margin: 0 auto 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .brand-logo-container img {
+            max-height: 54px;
+            width: auto;
+            display: block;
+        }
+        .brand-title {
+            color: #152B6E !important;
+            font-size: 20px !important;
+            font-weight: 700 !important;
+            letter-spacing: 2.5px !important;
+            text-align: center !important;
+            margin-bottom: 32px !important;
+            text-transform: uppercase !important;
+        }
+        .login-card form {
+            width: 100%;
+        }
+        .login-card .form-group.basic {
+            border-bottom: none !important;
+            margin-bottom: 22px !important;
+            padding: 0 !important;
+            width: 100%;
+        }
+        .login-card .form-group.basic .label {
+            color: #374151 !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            margin-bottom: 8px !important;
+            letter-spacing: 0.2px;
+            text-align: left !important;
+            display: block !important;
+        }
+        .login-card .form-control {
+            background: #ffffff !important;
+            border: 1.5px solid #d1d5db !important;
+            border-radius: 12px !important;
+            color: #1f2937 !important;
+            padding: 12px 16px !important;
+            height: auto !important;
+            font-size: 15px !important;
+            text-align: center !important;
+            transition: all 0.3s ease !important;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .login-card .form-control:focus {
+            border-color: #152B6E !important;
+            box-shadow: 0 0 0 3px rgba(21, 43, 110, 0.1) !important;
+            background: #ffffff !important;
+            color: #1f2937 !important;
+        }
+        .login-card .form-control::placeholder {
+            color: #9ca3af !important;
+        }
+        .login-card .input-wrapper {
+            position: relative !important;
+            width: 100%;
+        }
+        .form-links-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 26px;
+            width: 100%;
+            font-size: 13.5px;
         }
         .remember-me {
             display: flex;
             align-items: center;
-            gap: 6px;
-            color: #4b5563;
+            gap: 8px;
+            color: #374151;
             cursor: pointer;
+            font-weight: 600;
             user-select: none;
         }
         .remember-me input {
-            width: 15px;
-            height: 15px;
+            width: 16px;
+            height: 16px;
             accent-color: #152B6E;
             cursor: pointer;
         }
         .forgot-link {
-            color: #D4AF37;
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.15s ease;
+            color: #152B6E !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            transition: all 0.2s ease !important;
         }
         .forgot-link:hover {
-            color: #bfa02e;
-            text-decoration: underline;
+            color: #B89225 !important;
         }
-        .submit-btn {
-            width: 100%;
-            background-color: #152B6E;
-            border: 1px solid #152B6E;
-            color: #ffffff;
-            padding: 11px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            border-radius: 6px;
+        .custom-login-btn {
+            background: linear-gradient(135deg, #152B6E 0%, #0d1730 100%) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            color: #ffffff !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            padding: 14px 20px !important;
+            width: 100% !important;
+            box-shadow: 0 6px 18px rgba(21, 43, 110, 0.12) !important;
+            transition: all 0.3s ease !important;
+            letter-spacing: 0.5px !important;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
         }
-        .submit-btn:hover {
-            background-color: #0f2052;
-            border-color: #0f2052;
+        .custom-login-btn:hover {
+            background: linear-gradient(135deg, #223f95 0%, #152b6e 100%) !important;
+            box-shadow: 0 8px 22px rgba(21, 43, 110, 0.2) !important;
         }
-        .submit-btn:active {
-            transform: scale(0.98);
+        .custom-login-btn:active {
+            transform: scale(0.98) !important;
+        }
+        .alert-error-wrap {
+            width: 100%;
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .invalid-feedback {
+            color: #dc2626 !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            display: block !important;
+            text-align: center !important;
+            margin: 4px 0;
         }
         .auth-footer {
-            margin-top: 20px;
+            margin-top: 24px;
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             color: #6b7280;
         }
         .auth-footer a {
             color: #152B6E;
             font-weight: 700;
             text-decoration: none;
+            transition: color 0.2s ease;
         }
         .auth-footer a:hover {
+            color: #B89225;
             text-decoration: underline;
-        }
-        .alert-error {
-            background-color: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #991b1b;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-bottom: 16px;
         }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <div class="auth-brand">
-            <div style="margin-bottom: 16px; display: flex; justify-content: center; align-items: center;">
-                <img src="{{ asset('assets/backend/logo-dark.png') }}" alt="logo" style="max-height: 54px; width: auto; display: block;">
+    <div class="login-screen-wrap">
+        <!-- Header -->
+        <div class="appHeader">
+            <div class="left">
+                <a href="{{ route('home') }}" class="back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </a>
             </div>
-            <h1 class="auth-title">Le Marble Gallery</h1>
-            <p class="auth-subtitle">Sign in to your account</p>
+            <div class="pageTitle">{{ __('Sign in') }}</div>
+            <div class="right"></div>
         </div>
 
-        @if ($errors->any())
-            <div class="alert-error">
-                @foreach ($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
+        <!-- App Capsule -->
+        <div class="appCapsule">
+            <div class="login-card">
+                <div class="brand-logo-container">
+                    <img src="{{ asset('assets/backend/logo-dark.png') }}" alt="logo">
+                </div>
+                <h2 class="brand-title">{{ $siteName }}</h2>
+
+                <form method="POST" action="{{ route('signin') }}">
+                    @csrf
+
+                    @if ($errors->any())
+                        <div class="alert-error-wrap">
+                            @foreach ($errors->all() as $error)
+                                <div class="invalid-feedback">{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="login">{{ __('Username / Mobile') }}</label>
+                            <input type="text" id="login" name="login" required class="form-control" placeholder="{{ __('Enter Username or Mobile') }}" value="{{ old('login') }}" autofocus autocomplete="username">
+                        </div>
+                    </div>
+
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="password">{{ __('Password') }}</label>
+                            <input type="password" id="password" name="password" required class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="current-password">
+                        </div>
+                    </div>
+
+                    <div class="form-links-container">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember" value="1" {{ old('remember') ? 'checked' : '' }}>
+                            <span>{{ __('Remember me') }}</span>
+                        </label>
+                        <a href="{{ route('password.reset') }}" class="forgot-link">{{ __('Forgot Password?') }}</a>
+                    </div>
+
+                    <button type="submit" class="custom-login-btn">{{ __('Continue') }}</button>
+                </form>
+
+                <p class="auth-footer">{{ __("Don't have an account?") }} <a href="{{ route('signup') }}">{{ __('Register here') }}</a></p>
             </div>
-        @endif
-
-        <form method="POST" action="{{ route('signin') }}">
-            @csrf
-
-            <div class="form-group">
-                <label for="login" class="form-label">Username</label>
-                <input type="text" id="login" name="login" class="form-input" value="{{ old('login') }}" placeholder="Enter username" required autofocus>
-            </div>
-
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-input" placeholder="Enter password" required>
-            </div>
-
-            <div class="meta-row">
-                <label class="remember-me">
-                    <input type="checkbox" name="remember" value="1">
-                    <span>Remember me</span>
-                </label>
-                <a href="{{ route('password.reset') }}" class="forgot-link">Forgot password?</a>
-            </div>
-
-            <button type="submit" class="submit-btn">Sign In</button>
-        </form>
-
-        <p class="auth-footer">Don't have an account? <a href="{{ route('signup') }}">Register here</a></p>
+        </div>
     </div>
 </body>
 </html>

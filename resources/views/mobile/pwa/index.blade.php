@@ -45,6 +45,49 @@
             -webkit-box-shadow: none !important;
             -moz-box-shadow: none !important;
         }
+
+        /* Ensure PhotoSwipe prev/next arrows are always visible and styled beautifully */
+        .pswp__button--arrow--left,
+        .pswp__button--arrow--right {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 0.8 !important;
+            background-color: rgba(0, 0, 0, 0.45) !important;
+            border-radius: 50% !important;
+            width: 44px !important;
+            height: 44px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            margin: 0 !important;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        .pswp__button--arrow--left:hover,
+        .pswp__button--arrow--right:hover {
+            opacity: 1 !important;
+            background-color: rgba(0, 0, 0, 0.7) !important;
+        }
+        .pswp__button--arrow--left {
+            left: 16px !important;
+        }
+        .pswp__button--arrow--right {
+            right: 16px !important;
+        }
+        /* Style the actual arrow icons inside PhotoSwipe buttons and remove their default grey background */
+        .pswp__button--arrow--left:before,
+        .pswp__button--arrow--right:before {
+            background-color: transparent !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            margin: 0 !important;
+            width: 32px !important;
+            height: 30px !important;
+        }
+        .pswp__button--arrow--left:before {
+            left: 6px !important;
+        }
+        .pswp__button--arrow--right:before {
+            right: 6px !important;
+        }
         body, p, span, div, strong, small, label, input, select, textarea, button, a {
             font-family: 'Inter', sans-serif;
         }
@@ -620,149 +663,7 @@
             border: solid 1px {{ config('app.theme_primary') }} !important;
         }
 
-        /* Centered Mobile Emulator View on Desktop/Tablet Screens */
-        @media (min-width: 576px) {
-            body {
-                background-color: #0d1b3e !important;
-                background-image: linear-gradient(135deg, rgba(13,27,62,0.96), rgba(21,43,110,0.92)) !important;
-                background-repeat: no-repeat !important;
-                background-size: cover !important;
-                background-position: center !important;
-                background-attachment: fixed !important;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                min-height: 100vh !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow-x: hidden !important;
-            }
-
-            #page {
-                position: relative !important;
-                width: 100% !important;
-                max-width: 480px !important;
-                min-height: 100vh !important;
-                background: #F8F8F8 !important;
-                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7) !important;
-                border-left: 1px solid #374151 !important;
-                border-right: 1px solid #374151 !important;
-                overflow-x: hidden !important;
-                margin: 0 auto !important;
-            }
-
-            .appHeader {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-                border-left: 1px solid #374151 !important;
-                border-right: 1px solid #374151 !important;
-            }
-
-            .appHeader:before {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .extraHeader {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-                border-left: 1px solid #374151 !important;
-                border-right: 1px solid #374151 !important;
-            }
-
-            .appBottomMenu {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-                border-left: 1px solid #374151 !important;
-                border-right: 1px solid #374151 !important;
-                z-index: 99999999 !important;
-            }
-
-            #cat-overlay {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-                border-left: 1px solid #374151 !important;
-                border-right: 1px solid #374151 !important;
-                bottom: 68px !important;
-            }
-
-            #sidebar, .sidebar {
-                max-width: 480px !important;
-                left: 50% !important;
-                margin-left: -240px !important;
-                right: auto !important;
-                height: 100% !important;
-                position: fixed !important;
-                z-index: 99999 !important;
-            }
-
-            #sidebar-loader {
-                max-width: 480px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .sidebar-buttons {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .profileBox {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .profileBox:before {
-                max-width: 480px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .toast-box {
-                max-width: 440px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .modal.panelbox .modal-dialog {
-                max-width: 480px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-                margin: 0 !important;
-            }
-
-            .modal-dialog {
-                max-width: 440px !important;
-                margin: 1.75rem auto !important;
-            }
-
-            .pswp {
-                max-width: 480px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-
-            #loader {
-                max-width: 480px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-        }
+        /* Responsive Layout for Tablets/Desktops removed to fit center content to the screen width on all devices */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
@@ -770,6 +671,24 @@
         }
         .shake {
             animation: shake 0.5s;
+        }
+        /* Hide all modals that are not actively shown */
+        .modal:not(.show) {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        /* Extra guard: hide panelbox-right and action-sheet panels when not open */
+        .panelbox.panelbox-right:not(.show),
+        .action-sheet:not(.show) {
+            display: none !important;
+            transform: none !important;
+            right: -100vw !important;
+        }
+        /* Prevent any horizontal scroll caused by off-screen modals */
+        html, body, #page {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
         }
     </style>
 
@@ -1266,6 +1185,9 @@
                     '</div>'
                 );
 
+                var grid = $('<div class="row" style="margin:0 -6px;"></div>');
+                container.append(grid);
+
                 products.forEach(function (product) {
                     var cartItem = cart.products[product.id];
                     var qty = cartItem ? parseFloat(cartItem.quantity) : 0;
@@ -1275,39 +1197,44 @@
                     var isOut = product.stock_status === 'limited' && product.stock_available <= 0;
                     var stockColor = isOut ? '#ef4444' : '#22c55e';
                     var qtyLabel = qty > 0
-                        ? '<div style="font-size:11px; color:#6b7280; margin-top:3px;">Qty: <span style="font-weight:700; color:#111827;">' + qty + ' items</span></div>'
+                        ? '<div style="font-size:11px; color:#6b7280; margin-top:3px;">Qty: <span class="cat-qty-label-text" style="font-weight:700; color:#111827;">' + qty + ' items</span></div>'
                         : '';
 
-                    var row =
-                        '<div class="cat-product-row" data-id="' + product.id + '" ' +
-                             'style="background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:12px; margin-bottom:10px; cursor:pointer;">' +
-                            '<div style="display:flex; align-items:center; gap:12px;">' +
-                                '<div style="display:flex; align-items:center; gap:12px; flex:1; min-width:0;">' +
-                                    '<div style="width:64px; height:64px; border-radius:6px; overflow:hidden; border:1px solid #f0f0f0; flex-shrink:0;">' +
-                                        '<img src="' + imgSrc + '" alt="' + product.name + '" style="width:100%; height:100%; object-fit:cover;">' +
-                                    '</div>' +
-                                    '<div style="flex:1; min-width:0;">' +
-                                        '<div style="font-size:13px; font-weight:700; color:#111827; font-family:\'Inter\',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-transform:uppercase;">' + product.name + '</div>' +
-                                        qtyLabel +
-                                        '<div style="font-size:15px; font-weight:800; color:#152B6E; margin-top:3px;">' + price + '</div>' +
+                    var col = $(
+                        '<div class="col-12 col-sm-6 col-md-4" style="padding:0 6px 12px;">' +
+                            '<div class="cat-product-row" data-id="' + product.id + '" ' +
+                                 'style="background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:12px; cursor:pointer; height: 100%; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">' +
+                                '<div>' +
+                                    '<div style="display:flex; align-items:center; gap:12px;">' +
+                                        '<div style="width:64px; height:64px; border-radius:6px; overflow:hidden; border:1px solid #f0f0f0; flex-shrink:0;">' +
+                                            '<img src="' + imgSrc + '" alt="' + product.name + '" style="width:100%; height:100%; object-fit:cover;">' +
+                                        '</div>' +
+                                        '<div style="flex:1; min-width:0;">' +
+                                            '<div style="font-size:13px; font-weight:700; color:#111827; font-family:\'Inter\',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-transform:uppercase;">' + product.name + '</div>' +
+                                            qtyLabel +
+                                            '<div style="font-size:15px; font-weight:800; color:#152B6E; margin-top:3px;">' + price + '</div>' +
+                                        '</div>' +
                                     '</div>' +
                                 '</div>' +
-                                '<div style="flex-shrink:0;">' +
-                                    '<div class="cat-stepper" style="display:flex; align-items:center; border:1.5px solid #e5e7eb; border-radius:6px; overflow:hidden; height:36px;">' +
-                                        '<button class="cat-minus-btn" data-id="' + product.id + '" ' +
-                                                'style="border:none; background:#f9fafb; color:#152B6E; width:32px; height:100%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; padding:0; font-weight:700;">−</button>' +
-                                        '<div class="cat-qty-val" style="width:30px; text-align:center; font-size:13px; font-weight:700; color:#111827;">' + qty + '</div>' +
-                                        '<button class="cat-plus-btn" data-id="' + product.id + '" ' +
-                                                'style="border:none; background:#f9fafb; color:#152B6E; width:32px; height:100%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; padding:0; font-weight:700;">+</button>' +
+                                '<div>' +
+                                    '<div style="margin-top:12px; display:flex; align-items:center; justify-content:space-between; gap:12px;">' +
+                                        '<div style="display:flex; align-items:center; gap:6px;">' +
+                                            '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:' + stockColor + ';"></span>' +
+                                            '<span style="font-size:11px; color:#6b7280;">' + stockText + '</span>' +
+                                        '</div>' +
+                                        '<div class="cat-stepper" style="display:flex; align-items:center; border:1.5px solid #e5e7eb; border-radius:6px; overflow:hidden; height:36px; background: #ffffff; flex-shrink:0;">' +
+                                            '<button class="cat-minus-btn" data-id="' + product.id + '" ' +
+                                                    'style="border:none; background:#f9fafb; color:#152B6E; width:32px; height:100%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; padding:0; font-weight:700;">−</button>' +
+                                            '<div class="cat-qty-val" style="width:30px; text-align:center; font-size:13px; font-weight:700; color:#111827;">' + qty + '</div>' +
+                                            '<button class="cat-plus-btn" data-id="' + product.id + '" ' +
+                                                    'style="border:none; background:#f9fafb; color:#152B6E; width:32px; height:100%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; padding:0; font-weight:700;">+</button>' +
+                                        '</div>' +
                                     '</div>' +
                                 '</div>' +
                             '</div>' +
-                            '<div style="margin-top:10px; padding-top:8px; border-top:1px solid #f3f4f6; display:flex; align-items:center; gap:6px;">' +
-                                '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:' + stockColor + ';"></span>' +
-                                '<span style="font-size:11px; color:#6b7280;">' + stockText + '</span>' +
-                            '</div>' +
-                        '</div>';
-                    container.append(row);
+                        '</div>'
+                    );
+                    grid.append(col);
                 });
             }
 

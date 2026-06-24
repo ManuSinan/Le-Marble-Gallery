@@ -39,6 +39,12 @@ class MobileController extends Controller
     public function home(Request $request)
     {   
         $authUser = authUser('api');
+        
+        if (!$authUser) {
+            return response()->json([
+                'redirect' => route('mobile.signin')
+            ]);
+        }
  
         $bannerSliders = BannerSlider::orderBy('priority', 'desc')->get(); 
         $featuredProducts = Product::featured();
@@ -125,6 +131,13 @@ class MobileController extends Controller
 
     public function products(Request $request)
     {
+        $authUser = authUser('api');
+        if (!$authUser) {
+            return response()->json([
+                'redirect' => route('mobile.signin')
+            ]);
+        }
+
         $page = $request->page ?? 1;
         $sortby = $request->sortby ?? 'featured';
         $search = $request->search ?? '';
@@ -241,14 +254,18 @@ class MobileController extends Controller
 
     public function product(Request $request, Product $product)
     {
+        $authUser = authUser('api');
+        if (!$authUser) {
+            return response()->json([
+                'redirect' => route('mobile.signin')
+            ]);
+        }
 
         $cart = cartUpdate();
  
         $request->merge([
             'cart' => json_encode($cart),
         ]);
- 
-        $authUser = authUser('api');
         $favouriteStatus = false;
         if($authUser){
             $favouriteCount = Favourite::where('user_id', $authUser->id)->where('product_id', $product->id)->count();
@@ -360,12 +377,13 @@ class MobileController extends Controller
     public function favourite()
     {
         $authUser = authUser('api');
-
-        $products = null;
-
-        if($authUser){
-            $products = Product::favourite($authUser->id);
+        if (!$authUser) {
+            return response()->json([
+                'redirect' => route('mobile.signin')
+            ]);
         }
+
+        $products = Product::favourite($authUser->id);
  
         return page('favourite', route('mobile.home'), view('mobile/favourite/index', compact('products'))->render());
     }
@@ -517,6 +535,11 @@ class MobileController extends Controller
     public function cart(Request $request)
     {
         $authUser = authUser('api');
+        if (!$authUser) {
+            return response()->json([
+                'redirect' => route('mobile.signin')
+            ]);
+        }
 
         $cart = cartUpdate();
  
@@ -889,12 +912,13 @@ class MobileController extends Controller
     public function orders()
     {
         $authUser = authUser('api');
-
-        $orders = null;
-
-        if($authUser){
-            $orders = Order::where('user_id', $authUser->id)->orderBy('created_at', 'desc')->get();
+        if (!$authUser) {
+            return response()->json([
+                'redirect' => route('mobile.signin')
+            ]);
         }
+
+        $orders = Order::where('user_id', $authUser->id)->orderBy('created_at', 'desc')->get();
  
         return page('orders', route('mobile.home'), view('mobile/order/index', compact('orders'))->render());
 

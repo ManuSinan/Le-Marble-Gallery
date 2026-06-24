@@ -9,7 +9,7 @@ use App\Http\Controllers\WebhookController;
 Route::post('webhook', [WebhookController::class, 'handle'])->name('api.webhook');
 
 Route::get('mobile/{any}', function () {
-    return redirect()->route('mobile');
+    return redirect()->route('home');
 })->where('any', '.*');
 
 Route::middleware(['localize'])->prefix('mobile')->group(function () {

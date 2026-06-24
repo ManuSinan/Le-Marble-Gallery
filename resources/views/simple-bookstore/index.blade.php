@@ -857,7 +857,7 @@ input[type=number] { -moz-appearance: textfield; }
 <footer class="knm-footer">
     <div class="knm-container">
         <div class="knm-footer-bottom" style="border-top: none;">
-            <div>&copy; {{ date('Y') }} KNM Education Board. All rights reserved.</div>
+            <div>&copy; {{ date('Y') }} {{ $storeName ?? config('app.name', 'Lee Marble Gallery') }}. All rights reserved.</div>
             <div>Powered by: <a href="https://www.bluewhyte.com/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;"><strong>BlueWhyte</strong></a></div>
         </div>
     </div>

@@ -144,10 +144,6 @@ class SigninController extends Controller
 
     protected function redirectPathForUser($user): string
     {
-        if ($user && $user->role && $user->role->type === 'private') {
-            return route('dashboard');
-        }
-
         return route('home');
     }
 }

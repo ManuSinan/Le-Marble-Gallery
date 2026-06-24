@@ -679,6 +679,14 @@ if (!function_exists('authUser')) {
                     }
                 }
             }
+
+            // Fallback to web session auth
+            if (Auth::guard('web')->check()) {
+                $user = Auth::guard('web')->user();
+                if ($user && $user->status == 'active' && $user->role && ($user->role->id == 4 || strtolower($user->role->name) === 'salesman')) {
+                    return $user;
+                }
+            }
         }else{
 
             return null;
